@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebateTeamManagementSystem", "DebateTeamManagementSystem\DebateTeamManagementSystem.csproj", "{CE291CEA-958C-4928-A657-D4E25D6FC102}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebateTeamManagementSystem", "DebateTeamManagementSystem\DebateTeamManagementSystem.csproj", "{F619B8A6-B82C-4183-A704-D8D5E06059FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CE291CEA-958C-4928-A657-D4E25D6FC102}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CE291CEA-958C-4928-A657-D4E25D6FC102}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CE291CEA-958C-4928-A657-D4E25D6FC102}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CE291CEA-958C-4928-A657-D4E25D6FC102}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F619B8A6-B82C-4183-A704-D8D5E06059FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F619B8A6-B82C-4183-A704-D8D5E06059FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F619B8A6-B82C-4183-A704-D8D5E06059FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F619B8A6-B82C-4183-A704-D8D5E06059FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
