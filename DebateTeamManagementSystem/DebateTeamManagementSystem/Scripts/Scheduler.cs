@@ -73,15 +73,22 @@ namespace DebateTeamManagementSystem.Scripts
             int fightIndex = 0;
             for (int i = 0; i < teamList.Length-1; i++)
             {
-                int index = 0;
+                int index = i;
                 for (int j = teamList.Length-1; index < tempPairings.Length; j--)
                 {
                     fightPairings[fightIndex] = tempPairings[index];
                     fightIndex++;
                     index += j;
                 }
-                tempPairings = Util.RemoveAt<Util.Vec2>(tempPairings, 0);
             }
+
+            /*
+             * Will be switching to a 2D matrix style sorting algorithm
+             * Still use a 1D array, just some fiddling with the sorting index
+             * I have a txt document outlining the algorithm
+             * The above algorithm fails near the end
+             * assigns the last pairing multiple times
+             */
 
             return "This schedule is acceptable";
         }
