@@ -47,6 +47,24 @@ namespace DebateTeamManagementSystem.Scripts
         /// <returns>string message</returns>
         public string CreateSchedule ()
         {
+            int totalDays = (int)((startDate - endDate).TotalDays) / 7;
+            int totalSlots = totalDays * hourSlots.Length;
+
+            if (freeSlots > hourSlots.Length / 2)
+            {
+                return "Too many free slots or not enough hour slots";
+            }
+
+            if (totalSlots < teamList.Length - 1 * (teamList.Length / 2) + freeSlots * (totalDays-1))
+            {
+                return "Not enough time slots and/or days exist for the number of teams or there are too many back-up slots.";
+            }
+
+            if (freeSlots > hourSlots.Length / 3)
+            {
+                return "Please add more free slots in the event of reschedules or tie-breakers";
+            }
+
             // This assumes that the SetStartDate method was used to assign the startDate (startDate is a Saturday)
             int possibleDays = (int)((endDate - startDate).TotalDays / 7);
 
@@ -100,7 +118,31 @@ namespace DebateTeamManagementSystem.Scripts
                 // Get rid of the place-holder team.
                 teamList = Util.ExtendArray(teamList, -1);
             }
-                
+
+            // Set the schedule here
+            // Currently has no fail-safes
+            // NEEDS TESTING AND CHECKS
+            int pairingIndex = 0;
+            for (int i = 0; i < totalDays; i++)
+            {
+                if (i == 0)
+                {
+                    for (int j = 0; j < hourSlots.Length; j++)
+                    {
+                        timeSlots[i * hourSlots.Length + j].team1Index = (int)fightPairings[pairIndex].x;
+                        timeSlots[i * hourSlots.Length + j].team2Index = (int)fightPairings[pairIndex].y;
+                        pairingIndex++;
+                    }
+                } else
+                {
+                    for (int j = 0; j < hourSlots.Length - freeSlots; j++)
+                    {
+                        timeSlots[i * hourSlots.Length + j].team1Index = (int)fightPairings[pairIndex].x;
+                        timeSlots[i * hourSlots.Length + j].team2Index = (int)fightPairings[pairIndex].y;
+                        pairingIndex++;
+                    }
+                }
+            }
 
             return "This schedule is acceptable";
         }
