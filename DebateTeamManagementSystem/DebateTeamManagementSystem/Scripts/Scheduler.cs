@@ -132,6 +132,8 @@ namespace DebateTeamManagementSystem.Scripts
                         timeSlots[i * hourSlots.Length + j].team1Index = (int)fightPairings[pairIndex].x;
                         timeSlots[i * hourSlots.Length + j].team2Index = (int)fightPairings[pairIndex].y;
                         pairingIndex++;
+                        if (pairingIndex > fightPairings.Length - 1)
+                            break;
                     }
                 } else
                 {
@@ -140,8 +142,12 @@ namespace DebateTeamManagementSystem.Scripts
                         timeSlots[i * hourSlots.Length + j].team1Index = (int)fightPairings[pairIndex].x;
                         timeSlots[i * hourSlots.Length + j].team2Index = (int)fightPairings[pairIndex].y;
                         pairingIndex++;
+                        if (pairingIndex > fightPairings.Length - 1)
+                            break;
                     }
                 }
+                if (pairingIndex > fightPairings.Length - 1)
+                    break;
             }
 
             return "This schedule is acceptable";
