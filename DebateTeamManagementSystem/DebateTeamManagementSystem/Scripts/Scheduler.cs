@@ -17,6 +17,9 @@ namespace DebateTeamManagementSystem.Scripts
         // Ex: float[8.f, 20.5f] would be two time slots per day, 8:30am and 8:30pm
         float[] hourSlots;
 
+        // Number of slots to leave free each day for reschedules
+        int freeSlots;
+
         // Special struct that holds the DateTime of the debate, both team indices, and both team scores.
         Util.TimeSlot[] timeSlots;
         
@@ -53,42 +56,51 @@ namespace DebateTeamManagementSystem.Scripts
             {
                 timeSlots[i].timeSlot = startDate.AddDays((int)(i / hourSlots.Length));
             }
-
-            // Make a tempArray of all team pairings
-            Util.Vec2[] tempPairings = new Util.Vec2[0];
-            // Assign pairings
-            for (int i = 0; i < teamList.Length-1; i++)
-            {
-                for (int j = i+1; j < teamList.Length; j++)
-                {
-                    // Make a new slot for this pair
-                    tempPairings = Util.ExtendArray<Util.Vec2>(tempPairings, 1);
-                    // Assign the pair
-                    tempPairings[tempPairings.Length - 1] = new Util.Vec2(i, j);
-                }
-            }
             
-            // Sort the tempArray into the fightPairings array using our algorithm.
-            fightPairings = new Util.Vec2[tempPairings.Length];
-            int fightIndex = 0;
-            for (int i = 0; i < teamList.Length-1; i++)
+            // Round Robin requires an even number of teams so if odd, add a stand-in BYE team.
+            bool odd = false;
+            if (teamList.Length % 2 != 0)
             {
-                int index = i;
-                for (int j = teamList.Length-1; index < tempPairings.Length; j--)
+                teamList = Util.ExtendArray(teamList, 1);
+                teamList[teamList.Length - 1] = "BYE";
+                odd = true;
+            }
+
+            // Get Ready To Rock
+            int halfSize = teamList.Length / 2;
+            fightPairings = new Util.Vec2[teamList.Length - 1 * halfSize];
+            int pairIndex = 0;
+            for (int i = 0; i < teamList.Length - 1; i++)
+            {
+                // Setup the rounds for one set
+                int[] round = new int[teamList.Length];
+                // Always start with the first team
+                round[0] = 0;
+                // Setup the rest of the circle for the round robin tournament algorithm
+                for (int j = 1; j < teamList.Length; j++)
                 {
-                    fightPairings[fightIndex] = tempPairings[index];
-                    fightIndex++;
-                    index += j;
+                    round[j] = j + i - (j + i > teamList.Length - 1 ? teamList.Length - 1 : 0);
+                }
+
+                // Pair off the teams using the wheel (Just look up graphics of the Round Robin Tournament algorithm, this is what reads the wheel
+                for (int j = 0; j < halfSize; j++)
+                {
+                    fightPairings[pairIndex] = new Util.Vec2(round[j], round[round.Length-1-j]);
                 }
             }
 
-            /*
-             * Will be switching to a 2D matrix style sorting algorithm
-             * Still use a 1D array, just some fiddling with the sorting index
-             * I have a txt document outlining the algorithm
-             * The above algorithm fails near the end
-             * assigns the last pairing multiple times
-             */
+            // If there was an odd number of teams, remove the BYE team pairings.  Keep in mind, we should only have (int)(teamList.Length/2) plays per round
+            if (odd)
+            {
+                for (int i = fightPairings.Length - 1; i >= 0; i--)
+                {
+                    if (fightPairings[i].x == teamList.Length - 1 || fightPairings[i].y == teamList.Length - 1)
+                        fightPairings = Util.RemoveAt<Util.Vec2>(fightPairings, i);
+                }
+                // Get rid of the place-holder team.
+                teamList = Util.ExtendArray(teamList, -1);
+            }
+                
 
             return "This schedule is acceptable";
         }
@@ -125,6 +137,12 @@ namespace DebateTeamManagementSystem.Scripts
         {
             get { return hourSlots; }
             set { hourSlots = value; }
+        }
+
+        public int FreeSlots
+        {
+            get { return freeSlots; }
+            set { freeSlots = value; }
         }
         
         public string[] TeamList
