@@ -13,30 +13,12 @@ namespace DebateTeamManagementSystem {
     public partial class Edit {
         
         /// <summary>
-        /// EnterTeamLabel control.
+        /// teamsGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label EnterTeamLabel;
-        
-        /// <summary>
-        /// TeamText control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TeamText;
-        
-        /// <summary>
-        /// SubmitTeam control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SubmitTeam;
+        protected global::System.Web.UI.WebControls.GridView teamsGrid;
     }
 }
