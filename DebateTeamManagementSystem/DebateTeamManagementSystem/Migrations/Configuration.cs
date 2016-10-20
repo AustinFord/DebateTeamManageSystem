@@ -15,12 +15,27 @@ namespace DebateTeamManagementSystem.Migrations
 
         protected override void Seed(DebateTeamManagementSystem.Models.DebateContext context)
         {
-            context.Teams.Add(
-                new Team {
-                    TeamID = 50, 
-                    TeamName = "Test Team 1" }
+            context.Teams.AddOrUpdate(
+                new Team
+                {
+                    TeamName = "TestyTeam"
+                },
+                new Team
+                {
+                    TeamName = "TestyTeam2"
+                },
+                new Team
+                {
+                    TeamName = "TestyTeam3"
+                },
+                new Team
+                {
+                    TeamName = "TestyTeam4"
+                }
                 );
+
             context.SaveChanges();
+
         }
     }
 }

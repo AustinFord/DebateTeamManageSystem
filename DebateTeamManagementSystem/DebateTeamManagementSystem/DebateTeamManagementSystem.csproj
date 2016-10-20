@@ -394,13 +394,17 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201610202116056_initial.cs" />
-    <Compile Include="Migrations\201610202116056_initial.Designer.cs">
-      <DependentUpon>201610202116056_initial.cs</DependentUpon>
+    <Compile Include="Migrations\201610202142381_initial.cs" />
+    <Compile Include="Migrations\201610202142381_initial.Designer.cs">
+      <DependentUpon>201610202142381_initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201610202133145_initial1.cs" />
-    <Compile Include="Migrations\201610202133145_initial1.Designer.cs">
-      <DependentUpon>201610202133145_initial1.cs</DependentUpon>
+    <Compile Include="Migrations\201610202221099_initial1.cs" />
+    <Compile Include="Migrations\201610202221099_initial1.Designer.cs">
+      <DependentUpon>201610202221099_initial1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610202222298_initial2.cs" />
+    <Compile Include="Migrations\201610202222298_initial2.Designer.cs">
+      <DependentUpon>201610202222298_initial2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -435,11 +439,14 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201610202116056_initial.resx">
-      <DependentUpon>201610202116056_initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201610202142381_initial.resx">
+      <DependentUpon>201610202142381_initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610202133145_initial1.resx">
-      <DependentUpon>201610202133145_initial1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201610202221099_initial1.resx">
+      <DependentUpon>201610202221099_initial1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610202222298_initial2.resx">
+      <DependentUpon>201610202222298_initial2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

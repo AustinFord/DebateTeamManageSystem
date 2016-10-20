@@ -9,7 +9,7 @@ namespace DebateTeamManagementSystem.Models
 {
     public class DebateContext : DbContext
     {
-        public DbSet Teams { get; set; }
+        public DbSet<Team> Teams { get; set; }
     }
 
     public class Team
