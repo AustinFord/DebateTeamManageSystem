@@ -113,7 +113,7 @@ namespace DebateTeamManagementSystem.Scripts
                 for (int i = fightPairings.Length - 1; i >= 0; i--)
                 {
                     if (fightPairings[i].x == teamList.Length - 1 || fightPairings[i].y == teamList.Length - 1)
-                        fightPairings = Util.RemoveAt<Util.Vec2>(fightPairings, i);
+                        fightPairings = Util.RemoveAt(fightPairings, i);
                 }
                 // Get rid of the place-holder team.
                 teamList = Util.ExtendArray(teamList, -1);
