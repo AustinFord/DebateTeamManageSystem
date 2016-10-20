@@ -23,5 +23,62 @@ namespace DebateTeamManagementSystem
             var query = db.Teams;
             return query;
         }
+
+        public void teamsGrid_UpdateItem(int TeamID)
+        {
+            using (DebateContext db = new DebateContext())
+            {
+                Team item = null;
+                item = db.Teams.Find(TeamID);
+                if (item == null)
+                {
+                    ModelState.AddModelError("",
+                      String.Format("Item with id {0} was not found", TeamID));
+                    return;
+                }
+
+                TryUpdateModel(item);
+                if (ModelState.IsValid)
+                {
+                    db.SaveChanges();
+                }
+            }
+        }
+
+        // The id parameter name should match the DataKeyNames value set on the control
+        public void teamsGrid_UpdateItem1(int TeamID)
+        {
+            DebateTeamManagementSystem.Models.Team item = null;
+            // Load the item here, e.g. item = MyDataLayer.Find(id);
+            if (item == null)
+            {
+                // The item wasn't found
+                ModelState.AddModelError("", String.Format("Item with id {0} was not found", TeamID));
+                return;
+            }
+            TryUpdateModel(item);
+            if (ModelState.IsValid)
+            {
+                // Save changes here, e.g. MyDataLayer.SaveChanges();
+
+            }
+        }
+
+        /*public void teamsGrid_DeleteItem(int studentID)
+        {
+            using (SchoolContext db = new SchoolContext())
+            {
+                var item = new Student { StudentID = studentID };
+                db.Entry(item).State = EntityState.Deleted;
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    ModelState.AddModelError("",
+                      String.Format("Item with id {0} no longer exists in the database.", studentID));
+                }
+            }*/
     }
 }

@@ -6,6 +6,8 @@
         <asp:GridView runat="server" ID="teamsGrid"
         ItemType="DebateTeamManagementSystem.Models.Team" DataKeyNames="TeamID" 
         SelectMethod="teamsGrid_GetData"
+        UpdateMethod="teamsGrid_UpdateItem"
+        AutoGenerateEditButton="true"
         AutoGenerateColumns="false">
         <Columns>
             <asp:DynamicField DataField="TeamName" />
