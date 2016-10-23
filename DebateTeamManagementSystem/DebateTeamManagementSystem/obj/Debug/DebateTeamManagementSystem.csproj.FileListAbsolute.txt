@@ -160,3 +160,7 @@ C:\Users\Cygnus\Source\Repos\a\DebateTeamManageSystem\DebateTeamManagementSystem
 C:\Users\Cygnus\Source\Repos\a\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.csproj.GenerateResource.Cache
 C:\Users\Cygnus\Source\Repos\a\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.Migrations.initial1.resources
 C:\Users\Cygnus\Source\Repos\a\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.Migrations.initial2.resources
+D:\Documents\Intro SWE Project\Repository\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.Migrations.initial.resources
+D:\Documents\Intro SWE Project\Repository\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.Migrations.initial1.resources
+D:\Documents\Intro SWE Project\Repository\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.Migrations.initial2.resources
+D:\Documents\Intro SWE Project\Repository\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.csproj.GenerateResource.Cache
