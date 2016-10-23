@@ -45,11 +45,12 @@ namespace DebateTeamManagementSystem.Scripts
 
             // Create a temp array with a length of the inbound array adjusted by the extentions argument.
             T[] tempArray = new T[array.Length + extensions];
+
             // Start copying values up to the length of the NEW array.  This prevents leaving the bounds of a shortened array.
-            for (int i = 0; i < array.Length + extensions; i++)
+            for (int i = 0; i < tempArray.Length; i++)
             {
                 // If we run out of values, stop trying to copy them over
-                if (i <= array.Length)
+                if (i >= array.Length)
                     break;
 
                 tempArray[i] = array[i];
