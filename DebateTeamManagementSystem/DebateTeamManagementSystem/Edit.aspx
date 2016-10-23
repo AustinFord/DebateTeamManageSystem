@@ -3,7 +3,10 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2><%: Title %></h2>
     <h3>Edit Team Info: </h3>
-    <div class="jumbotron"><asp:GridView runat="server" ID="teamsGrid"
+    <div class="jumbotron">
+        <asp:TextBox ID="TextBox1" runat="server" OnTextChanged="TextBox1_TextChanged"></asp:TextBox>
+        <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
+        <asp:GridView runat="server" ID="teamsGrid"
         ItemType="DebateTeamManagementSystem.Models.Team" DataKeyNames="TeamID" 
         SelectMethod="teamsGrid_GetData"
         UpdateMethod="teamsGrid_UpdateItem"
@@ -14,5 +17,7 @@
         <Columns>
             <asp:DynamicField DataField="TeamName" />
         </Columns>
-    </asp:GridView></div>
+    </asp:GridView>
+        <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Button" />
+    </div>
 </asp:Content>
