@@ -4,8 +4,9 @@
     <h2><%: Title %></h2>
     <h3>Edit Team Info: </h3>
     <div class="jumbotron">
+        <asp:Label ID="Label1" runat="server" Text="Please Enter Team Name"></asp:Label>
         <asp:TextBox ID="TextBox1" runat="server" OnTextChanged="TextBox1_TextChanged"></asp:TextBox>
-        <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
+        <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Submit" />
         <asp:GridView runat="server" ID="teamsGrid"
         ItemType="DebateTeamManagementSystem.Models.Team" DataKeyNames="TeamID" 
         SelectMethod="teamsGrid_GetData"
@@ -18,6 +19,5 @@
             <asp:DynamicField DataField="TeamName" />
         </Columns>
     </asp:GridView>
-        <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Button" />
     </div>
 </asp:Content>

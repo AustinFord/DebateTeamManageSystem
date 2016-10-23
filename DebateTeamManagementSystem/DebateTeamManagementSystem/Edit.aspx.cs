@@ -85,18 +85,20 @@ namespace DebateTeamManagementSystem
                
                 var item = new Team { TeamName = teamName };
 
-                DbSet dbset = db.Set(item.GetType());
+                if (TextBox1.Text != null && TextBox1.Text != "") {
+                    DbSet dbset = db.Set(item.GetType());
 
-                dbset.Add(item);
+                    dbset.Add(item);
 
-                db.Entry(item).State = EntityState.Added;
+                    db.Entry(item).State = EntityState.Added;
+                }
 
                if (ModelState.IsValid)
                {
                    db.SaveChanges();
                }
-              
 
+                Response.Redirect("~/Edit");
             }
         }
     }
