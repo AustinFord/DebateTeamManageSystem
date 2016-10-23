@@ -18,7 +18,7 @@ namespace DebateTeamManagementSystem
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+           
         }
 
         protected void TeamText_TextChanged(object sender, EventArgs e)
@@ -69,6 +69,34 @@ namespace DebateTeamManagementSystem
                     ModelState.AddModelError("",
                       String.Format("Item with id {0} no longer exists in the database.", TeamID));
                 }
+            }
+        }
+
+        protected void TextBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            using (DebateContext db = new DebateContext())
+           {
+                var teamName = TextBox1.Text;
+               
+                var item = new Team { TeamName = teamName };
+
+                DbSet dbset = db.Set(item.GetType());
+
+                dbset.Add(item);
+
+                db.Entry(item).State = EntityState.Added;
+
+               if (ModelState.IsValid)
+               {
+                   db.SaveChanges();
+               }
+              
+
             }
         }
     }
