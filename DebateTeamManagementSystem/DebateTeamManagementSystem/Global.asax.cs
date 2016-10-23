@@ -6,6 +6,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Security;
 using System.Web.SessionState;
+using DebateTeamManagementSystem.Scripts;
 
 namespace DebateTeamManagementSystem
 {
@@ -16,6 +17,10 @@ namespace DebateTeamManagementSystem
             // Code that runs on application startup
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            //Create Admin Role
+            RoleActions roleActions = new RoleActions();
+            roleActions.AddUserAndRole();
         }
     }
 }

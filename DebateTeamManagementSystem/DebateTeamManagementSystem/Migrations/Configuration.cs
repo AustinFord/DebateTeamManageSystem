@@ -1,6 +1,5 @@
 namespace DebateTeamManagementSystem.Migrations
 {
-    using Models;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -15,27 +14,18 @@ namespace DebateTeamManagementSystem.Migrations
 
         protected override void Seed(DebateTeamManagementSystem.Models.DebateContext context)
         {
-            context.Teams.AddOrUpdate(
-                new Team
-                {
-                    TeamName = "TestyTeam"
-                },
-                new Team
-                {
-                    TeamName = "TestyTeam2"
-                },
-                new Team
-                {
-                    TeamName = "TestyTeam3"
-                },
-                new Team
-                {
-                    TeamName = "TestyTeam4"
-                }
-                );
+            //  This method will be called after migrating to the latest version.
 
-            context.SaveChanges();
-
+            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
+            //  to avoid creating duplicate seed data. E.g.
+            //
+            //    context.People.AddOrUpdate(
+            //      p => p.FullName,
+            //      new Person { FullName = "Andrew Peters" },
+            //      new Person { FullName = "Brice Lambson" },
+            //      new Person { FullName = "Rowan Miller" }
+            //    );
+            //
         }
     }
 }
