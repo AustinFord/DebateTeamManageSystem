@@ -10,6 +10,7 @@ namespace DebateTeamManagementSystem.Models
     public class DebateContext : DbContext
     {
         public DbSet<Team> Teams { get; set; }
+        public DbSet<TimeSlot> TimeSlots { get; set; }
     }
 
     public class Team
@@ -20,5 +21,12 @@ namespace DebateTeamManagementSystem.Models
 
         [Required, StringLength(40), Display(Name = "Team Name")]
         public string TeamName { get; set; }
+    }
+    public class TimeSlot
+    {
+        [Key]
+        public int TimeSlotID { get; set; }
+        public string Team1Name { get; set; }
+        public string Team2Name { get; set; }
     }
 }

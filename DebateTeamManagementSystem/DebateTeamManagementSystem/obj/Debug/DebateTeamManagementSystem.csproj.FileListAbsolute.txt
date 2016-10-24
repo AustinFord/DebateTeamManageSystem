@@ -320,9 +320,7 @@ C:\Users\austi\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\De
 C:\Users\austi\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\austi\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\bin\Microsoft.Owin.Security.OAuth.xml
 C:\Users\austi\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.csprojResolveAssemblyReference.cache
-C:\Users\austi\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.Migrations.initial.resources
-C:\Users\austi\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.Migrations.initial1.resources
-C:\Users\austi\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.Migrations.initial2.resources
-C:\Users\austi\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.csproj.GenerateResource.Cache
 C:\Users\austi\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.dll
 C:\Users\austi\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.pdb
+C:\Users\austi\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.Migrations.initial.resources
+C:\Users\austi\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.csproj.GenerateResource.Cache
