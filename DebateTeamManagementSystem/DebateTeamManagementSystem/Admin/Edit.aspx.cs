@@ -98,7 +98,7 @@ namespace DebateTeamManagementSystem
                    db.SaveChanges();
                }
 
-                Response.Redirect("~/Edit");
+                Response.Redirect("~/Admin/Edit");
             }
         }
     }
