@@ -24,9 +24,26 @@ namespace DebateTeamManagementSystem.Models
     }
     public class TimeSlot
     {
-        [Key]
+        [Key, Display(Name = "ID")]
+        [ScaffoldColumn(false)]
         public int TimeSlotID { get; set; }
+
+        [Required, StringLength(40), Display(Name = "Team 1 Name")]
         public string Team1Name { get; set; }
+
+        [Required, StringLength(40), Display(Name = "Team 2 Name")]
         public string Team2Name { get; set; }
+
+        [Display(Name = "Team 1 Score")]
+        public int Team1Score { get; set; }
+
+        [Display(Name = "Team 2 Score")]
+        public int Team2Score { get; set; }
+
+        [Required, Display(Name = "Date of Debate")]
+        public string date { get; set; }
+
+        [Required, Display(Name = "Time of Debate")]
+        public string time { get; set; }
     }
 }

@@ -101,5 +101,56 @@ namespace DebateTeamManagementSystem
                 Response.Redirect("~/Admin/Edit");
             }
         }
+
+        protected void scheduleGrid_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        public IQueryable<TimeSlot> scheduleGrid_GetData()
+        {
+            DebateContext db = new DebateContext();
+            var query = db.TimeSlots;
+            return query;
+        }
+
+        public void scheduleGrid_UpdateItem(int TimeSlotID)
+        {
+            using (DebateContext db = new DebateContext())
+            {
+                TimeSlot item = null;
+                item = db.TimeSlots.Find(TimeSlotID);
+                if (item == null)
+                {
+                    ModelState.AddModelError("",
+                      String.Format("Item with id {0} was not found", TimeSlotID));
+                    return;
+                }
+
+                TryUpdateModel(item);
+                if (ModelState.IsValid)
+                {
+                    db.SaveChanges();
+                }
+            }
+        }
+
+        public void scheduleGrid_DeleteItem(int TimeSlotID)
+        {
+            using (DebateContext db = new DebateContext())
+            {
+                var item = new TimeSlot { TimeSlotID = TimeSlotID };
+                db.Entry(item).State = EntityState.Deleted;
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    ModelState.AddModelError("",
+                      String.Format("Item with id {0} no longer exists in the database.", TimeSlotID));
+                }
+            }
+        }
     }
 }
