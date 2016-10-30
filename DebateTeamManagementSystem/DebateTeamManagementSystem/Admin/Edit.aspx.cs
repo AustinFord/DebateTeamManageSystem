@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
@@ -7,6 +8,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using DebateTeamManagementSystem.Models;
 using System.Data.Entity.Infrastructure;
+using System.Web.Providers.Entities;
+using DebateTeamManagementSystem.Scripts;
 namespace DebateTeamManagementSystem
 {
 
@@ -14,6 +17,7 @@ namespace DebateTeamManagementSystem
     public partial class Edit : Page
     {
         public ArrayList teamList = new ArrayList();
+        
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -185,6 +189,87 @@ namespace DebateTeamManagementSystem
                 }
             }
             return isTeamNameUnique;
+        }
+                
+        protected void GenerateSchedule(object sender, EventArgs e) {
+            Scheduler scheduler = new Scheduler();
+            DebateContext teamsDB = new DebateContext();
+
+            var teams = teamsDB.Teams.ToArray();
+            string[] teamNames = new string[teams.Length];
+
+            for (int i = 0; i < teams.Length; i++) {
+                teamNames[i] = teams[i].TeamName;
+            }
+
+            scheduler.TeamList = teamNames;
+
+            scheduler.StartDate = StartDate.SelectedDate;
+
+            scheduler.EndDate = EndDate.SelectedDate;
+
+            scheduler.FreeSlots = Int32.Parse(FreeSlots.SelectedValue);
+
+
+            List<float> hourSlots = new List<float>();
+
+            for (int i = 0; i < HourSlots.Items.Count; i++) {
+
+                if (HourSlots.Items[i].Selected) {
+                    hourSlots.Add(float.Parse(HourSlots.Items[i].Value));
+                }
+            }
+
+            scheduler.HourSlots = hourSlots.ToArray();
+
+            scheduler.CreateSchedule();
+            
+            //checks to see if the scheduler can perform a generation
+            if (!scheduler.IsGood) {
+                return;
+            }
+
+            DebateContext scheduleDB = new DebateContext();
+
+            //foreach(var item in scheduleDB.TimeSlots) {
+            for (int i = scheduleDB.TimeSlots.ToList().Count - 1; i >= 0; i--)
+            {
+            
+                scheduleDB.TimeSlots.ToList().RemoveAt(i);
+                scheduleDB.SaveChanges();
+            }
+     //       scheduleDB.Database.ExecuteSqlCommand("delete from TimeSlots");
+            
+            TimeSlot TimeSlotToEnter = new TimeSlot();
+            DbSet dbset = scheduleDB.Set(TimeSlotToEnter.GetType());
+            foreach (Util.TimeSlot item in scheduler.TimeSlots) {
+                
+                TimeSlotToEnter = new TimeSlot();
+                TimeSlotToEnter.Team1Name = item.team1Name;
+                TimeSlotToEnter.Team2Name = item.team2Name;
+                TimeSlotToEnter.Team1Score = item.team1Score;
+                TimeSlotToEnter.Team2Score = item.team2Score;
+                TimeSlotToEnter.date = item.date;
+                TimeSlotToEnter.time = item.time;
+
+
+                //TimeSlotToEnter.Team1Name = "ABC";
+                //TimeSlotToEnter.Team2Name = "ABC";
+                //TimeSlotToEnter.Team1Score = 0;
+                //TimeSlotToEnter.Team2Score = 0;
+                //TimeSlotToEnter.date = "ABC";
+                //TimeSlotToEnter.time = "ABC";
+
+
+                dbset.Add(TimeSlotToEnter);
+                // scheduleDB.Entry(TimeSlotToEnter).State = EntityState.Added;
+
+                scheduleDB.SaveChanges();
+
+            }
+
+            Response.Redirect("~/Admin/Edit");
+                        
         }
     }
 }

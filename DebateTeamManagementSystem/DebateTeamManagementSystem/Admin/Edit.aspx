@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Edit" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Edit.aspx.cs" Inherits="DebateTeamManagementSystem.Edit" %>
+﻿<%@ Page Title="Edit" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Edit.aspx.cs" Inherits="DebateTeamManagementSystem.Edit" MaintainScrollPositionOnPostback ="true" %>
 
 
 
@@ -6,8 +6,8 @@
     <h3>Edit Team Info: </h3>
     <div class="jumbotron">
         <asp:Label ID="Label1" runat="server" Text="Please Enter Team Name"></asp:Label>
-        <asp:TextBox ID="TextBox1" runat="server" OnTextChanged="TextBox1_TextChanged"></asp:TextBox>
-        <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Submit" />
+        <asp:TextBox ID="TextBox1" runat="server" OnTextChanged="TextBox1_TextChanged" Width="162px"></asp:TextBox>
+        <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Submit" Width="125px" />
         <div class="gvclass">
         <asp:GridView runat="server" ID="teamsGrid"
         ItemType="DebateTeamManagementSystem.Models.Team" DataKeyNames="TeamID" 
@@ -32,6 +32,67 @@
     </asp:GridView>
         </div>
         <br />
+       
+         <h3>Please select a season start and end date.</h3>
+        <div style ="width: 1000px; height: 30px; margin: 0 auto; column-count:2; display: inline;">
+            <div>
+                <h4>Start date:</h4>
+            <asp:Calendar ID="StartDate" runat="server" BackColor="White" BorderColor="#3366CC" BorderWidth="1px" CellPadding="0" DayNameFormat="Shortest" Font-Names="Verdana" Font-Size="8pt" ForeColor="#003399" Height="16px" Width="220px">
+                <DayHeaderStyle BackColor="#99CCCC" ForeColor="#336666" Height="1px" />
+                <NextPrevStyle Font-Size="8pt" ForeColor="#CCCCFF" />
+                <OtherMonthDayStyle ForeColor="#999999" />
+                <SelectedDayStyle BackColor="#009999" Font-Bold="True" ForeColor="#CCFF99" />
+                <SelectorStyle BackColor="#99CCCC" ForeColor="#336666" />
+                <TitleStyle BackColor="#003399" BorderColor="#3366CC" BorderWidth="1px" Font-Bold="True" Font-Size="10pt" ForeColor="#CCCCFF" Height="25px" />
+                <TodayDayStyle BackColor="#99CCCC" ForeColor="White" />
+                <WeekendDayStyle BackColor="#CCCCFF" />
+            </asp:Calendar>
+            </div>
+            <div>
+                <h4>End date:</h4>
+            <asp:Calendar ID="EndDate" runat="server" BackColor="White" BorderColor="#3366CC" BorderWidth="1px" CellPadding="0" DayNameFormat="Shortest" Font-Names="Verdana" Font-Size="8pt" ForeColor="#003399" Height="16px" Width="220px">
+                <DayHeaderStyle BackColor="#99CCCC" ForeColor="#336666" Height="1px" />
+                <NextPrevStyle Font-Size="8pt" ForeColor="#CCCCFF" />
+                <OtherMonthDayStyle ForeColor="#999999" />
+                <SelectedDayStyle BackColor="#009999" Font-Bold="True" ForeColor="#CCFF99" />
+                <SelectorStyle BackColor="#99CCCC" ForeColor="#336666" />
+                <TitleStyle BackColor="#003399" BorderColor="#3366CC" BorderWidth="1px" Font-Bold="True" Font-Size="10pt" ForeColor="#CCCCFF" Height="25px" />
+                <TodayDayStyle BackColor="#99CCCC" ForeColor="White" />
+                <WeekendDayStyle BackColor="#CCCCFF" />
+            </asp:Calendar>
+                </div>
+            </div>
+        <h3>Please check all the times desired for timeslots. Each hour is a timeslot.</h3>
+            <div style ="width: 1000px; height: auto; margin: 0 auto; column-count:3;">
+            <asp:CheckBoxList ID="HourSlots" runat="server" Font-Size ="16px" >
+                <asp:ListItem Value="7">7:00AM</asp:ListItem>
+                <asp:ListItem Value="8">8:00AM</asp:ListItem>
+                <asp:ListItem Value="9">9:00AM</asp:ListItem>
+                <asp:ListItem Value="10">10:00AM</asp:ListItem>
+                <asp:ListItem Value="11">11:00AM</asp:ListItem>
+                <asp:ListItem Value="12">12:00PM</asp:ListItem>
+                <asp:ListItem Value="13">1:00PM</asp:ListItem>
+                <asp:ListItem Value="14">2:00PM</asp:ListItem>
+                <asp:ListItem Value="15">3:00PM</asp:ListItem>
+                <asp:ListItem Value="16">4:00PM</asp:ListItem>
+                <asp:ListItem Value="17">5:00PM</asp:ListItem>
+                <asp:ListItem Value="18">6:00PM</asp:ListItem>
+               
+            </asp:CheckBoxList>
+            </div>
+        
+        <h3>Please Select how many freeslots will be available each day</h3>
+         <asp:dropdownlist runat="server" id="FreeSlots" name="FreeSlots" >
+            <asp:ListItem Value="1">1 Free Slot</asp:ListItem>
+             <asp:ListItem Value="2">2 Free Slots</asp:ListItem>
+        </asp:dropdownlist>
+        <br />
+        <br />
+        <asp:Button ID="Button_GenerateSchedule" runat="server" OnClick="GenerateSchedule" Text="Generate Schedule" Width="125px" />
+        
+        <br />
+
+        <div class ="jumbotron" style ="width: 1400px; margin: 0 auto;">
         <asp:GridView runat="server" ID="scheduleGrid"
         ItemType="DebateTeamManagementSystem.Models.TimeSlot" DataKeyNames="TimeSlotID" 
         SelectMethod="scheduleGrid_GetData"
@@ -52,4 +113,8 @@
             <RowStyle HorizontalAlign="Center" VerticalAlign="Middle" />
     </asp:GridView>
     </div>
-</asp:Content>
+    </div>
+     
+        
+ </asp:Content>
+

@@ -411,3 +411,9 @@ C:\Users\Tim\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\Deba
 C:\Users\Tim\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\bin\System.Net.Http.Formatting.xml
 C:\Users\Tim\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\bin\SendGrid.SmtpApi.dll
 C:\Users\Tim\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\bin\SendGridMail.dll
+C:\Users\austi\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\bin\SendGrid.CSharp.HTTP.Client.dll
+C:\Users\austi\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\bin\SendGrid.dll
+C:\Users\austi\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\bin\SendGrid.SmtpApi.dll
+C:\Users\austi\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\bin\SendGridMail.dll
+C:\Users\austi\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\bin\System.Net.Http.Formatting.dll
+C:\Users\austi\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\bin\System.Net.Http.Formatting.xml

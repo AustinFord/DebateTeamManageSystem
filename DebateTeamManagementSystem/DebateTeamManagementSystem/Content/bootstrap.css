@@ -162,7 +162,7 @@ button,
 input,
 select,
 textarea {
-  margin: 0;
+  margin: 0 0 0 18px;
   font-family: inherit;
   font-size: 100%;
 }
@@ -180,10 +180,11 @@ select {
 button,
 html input[type="button"],
 input[type="reset"],
-input[type="submit"] {
+input[type="submit"]{
   cursor: pointer;
   -webkit-appearance: button;
 }
+
 
 button[disabled],
 html input[disabled] {
@@ -325,6 +326,7 @@ textarea {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
+    width: 60px;
 }
 
 button,

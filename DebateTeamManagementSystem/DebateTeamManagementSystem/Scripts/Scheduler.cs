@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Globalization;
 
 namespace DebateTeamManagementSystem.Scripts
 {
@@ -37,7 +38,7 @@ namespace DebateTeamManagementSystem.Scripts
         /// <summary>
         /// Constructor, not currently used.
         /// </summary>
-        public Scheduler () { }
+        public Scheduler() { }
 
         /// <summary>
         /// Boolean to declare the schedule is properly created
@@ -50,7 +51,7 @@ namespace DebateTeamManagementSystem.Scripts
         /// time slots or more weeks should be added to the season to accomodate the debates and a suitable amount for unforseen schedule changes.
         /// </summary>
         /// <returns>string message</returns>
-        public string CreateSchedule ()
+        public string CreateSchedule()
         {
             int totalDays = (int)((endDate - startDate).TotalDays) / 7;
             int totalSlots = totalDays * hourSlots.Length;
@@ -59,8 +60,8 @@ namespace DebateTeamManagementSystem.Scripts
             {
                 return "Too many free slots or not enough hour slots";
             }
-            
-            if (totalSlots < teamList.Length - 1 * (teamList.Length / 2) + freeSlots * (totalDays-1))
+
+            if (totalSlots < teamList.Length - 1 * (teamList.Length / 2) + freeSlots * (totalDays - 1))
             {
                 return "Not enough time slots and/or days exist for the number of teams or there are too many free slots.";
             }
@@ -76,21 +77,25 @@ namespace DebateTeamManagementSystem.Scripts
             // Create TimeSlot[] with slots for each hourSlot of each day.
             timeSlots = new Util.TimeSlot[possibleDays * hourSlots.Length];
             int hourIndex = 0;
+            DateTime tempDateTime;
             for (int i = 0; i < timeSlots.Length; i++)
             {
-                timeSlots[i].timeSlot = startDate.AddDays((int)(i / hourSlots.Length));
-                timeSlots[i].timeSlot = timeSlots[i].timeSlot.AddHours((int)hourSlots[hourIndex]);
-                timeSlots[i].timeSlot = timeSlots[i].timeSlot.AddMinutes((int)(60 * (hourSlots[hourIndex] % 1)));
+                tempDateTime = new DateTime();
+                tempDateTime = startDate.AddDays((int)(i / hourSlots.Length) * 7);
+                tempDateTime = tempDateTime.AddHours((int)hourSlots[hourIndex]);
+                tempDateTime = tempDateTime.AddMinutes((int)(60 * (hourSlots[hourIndex] % 1)));
+                timeSlots[i].date = Util.DateTimeConverter(tempDateTime).Split('|')[0];
+                timeSlots[i].time = Util.DateTimeConverter(tempDateTime).Split('|')[1];
                 //Console.WriteLine(timeSlots[i].timeSlot);
-                timeSlots[i].team1Index = -1;
-                timeSlots[i].team2Index = -1;
+                timeSlots[i].team1Name = "N/A";
+                timeSlots[i].team2Name = "N/A";
                 hourIndex++;
                 if (hourIndex >= hourSlots.Length)
                 {
                     hourIndex = 0;
                 }
             }
-            
+
             // Round Robin requires an even number of teams so if odd, add a stand-in BYE team.
             bool odd = false;
             if (teamList.Length % 2 != 0)
@@ -120,7 +125,7 @@ namespace DebateTeamManagementSystem.Scripts
                 for (int j = 0; j < halfSize; j++)
                 {
                     fightPairings = Util.ExtendArray(fightPairings, 1);
-                    fightPairings[pairIndex] = new Util.Vec2(round[j], round[round.Length-1-j]);
+                    fightPairings[pairIndex] = new Util.Vec2(round[j], round[round.Length - 1 - j]);
                     pairIndex++;
                 }
             }
@@ -147,18 +152,19 @@ namespace DebateTeamManagementSystem.Scripts
                 {
                     for (int j = 0; j < hourSlots.Length; j++)
                     {
-                        timeSlots[i * hourSlots.Length + j].team1Index = (int)fightPairings[pairIndex].x;
-                        timeSlots[i * hourSlots.Length + j].team2Index = (int)fightPairings[pairIndex].y;
+                        timeSlots[i * hourSlots.Length + j].team1Name = teamList[(int)fightPairings[pairIndex].x];
+                        timeSlots[i * hourSlots.Length + j].team2Name = teamList[(int)fightPairings[pairIndex].y];
                         pairIndex++;
                         if (pairIndex > fightPairings.Length - 1)
                             break;
                     }
-                } else
+                }
+                else
                 {
                     for (int j = 0; j < hourSlots.Length - freeSlots; j++)
                     {
-                        timeSlots[i * hourSlots.Length + j].team1Index = (int)fightPairings[pairIndex].x;
-                        timeSlots[i * hourSlots.Length + j].team2Index = (int)fightPairings[pairIndex].y;
+                        timeSlots[i * hourSlots.Length + j].team1Name = teamList[(int)fightPairings[pairIndex].x];
+                        timeSlots[i * hourSlots.Length + j].team2Name = teamList[(int)fightPairings[pairIndex].y];
                         pairIndex++;
                         if (pairIndex > fightPairings.Length - 1)
                             break;
@@ -201,7 +207,7 @@ namespace DebateTeamManagementSystem.Scripts
                 endDate = value.AddDays(firstSaturday).Date;
             }
         }
-        
+
         /// <summary>
         /// Takes in an array of floats describing the hourSlots that the debates will take place.
         /// </summary>
@@ -220,7 +226,7 @@ namespace DebateTeamManagementSystem.Scripts
             get { return freeSlots; }
             set { freeSlots = value; }
         }
-        
+
         /// <summary>
         /// List of team names
         /// </summary>
