@@ -7,15 +7,40 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using DebateTeamManagementSystem.Models;
+using System.Net;
+using System.Net.Mail;
 
 namespace DebateTeamManagementSystem
 {
     public class EmailService : IIdentityMessageService
     {
-        public Task SendAsync(IdentityMessage message)
+        public async Task SendAsync(IdentityMessage message)
         {
-            // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            await configSendGridasync(message);
+        }
+
+        private async Task configSendGridasync(IdentityMessage message)
+        {
+            var smtp = new SmtpClient("smtp.gmail.com", 587);
+
+            var creds = new NetworkCredential("debateteammanagementsystem@gmail.com", "dtms1234");
+
+            smtp.UseDefaultCredentials = false;
+            smtp.Credentials = creds;
+            smtp.EnableSsl = true;
+
+            var to = new MailAddress(message.Destination);
+            var from = new MailAddress("debateteammanagementsystem@gmail.com", "Tim Wolf");
+
+            var msg = new MailMessage();
+
+            msg.To.Add(to);
+            msg.From = from;
+            msg.IsBodyHtml = true;
+            msg.Subject = message.Subject;
+            msg.Body = message.Body;
+
+            await smtp.SendMailAsync(msg);
         }
     }
 
