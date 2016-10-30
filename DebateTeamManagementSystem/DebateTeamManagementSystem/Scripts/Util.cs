@@ -14,8 +14,8 @@ namespace DebateTeamManagementSystem.Scripts
         // Might eventually hold the referee assigned to the debate
         public struct TimeSlot
         {
-            public DateTime timeSlot;
-            public int team1Index, team1Score, team2Index, team2Score;
+            public string team1Name, team2Name, date, time;
+            public int team1Index, team1Score;
         }
 
         // Struct to hold pairs of floats
@@ -81,6 +81,13 @@ namespace DebateTeamManagementSystem.Scripts
                 tempArray[i] = array[i + (removed ? 1 : 0)];
             }
             return tempArray;
+        }
+
+        public static string DateTimeConverter(DateTime dateTime)
+        {
+            string temp = "";
+            temp += dateTime.ToString("MMM") + " " + dateTime.Day + " " + dateTime.Year + "|" + dateTime.Hour + ":00 " + dateTime.ToString("tt");
+            return temp;
         }
     }
 }
