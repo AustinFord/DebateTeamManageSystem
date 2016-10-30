@@ -45,21 +45,32 @@ namespace DebateTeamManagementSystem
             }
         }
 
-        /*public void teamsGrid_DeleteItem(int studentID)
+        public IQueryable<TimeSlot> scheduleGrid_GetData()
         {
-            using (SchoolContext db = new SchoolContext())
-            {
-                var item = new Student { StudentID = studentID };
-                db.Entry(item).State = EntityState.Deleted;
-                try
-                {
-                    db.SaveChanges();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    ModelState.AddModelError("",
-                      String.Format("Item with id {0} no longer exists in the database.", studentID));
-                }
-            }*/
+            DebateContext db = new DebateContext();
+            var query = db.TimeSlots;
+            return query;
+        }
+
+        protected void scheduleGrid_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+        /*public void teamsGrid_DeleteItem(int studentID)
+{
+   using (SchoolContext db = new SchoolContext())
+   {
+       var item = new Student { StudentID = studentID };
+       db.Entry(item).State = EntityState.Deleted;
+       try
+       {
+           db.SaveChanges();
+       }
+       catch (DbUpdateConcurrencyException)
+       {
+           ModelState.AddModelError("",
+             String.Format("Item with id {0} no longer exists in the database.", studentID));
+       }
+   }*/
     }
 }

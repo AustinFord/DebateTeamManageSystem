@@ -14,6 +14,25 @@
 
     </div>
 
+
+    <div class="jumbotron">
+        <asp:GridView runat="server" ID="scheduleGrid"
+        ItemType="DebateTeamManagementSystem.Models.TimeSlot" DataKeyNames="TimeSlotID" 
+        SelectMethod="scheduleGrid_GetData"
+        AutoGenerateColumns="false" OnSelectedIndexChanged="scheduleGrid_SelectedIndexChanged">
+        <Columns>
+            <asp:DynamicField DataField="Team1Name" />
+            <asp:DynamicField DataField="Team2Name" />
+            <asp:DynamicField DataField="Team1Score" />
+            <asp:DynamicField DataField="Team2Score" />
+            <asp:DynamicField DataField="date" />
+            <asp:DynamicField DataField="time" />
+        </Columns>
+    </asp:GridView>
+
+    </div>
+           
+
     <div class="row">
         <!--<div class="col-md-4">
             <h2>Getting started</h2>
