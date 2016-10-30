@@ -176,9 +176,9 @@ namespace DebateTeamManagementSystem
 
             foreach (Team currentItem in teamList)
             {
-
+                
                 //found a match in the database.
-                if (currentItem.TeamName.Equals(teamName))
+                if (currentItem.TeamName.ToUpper().Equals(teamName.ToUpper()))
                 {
                     isTeamNameUnique = false;
                     break;
