@@ -53,7 +53,15 @@ namespace DebateTeamManagementSystem.Scripts
         /// <returns>string message</returns>
         public string CreateSchedule()
         {
-            int totalDays = (int)((endDate - startDate).TotalDays) / 7;
+            List<DateTime> validDays = new List<DateTime>();
+            DateTime tempDate = startDate;
+            while (tempDate <= endDate)
+            {
+                validDays.Add(tempDate);
+                tempDate = tempDate.AddDays(7);
+            }
+            //int totalDays = (int)((endDate - startDate).TotalDays) / 7;
+            int totalDays = validDays.Count;
             int totalSlots = totalDays * hourSlots.Length;
 
             if (freeSlots > hourSlots.Length / 2)
@@ -68,20 +76,26 @@ namespace DebateTeamManagementSystem.Scripts
 
             if (freeSlots > hourSlots.Length / 3)
             {
-                return "Please add more free slots in the event of reschedules or tie-breakers";
+                return "Please add more free slots in the event of reschedules or tie-breakers.";
+            }
+
+            if (teamList.Length < 2)
+            {
+                return "At least two teams must exist to create a season.";
             }
 
             // This assumes that the SetStartDate method was used to assign the startDate (startDate is a Saturday)
-            int possibleDays = (int)((endDate - startDate).TotalDays / 7);
+            //int possibleDays = (int)((endDate - startDate).TotalDays / 7);
 
             // Create TimeSlot[] with slots for each hourSlot of each day.
-            timeSlots = new Util.TimeSlot[possibleDays * hourSlots.Length];
+            timeSlots = new Util.TimeSlot[totalDays * hourSlots.Length];
             int hourIndex = 0;
+            int dayIndex = 0;
             DateTime tempDateTime;
             for (int i = 0; i < timeSlots.Length; i++)
             {
                 tempDateTime = new DateTime();
-                tempDateTime = startDate.AddDays((int)(i / hourSlots.Length) * 7);
+                tempDateTime = validDays[dayIndex];
                 tempDateTime = tempDateTime.AddHours((int)hourSlots[hourIndex]);
                 tempDateTime = tempDateTime.AddMinutes((int)(60 * (hourSlots[hourIndex] % 1)));
                 timeSlots[i].date = Util.DateTimeConverter(tempDateTime).Split('|')[0];
@@ -93,6 +107,7 @@ namespace DebateTeamManagementSystem.Scripts
                 if (hourIndex >= hourSlots.Length)
                 {
                     hourIndex = 0;
+                    dayIndex++;
                 }
             }
 
