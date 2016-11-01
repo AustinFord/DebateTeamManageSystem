@@ -231,14 +231,13 @@ namespace DebateTeamManagementSystem
 
             DebateContext scheduleDB = new DebateContext();
 
-            //foreach(var item in scheduleDB.TimeSlots) {
-            for (int i = scheduleDB.TimeSlots.ToList().Count - 1; i >= 0; i--)
-            {
+            //for (int i = scheduleDB.TimeSlots.ToList().Count - 1; i >= 0; i--)
+            //{
             
-                scheduleDB.TimeSlots.ToList().RemoveAt(i);
-                scheduleDB.SaveChanges();
-            }
-     //       scheduleDB.Database.ExecuteSqlCommand("delete from TimeSlots");
+            //    scheduleDB.TimeSlots.ToList().RemoveAt(i);
+            //    scheduleDB.SaveChanges();
+            //}
+            scheduleDB.Database.ExecuteSqlCommand("delete from TimeSlots");
             
             TimeSlot TimeSlotToEnter = new TimeSlot();
             DbSet dbset = scheduleDB.Set(TimeSlotToEnter.GetType());

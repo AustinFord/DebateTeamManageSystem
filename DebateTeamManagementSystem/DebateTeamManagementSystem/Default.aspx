@@ -6,7 +6,8 @@
         <asp:GridView runat="server" ID="teamsGrid"
         ItemType="DebateTeamManagementSystem.Models.Team" DataKeyNames="TeamID" 
         SelectMethod="teamsGrid_GetData"
-        AutoGenerateColumns="false">
+        AutoGenerateColumns="False" AllowSorting="True" CellPadding="3" Font-Size="Medium">
+        
         <Columns>
             <asp:DynamicField DataField="TeamName" />
         </Columns>
@@ -19,7 +20,8 @@
         <asp:GridView runat="server" ID="scheduleGrid"
         ItemType="DebateTeamManagementSystem.Models.TimeSlot" DataKeyNames="TimeSlotID" 
         SelectMethod="scheduleGrid_GetData"
-        AutoGenerateColumns="false" OnSelectedIndexChanged="scheduleGrid_SelectedIndexChanged">
+        AutoGenerateColumns="False" AllowSorting="True" CellPadding="3" Font-Size="Medium" >
+        
         <Columns>
             <asp:DynamicField DataField="Team1Name" />
             <asp:DynamicField DataField="Team2Name" />
