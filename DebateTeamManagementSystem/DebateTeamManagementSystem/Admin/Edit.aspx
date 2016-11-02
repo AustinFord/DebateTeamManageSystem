@@ -9,7 +9,7 @@
         <asp:TextBox ID="TextBox1" runat="server" OnTextChanged="TextBox1_TextChanged" Width="162px"></asp:TextBox>
         <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Submit" Width="125px" />
         <div class="gvclass">
-        <asp:GridView runat="server" ID="teamsGrid"
+        <asp:GridView runat="server" ID="teamsGrid" 
         ItemType="DebateTeamManagementSystem.Models.Team" DataKeyNames="TeamID" 
         SelectMethod="teamsGrid_GetData"
         UpdateMethod="teamsGrid_UpdateItem"

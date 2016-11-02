@@ -41,31 +41,40 @@ namespace DebateTeamManagementSystem
             using (DebateContext db = new DebateContext())
             {
                 Team item = null;
+                String itemTeamName;
+                int itemID;
                 item = db.Teams.Find(TeamID);
-
+                itemTeamName = item.TeamName;
+                itemID = item.TeamID;
                 //found in the database
                 //if (db.Teams.Any(x => x.TeamName == item.TeamName && x.TeamID != item.TeamID))
-               // {
-
-                    if (item == null)
-                    {
+                // {
+                if (item == null)
+                {
                     ModelState.AddModelError("",
                       String.Format("Item with id {0} was not found", TeamID));
                     return;
-                    }
+                }
 
-                    TryUpdateModel(item);
+                TryUpdateModel(item);
 
+                if (isTeamNameUnique(item.TeamName, db.Teams.ToList(), itemID))
+                {
                     if (ModelState.IsValid)
                     {
                         db.SaveChanges();
                     }
-               // }
-                else {
+                } else {
+
+                    item.TeamName = itemTeamName;
+              
+                        db.SaveChanges();
+                    //then we should display an error saying the team name isnt unique.
                 }
+               
             }
         }
-
+        
         public void teamsGrid_DeleteItem(int TeamID)
         {
             using (DebateContext db = new DebateContext())
@@ -81,6 +90,7 @@ namespace DebateTeamManagementSystem
                     ModelState.AddModelError("",
                       String.Format("Item with id {0} no longer exists in the database.", TeamID));
                 }
+                Response.Redirect("~/Admin/Edit");
             }
         }
 
@@ -190,7 +200,24 @@ namespace DebateTeamManagementSystem
             }
             return isTeamNameUnique;
         }
-                
+
+        Boolean isTeamNameUnique(String teamName, System.Collections.Generic.List<Team> teamList, int teamID)
+        {
+            Boolean isTeamNameUnique = true;
+
+            foreach (Team currentItem in teamList)
+            {
+
+                //found a match in the database.
+                if ((currentItem.TeamName.ToUpper().Equals(teamName.ToUpper())) && teamID != currentItem.TeamID)
+                {
+                    isTeamNameUnique = false;
+                    break;
+                }
+            }
+            return isTeamNameUnique;
+        }
+
         protected void GenerateSchedule(object sender, EventArgs e) {
             Scheduler scheduler = new Scheduler();
             DebateContext teamsDB = new DebateContext();
