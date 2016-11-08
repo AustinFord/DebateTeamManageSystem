@@ -17,11 +17,18 @@ namespace DebateTeamManagementSystem
     public partial class Edit : Page
     {
         public ArrayList teamList = new ArrayList();
-        
-
+        private DateTime prevStartDate;
+        private DateTime prevEndDate;
         protected void Page_Load(object sender, EventArgs e)
         {
-           
+            StartDate.SelectedDate = DateTime.Today.AddDays(((int)DayOfWeek.Saturday - (int)DateTime.Today.DayOfWeek + 7) % 7);
+            prevStartDate = StartDate.SelectedDate;
+
+            
+            EndDate.SelectedDate = StartDate.SelectedDate.AddDays(7);
+            prevEndDate = EndDate.SelectedDate;
+            
+            
         }
 
         protected void TeamText_TextChanged(object sender, EventArgs e)
@@ -63,24 +70,28 @@ namespace DebateTeamManagementSystem
                     if (ModelState.IsValid)
                     {
                         db.SaveChanges();
+                        TeamError.Visible = false;
                     }
                 } else {
 
                     item.TeamName = itemTeamName;
-              
-                        db.SaveChanges();
+                    TeamErrorText.Text = "That team name is not unique. Please choose a new one";
+                    TeamError.Visible = true;
+                    db.SaveChanges();
                     //then we should display an error saying the team name isnt unique.
                 }
-               
+
             }
         }
-        
+
         public void teamsGrid_DeleteItem(int TeamID)
         {
             using (DebateContext db = new DebateContext())
             {
                 var item = new Team { TeamID = TeamID };
                 db.Entry(item).State = EntityState.Deleted;
+                int currentPageCount = teamsGrid.PageCount;
+
                 try
                 {
                     db.SaveChanges();
@@ -90,7 +101,9 @@ namespace DebateTeamManagementSystem
                     ModelState.AddModelError("",
                       String.Format("Item with id {0} no longer exists in the database.", TeamID));
                 }
-                Response.Redirect("~/Admin/Edit");
+                
+                    Response.Redirect("~/Admin/Edit");
+                                
             }
         }
 
@@ -102,21 +115,22 @@ namespace DebateTeamManagementSystem
         protected void Button1_Click(object sender, EventArgs e)
         {
             using (DebateContext db = new DebateContext())
-           {
+            {
                 var teamName = TextBox1.Text;
-               
-                var teamList = db.Teams.ToList();
-                
-                Boolean isTeamUnique = isTeamNameUnique(teamName, teamList);
-                                
 
-                if (isTeamUnique) {
-                var item = new Team { TeamName = teamName };
-                
+                var teamList = db.Teams.ToList();
+
+                Boolean isTeamUnique = isTeamNameUnique(teamName, teamList);
+
+
+                if (isTeamUnique)
+                {
+                    var item = new Team { TeamName = teamName };
+
                     if (TextBox1.Text != null && TextBox1.Text != "")
                     {
                         DbSet dbset = db.Set(item.GetType());
-                        
+
                         dbset.Add(item);
 
                         db.Entry(item).State = EntityState.Added;
@@ -128,7 +142,11 @@ namespace DebateTeamManagementSystem
                     }
 
                 }
-                
+                else {
+                    TeamErrorText.Text = "That team name is not unique. Please choose a new one";
+                    TeamError.Visible = true;
+                }
+
 
                 Response.Redirect("~/Admin/Edit");
             }
@@ -185,12 +203,12 @@ namespace DebateTeamManagementSystem
             }
         }
 
-        Boolean isTeamNameUnique(String teamName, System.Collections.Generic.List<Team> teamList) {
+        Boolean isTeamNameUnique(String teamName, List<Team> teamList) {
             Boolean isTeamNameUnique = true;
 
             foreach (Team currentItem in teamList)
             {
-                
+
                 //found a match in the database.
                 if (currentItem.TeamName.ToUpper().Equals(teamName.ToUpper()))
                 {
@@ -201,7 +219,7 @@ namespace DebateTeamManagementSystem
             return isTeamNameUnique;
         }
 
-        Boolean isTeamNameUnique(String teamName, System.Collections.Generic.List<Team> teamList, int teamID)
+        Boolean isTeamNameUnique(String teamName, List<Team> teamList, int teamID)
         {
             Boolean isTeamNameUnique = true;
 
@@ -212,6 +230,7 @@ namespace DebateTeamManagementSystem
                 if ((currentItem.TeamName.ToUpper().Equals(teamName.ToUpper())) && teamID != currentItem.TeamID)
                 {
                     isTeamNameUnique = false;
+              
                     break;
                 }
             }
@@ -240,36 +259,43 @@ namespace DebateTeamManagementSystem
 
             List<float> hourSlots = new List<float>();
 
-            for (int i = 0; i < HourSlots.Items.Count; i++) {
+            for (int i = 0; i < HourSlots.Items.Count; i++)
+            {
 
-                if (HourSlots.Items[i].Selected) {
+                if (HourSlots.Items[i].Selected)
+                {
                     hourSlots.Add(float.Parse(HourSlots.Items[i].Value));
                 }
             }
 
-            scheduler.HourSlots = hourSlots.ToArray();
 
+            if (!isDateGood()) {
+                return; 
+            }
+
+            if (!validNumberOfTeams()) {
+                //send out an error to the screen
+                return;
+            }
+
+            scheduler.HourSlots = hourSlots.ToArray();
             scheduler.CreateSchedule();
-            
-            //checks to see if the scheduler can perform a generation
+           
+
             if (!scheduler.IsGood) {
+                //need to present a message saying that the scheduler is not good.
                 return;
             }
 
             DebateContext scheduleDB = new DebateContext();
 
-            //for (int i = scheduleDB.TimeSlots.ToList().Count - 1; i >= 0; i--)
-            //{
-            
-            //    scheduleDB.TimeSlots.ToList().RemoveAt(i);
-            //    scheduleDB.SaveChanges();
-            //}
             scheduleDB.Database.ExecuteSqlCommand("delete from TimeSlots");
-            
+
             TimeSlot TimeSlotToEnter = new TimeSlot();
             DbSet dbset = scheduleDB.Set(TimeSlotToEnter.GetType());
+
             foreach (Util.TimeSlot item in scheduler.TimeSlots) {
-                
+
                 TimeSlotToEnter = new TimeSlot();
                 TimeSlotToEnter.Team1Name = item.team1Name;
                 TimeSlotToEnter.Team2Name = item.team2Name;
@@ -277,25 +303,79 @@ namespace DebateTeamManagementSystem
                 TimeSlotToEnter.Team2Score = item.team2Score;
                 TimeSlotToEnter.date = item.date;
                 TimeSlotToEnter.time = item.time;
-
-
-                //TimeSlotToEnter.Team1Name = "ABC";
-                //TimeSlotToEnter.Team2Name = "ABC";
-                //TimeSlotToEnter.Team1Score = 0;
-                //TimeSlotToEnter.Team2Score = 0;
-                //TimeSlotToEnter.date = "ABC";
-                //TimeSlotToEnter.time = "ABC";
-
-
+        
                 dbset.Add(TimeSlotToEnter);
-                // scheduleDB.Entry(TimeSlotToEnter).State = EntityState.Added;
+                
 
                 scheduleDB.SaveChanges();
 
             }
 
             Response.Redirect("~/Admin/Edit");
-                        
+
         }
+
+        protected void StartDate_SelectionChanged(object sender, EventArgs e)
+        {
+            if (StartDate.SelectedDate.DayOfWeek != DayOfWeek.Saturday || StartDate.SelectedDate < DateTime.Today)
+            {
+                StartDate.SelectedDate = prevStartDate;
+                InvalidDateText.Text = "The start date must be on a saturday and at least today or in the future.";
+                DateErrorMessage.Visible = true;
+
+            }
+            else {
+                prevStartDate = StartDate.SelectedDate;
+            }
+        }
+
+        protected void EndDate_SelectionChanged(object sender, EventArgs e)
+        {
+            if (EndDate.SelectedDate.DayOfWeek != DayOfWeek.Saturday || EndDate.SelectedDate < DateTime.Today)
+            {
+                EndDate.SelectedDate = prevEndDate;
+                InvalidDateText.Text = "The end date must be on a saturday and at least today or in the future.";
+                DateErrorMessage.Visible = true;
+            }
+            else
+            {
+                prevEndDate = EndDate.SelectedDate;
+            }
+        }
+
+        protected bool isDateGood() {
+
+            bool isDateGood = true;
+
+            if (StartDate.SelectedDate.CompareTo(EndDate.SelectedDate) > 0) {
+                isDateGood = false;
+                InvalidDateText.Text = "Date is not good!";
+                DateErrorMessage.Visible = true;
+            }
+
+            return isDateGood;
+        }
+
+        protected bool validNumberOfTeams() {
+            bool numberOfTeamsValid = true;
+            DebateContext teamsDB = new DebateContext();
+
+            var teams = teamsDB.Teams.ToArray();
+
+            if (teams.Length < 2) {
+                numberOfTeamsValid = false;
+                TeamErrorText.Text = "You must have less than 10 but more than 1 team to schedule a season.";
+                TeamError.Visible = true;
+                return numberOfTeamsValid;
+            }
+
+            if (teams.Length > 10){
+                numberOfTeamsValid = false;
+                TeamErrorText.Text = "You must have less than 10 but more than 1 team to schedule a season.";
+                TeamError.Visible = true;
+            }
+            return numberOfTeamsValid;
+        }
+        
     }
 }

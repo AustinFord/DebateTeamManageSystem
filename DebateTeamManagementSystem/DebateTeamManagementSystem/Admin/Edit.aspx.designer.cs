@@ -49,6 +49,24 @@ namespace DebateTeamManagementSystem {
         protected global::System.Web.UI.WebControls.GridView teamsGrid;
         
         /// <summary>
+        /// TeamError control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder TeamError;
+        
+        /// <summary>
+        /// TeamErrorText control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal TeamErrorText;
+        
+        /// <summary>
         /// StartDate control.
         /// </summary>
         /// <remarks>
@@ -65,6 +83,24 @@ namespace DebateTeamManagementSystem {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Calendar EndDate;
+        
+        /// <summary>
+        /// DateErrorMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder DateErrorMessage;
+        
+        /// <summary>
+        /// InvalidDateText control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal InvalidDateText;
         
         /// <summary>
         /// HourSlots control.

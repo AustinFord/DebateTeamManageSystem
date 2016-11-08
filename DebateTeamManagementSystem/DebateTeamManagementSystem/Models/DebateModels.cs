@@ -21,6 +21,10 @@ namespace DebateTeamManagementSystem.Models
 
         [Required, StringLength(40), Display(Name = "Team Name")]
         public string TeamName { get; set; }
+
+        [Required, Display(Name ="Status")]
+        public bool Status { get; set; }
+
     }
     public class TimeSlot
     {

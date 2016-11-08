@@ -417,9 +417,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201610262256451_p.cs" />
-    <Compile Include="Migrations\201610262256451_p.Designer.cs">
-      <DependentUpon>201610262256451_p.cs</DependentUpon>
+    <Compile Include="Migrations\201611062121301_initial.cs" />
+    <Compile Include="Migrations\201611062121301_initial.Designer.cs">
+      <DependentUpon>201611062121301_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -456,8 +456,8 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201610262256451_p.resx">
-      <DependentUpon>201610262256451_p.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201611062121301_initial.resx">
+      <DependentUpon>201611062121301_initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

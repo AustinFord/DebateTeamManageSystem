@@ -64,17 +64,17 @@ namespace DebateTeamManagementSystem.Scripts
             int totalDays = validDays.Count;
             int totalSlots = totalDays * hourSlots.Length;
 
-            if (freeSlots > hourSlots.Length / 2)
+            if (freeSlots > (float)hourSlots.Length / 2f)
             {
                 return "Too many free slots or not enough hour slots";
             }
 
-            if (totalSlots < teamList.Length - 1 * (teamList.Length / 2) + freeSlots * (totalDays - 1))
+            if (totalSlots < (teamList.Length - 1) * (teamList.Length / 2) + freeSlots * (totalDays - 1))
             {
                 return "Not enough time slots and/or days exist for the number of teams or there are too many free slots.";
             }
 
-            if (freeSlots > hourSlots.Length / 3)
+            if (freeSlots < (float)hourSlots.Length / 3f)
             {
                 return "Please add more free slots in the event of reschedules or tie-breakers.";
             }
