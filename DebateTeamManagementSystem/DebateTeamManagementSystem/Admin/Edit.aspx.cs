@@ -10,6 +10,7 @@ using DebateTeamManagementSystem.Models;
 using System.Data.Entity.Infrastructure;
 using System.Web.Providers.Entities;
 using DebateTeamManagementSystem.Scripts;
+using IntroSWEConsoleApp;
 namespace DebateTeamManagementSystem
 {
 
@@ -19,16 +20,25 @@ namespace DebateTeamManagementSystem
         public ArrayList teamList = new ArrayList();
         private DateTime prevStartDate;
         private DateTime prevEndDate;
+        
+       
         protected void Page_Load(object sender, EventArgs e)
         {
-            StartDate.SelectedDate = DateTime.Today.AddDays(((int)DayOfWeek.Saturday - (int)DateTime.Today.DayOfWeek + 7) % 7);
-            prevStartDate = StartDate.SelectedDate;
 
-            
-            EndDate.SelectedDate = StartDate.SelectedDate.AddDays(7);
-            prevEndDate = EndDate.SelectedDate;
-            
-            
+            if (!IsPostBack && Session["IsAlreadyLoad"] == null)
+            {
+                StartDate.SelectedDate = DateTime.Today.AddDays(((int)DayOfWeek.Saturday - (int)DateTime.Today.DayOfWeek + 7) % 7);
+                prevStartDate = StartDate.SelectedDate;
+
+
+                EndDate.SelectedDate = StartDate.SelectedDate.AddDays(7);
+                prevEndDate = EndDate.SelectedDate;
+                Session["IsAlreadyLoad"] = true;
+                
+            }
+             
+              
+                    
         }
 
         protected void TeamText_TextChanged(object sender, EventArgs e)
@@ -238,38 +248,21 @@ namespace DebateTeamManagementSystem
         }
 
         protected void GenerateSchedule(object sender, EventArgs e) {
-            Scheduler scheduler = new Scheduler();
+     
             DebateContext teamsDB = new DebateContext();
 
             var teams = teamsDB.Teams.ToArray();
+
             string[] teamNames = new string[teams.Length];
 
             for (int i = 0; i < teams.Length; i++) {
                 teamNames[i] = teams[i].TeamName;
             }
-
-            scheduler.TeamList = teamNames;
-
-            scheduler.StartDate = StartDate.SelectedDate;
-
-            scheduler.EndDate = EndDate.SelectedDate;
-
-            scheduler.FreeSlots = Int32.Parse(FreeSlots.SelectedValue);
-
-
-            List<float> hourSlots = new List<float>();
-
-            for (int i = 0; i < HourSlots.Items.Count; i++)
-            {
-
-                if (HourSlots.Items[i].Selected)
-                {
-                    hourSlots.Add(float.Parse(HourSlots.Items[i].Value));
-                }
-            }
-
+                  
 
             if (!isDateGood()) {
+                InvalidDateText.Text = "Selected Dates are not valid.";
+                DateErrorMessage.Visible = true;
                 return; 
             }
 
@@ -278,14 +271,12 @@ namespace DebateTeamManagementSystem
                 return;
             }
 
-            scheduler.HourSlots = hourSlots.ToArray();
-            scheduler.CreateSchedule();
-           
+            
+            
+            Util.CreateSchedule(teamNames, StartDate.SelectedDate, EndDate.SelectedDate);
 
-            if (!scheduler.IsGood) {
-                //need to present a message saying that the scheduler is not good.
-                return;
-            }
+            Util.TimeSlot[] TimeSlotArray = Util.timeSlots;
+           
 
             DebateContext scheduleDB = new DebateContext();
 
@@ -294,15 +285,30 @@ namespace DebateTeamManagementSystem
             TimeSlot TimeSlotToEnter = new TimeSlot();
             DbSet dbset = scheduleDB.Set(TimeSlotToEnter.GetType());
 
-            foreach (Util.TimeSlot item in scheduler.TimeSlots) {
+            foreach (Util.TimeSlot item in Util.timeSlots) {
 
                 TimeSlotToEnter = new TimeSlot();
-                TimeSlotToEnter.Team1Name = item.team1Name;
-                TimeSlotToEnter.Team2Name = item.team2Name;
+
+                if (item.team1Name == null){
+                    TimeSlotToEnter.Team1Name = "FREE";
+                }
+                else {
+                    TimeSlotToEnter.Team1Name = item.team1Name;
+                }
+
+                if (item.team2Name ==null) {
+
+                    TimeSlotToEnter.Team2Name = "FREE";
+                }
+                else {
+
+                    TimeSlotToEnter.Team2Name = item.team2Name;
+                }
+
                 TimeSlotToEnter.Team1Score = item.team1Score;
                 TimeSlotToEnter.Team2Score = item.team2Score;
                 TimeSlotToEnter.date = item.date;
-                TimeSlotToEnter.time = item.time;
+               
         
                 dbset.Add(TimeSlotToEnter);
                 
@@ -322,10 +328,13 @@ namespace DebateTeamManagementSystem
                 StartDate.SelectedDate = prevStartDate;
                 InvalidDateText.Text = "The start date must be on a saturday and at least today or in the future.";
                 DateErrorMessage.Visible = true;
+               
 
             }
             else {
                 prevStartDate = StartDate.SelectedDate;
+             
+                DateErrorMessage.Visible = false;
             }
         }
 
@@ -336,10 +345,13 @@ namespace DebateTeamManagementSystem
                 EndDate.SelectedDate = prevEndDate;
                 InvalidDateText.Text = "The end date must be on a saturday and at least today or in the future.";
                 DateErrorMessage.Visible = true;
+               
             }
             else
             {
                 prevEndDate = EndDate.SelectedDate;
+                DateErrorMessage.Visible = false;
+               
             }
         }
 
@@ -347,7 +359,7 @@ namespace DebateTeamManagementSystem
 
             bool isDateGood = true;
 
-            if (StartDate.SelectedDate.CompareTo(EndDate.SelectedDate) > 0) {
+            if (StartDate.SelectedDate.CompareTo(EndDate.SelectedDate) > 0 || !StartDate.SelectedDate.DayOfWeek.Equals(DayOfWeek.Saturday) || !EndDate.SelectedDate.DayOfWeek.Equals(DayOfWeek.Saturday) ) {
                 isDateGood = false;
                 InvalidDateText.Text = "Date is not good!";
                 DateErrorMessage.Visible = true;
@@ -362,18 +374,14 @@ namespace DebateTeamManagementSystem
 
             var teams = teamsDB.Teams.ToArray();
 
-            if (teams.Length < 2) {
+            if (teams.Length < 2 || teams.Length > 10) {
                 numberOfTeamsValid = false;
                 TeamErrorText.Text = "You must have less than 10 but more than 1 team to schedule a season.";
                 TeamError.Visible = true;
                 return numberOfTeamsValid;
             }
 
-            if (teams.Length > 10){
-                numberOfTeamsValid = false;
-                TeamErrorText.Text = "You must have less than 10 but more than 1 team to schedule a season.";
-                TeamError.Visible = true;
-            }
+            
             return numberOfTeamsValid;
         }
         

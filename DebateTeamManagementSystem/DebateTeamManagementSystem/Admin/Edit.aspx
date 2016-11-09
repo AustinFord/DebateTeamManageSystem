@@ -130,7 +130,7 @@
             <asp:DynamicField DataField="Team1Score" />
             <asp:DynamicField DataField="Team2Score" />
             <asp:DynamicField DataField="date" />
-            <asp:DynamicField DataField="time" />
+           <%-- <asp:DynamicField DataField="time" />--%>
         </Columns>
             <EditRowStyle CssClass="GridViewEditRow" BackColor="Silver" HorizontalAlign="Center" VerticalAlign="Middle" />
             <RowStyle HorizontalAlign="Center" VerticalAlign="Middle" />

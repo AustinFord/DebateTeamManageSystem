@@ -47,7 +47,6 @@ namespace DebateTeamManagementSystem.Models
         [Required, Display(Name = "Date of Debate")]
         public string date { get; set; }
 
-        [Required, Display(Name = "Time of Debate")]
-        public string time { get; set; }
+        
     }
 }
