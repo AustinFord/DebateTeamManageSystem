@@ -505,3 +505,4 @@ C:\Users\austin\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\D
 C:\Users\austi\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.Migrations.initial.resources
 C:\Users\austi\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.csproj.GenerateResource.Cache
 C:\Users\austi\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.Migrations.initial1.resources
+C:\Users\austi\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.Migrations.initial2.resources

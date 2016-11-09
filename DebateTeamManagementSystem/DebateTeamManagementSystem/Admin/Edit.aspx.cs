@@ -36,8 +36,15 @@ namespace DebateTeamManagementSystem
                 Session["IsAlreadyLoad"] = true;
                 
             }
-             
-              
+            if (!validNumberOfTeams())
+            {
+                TeamErrorText.Text = "You must have less than 10 but more than 1 team to schedule a season.";
+                TeamError.Visible = true;
+            }
+            else {
+                TeamError.Visible = false;
+            }
+            
                     
         }
 
@@ -308,6 +315,7 @@ namespace DebateTeamManagementSystem
                 TimeSlotToEnter.Team1Score = item.team1Score;
                 TimeSlotToEnter.Team2Score = item.team2Score;
                 TimeSlotToEnter.date = item.date;
+                TimeSlotToEnter.isMorning = item.morning;
                
         
                 dbset.Add(TimeSlotToEnter);

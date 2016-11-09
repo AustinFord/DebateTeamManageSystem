@@ -47,6 +47,7 @@ namespace DebateTeamManagementSystem.Models
         [Required, Display(Name = "Date of Debate")]
         public string date { get; set; }
 
-        
+        [Required, Display(Name = "Morning/Afternoon")]
+        public bool isMorning { get; set; }
     }
 }

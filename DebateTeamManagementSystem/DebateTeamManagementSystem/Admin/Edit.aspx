@@ -79,7 +79,7 @@
                 </div>
             </div>
           
-             <h3>Please check all the times desired for timeslots. Each hour is a timeslot.</h3>
+             <%--<h3>Please check all the times desired for timeslots. Each hour is a timeslot.</h3>
             <div style ="width: 1000px; height: auto; margin: 0 auto; column-count:3;">
             <asp:CheckBoxList ID="HourSlots" runat="server" Font-Size ="16px" >
                 <asp:ListItem Value="7">7:00AM</asp:ListItem>
@@ -96,19 +96,19 @@
                 <asp:ListItem Value="18">6:00PM</asp:ListItem>
                
             </asp:CheckBoxList>
-            </div>
+            </div>--%>
     
 
     
         
-        <h3>Please Select how many freeslots will be available each day</h3>
+        <%--<h3>Please Select how many freeslots will be available each day</h3>
          <asp:dropdownlist runat="server" id="FreeSlots" name="FreeSlots" Width="220px" >
             <asp:ListItem Value="1">1 Free Slot</asp:ListItem>
              <asp:ListItem Value="2">2 Free Slots</asp:ListItem>
              <asp:ListItem Value="3">3 Free Slot</asp:ListItem>
              <asp:ListItem Value="4">4 Free Slots</asp:ListItem>
 
-        </asp:dropdownlist>
+        </asp:dropdownlist>--%>
         <br />
         <br />
         <asp:Button ID="Button_GenerateSchedule" runat="server" OnClick="GenerateSchedule" Text="Generate Schedule" Width="201px" Height="38px" />
@@ -131,6 +131,8 @@
             <asp:DynamicField DataField="Team2Score" />
             <asp:DynamicField DataField="date" />
            <%-- <asp:DynamicField DataField="time" />--%>
+           <asp:DynamicField DataField="isMorning" />
+            
         </Columns>
             <EditRowStyle CssClass="GridViewEditRow" BackColor="Silver" HorizontalAlign="Center" VerticalAlign="Middle" />
             <RowStyle HorizontalAlign="Center" VerticalAlign="Middle" />
