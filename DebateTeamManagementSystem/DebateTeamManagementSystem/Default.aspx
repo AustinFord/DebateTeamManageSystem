@@ -6,10 +6,11 @@
         <asp:GridView runat="server" ID="teamsGrid"
         ItemType="DebateTeamManagementSystem.Models.Team" DataKeyNames="TeamID" 
         SelectMethod="teamsGrid_GetData"
-        AutoGenerateColumns="False" AllowSorting="True" CellPadding="3" Font-Size="Medium">
+        AutoGenerateColumns="False" AllowSorting="True" CellPadding="3" Font-Size="Medium" OnSelectedIndexChanged="teamsGrid_SelectedIndexChanged">
         
         <Columns>
             <asp:DynamicField DataField="TeamName" />
+            
         </Columns>
     </asp:GridView>
 
@@ -28,7 +29,9 @@
             <asp:DynamicField DataField="Team1Score" />
             <asp:DynamicField DataField="Team2Score" />
             <asp:DynamicField DataField="date" />
-            <asp:DynamicField DataField="isMorning" />
+            <asp:DynamicField DataField="time" />
+            <asp:DynamicField DataField="RoundStatus" />
+
         </Columns>
     </asp:GridView>
 

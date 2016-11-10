@@ -110,6 +110,7 @@ namespace DebateTeamManagementSystem
                 try
                 {
                     deleteTeamFromSchedule(TeamID);
+                    item.isActive = false;
                     db.SaveChanges();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -270,7 +271,7 @@ namespace DebateTeamManagementSystem
             DebateContext scheduleDB = new DebateContext();
 
             GenerateNewScheduleCheck.Visible = true;
-            GenerateNewScheduleText.Text = "By generating a new shchedule, you will delete all of the timeslots that are not locked.";
+            GenerateNewScheduleText.Text = "By generating a new schedule, you will delete all of the timeslots that are not locked.";
             GenerateNewSchedule.Visible = true;
 
             if (GenerateNewScheduleCheck.Checked && GenerateNewScheduleCheck.Visible == true) {
@@ -336,8 +337,9 @@ namespace DebateTeamManagementSystem
                 TimeSlotToEnter.Team1Score = item.team1Score;
                 TimeSlotToEnter.Team2Score = item.team2Score;
                 TimeSlotToEnter.date = item.date;
-                TimeSlotToEnter.isMorning = item.morning;
-
+                TimeSlotToEnter.time = item.morning ? "Morning" : "Afternoon";
+                    
+            
 
                 if (isTimeSlotUnique(TimeSlotToEnter)) {
                     dbset.Add(TimeSlotToEnter);
@@ -447,20 +449,16 @@ namespace DebateTeamManagementSystem
                     foreach (TimeSlot scheduleItem in db.TimeSlots.ToList())
                     {
                         //need to make a back up of the schedule before deleting this.
-                            if (scheduleItem.Team1Name.Equals(item.TeamName)) {
-                            scheduleItem.Team1Name = "REMOVED";
-                            scheduleItem.Team1Score = 0;
+                            if (scheduleItem.Team1Name.Equals(item.TeamName) || scheduleItem.Team2Name.Equals(item.TeamName)) {
+                            scheduleItem.RoundStatus = item.TeamName + " dropout";
                             numberOfRowsChanged++;
-                            } else if (scheduleItem.Team2Name.Equals(item.TeamName)) {
-                            scheduleItem.Team2Name = "REMOVED";
-                            scheduleItem.Team2Score = 0;
-                            numberOfRowsChanged++;
+                            }
                         }
                         db.SaveChanges();
                     }
 
                 }
-            }
+            
         }
 
         protected void DeleteSchedule_Click(object sender, EventArgs e)
@@ -485,5 +483,7 @@ namespace DebateTeamManagementSystem
             }
                        
         }
+
+        
     }
 }

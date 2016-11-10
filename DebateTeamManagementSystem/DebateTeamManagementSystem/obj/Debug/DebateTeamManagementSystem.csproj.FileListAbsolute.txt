@@ -515,3 +515,5 @@ D:\Documents\Intro SWE Project\Repository\DebateTeamManagementSystem\DebateTeamM
 D:\Documents\Intro SWE Project\Repository\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.Migrations.initial.resources
 D:\Documents\Intro SWE Project\Repository\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.Migrations.initial1.resources
 D:\Documents\Intro SWE Project\Repository\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.csproj.GenerateResource.Cache
+C:\Users\austi\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.Migrations.initial2.resources
+C:\Users\austi\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.Migrations.initial3.resources

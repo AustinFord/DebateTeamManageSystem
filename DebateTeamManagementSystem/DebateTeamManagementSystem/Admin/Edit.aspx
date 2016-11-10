@@ -113,9 +113,9 @@
             <asp:DynamicField DataField="Team1Score" />
             <asp:DynamicField DataField="Team2Score" />
             <asp:DynamicField DataField="date" />
-            <asp:DynamicField DataField="isMorning" />
+            <asp:DynamicField DataField="time" />
             <asp:DynamicField DataField="isLocked" />
-            
+             <asp:DynamicField DataField="RoundStatus" />
             
         </Columns>
             <EditRowStyle CssClass="GridViewEditRow" BackColor="Silver" HorizontalAlign="Center" VerticalAlign="Middle" />

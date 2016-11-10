@@ -43,10 +43,13 @@ namespace DebateTeamManagementSystem.Models
         [Required, Display(Name = "Date of Debate")]
         public string date { get; set; }
 
-        [Required, Display(Name = "Morning/Afternoon")]
-        public bool isMorning { get; set; }
+        [Required, Display(Name = "Time")]
+        public string time { get; set; }
 
         [Display(Name = "Locked")]
         public bool isLocked { get; set; }
+
+        [Display(Name = "Round Status")]
+        public string RoundStatus { get; set; }
     }
 }
