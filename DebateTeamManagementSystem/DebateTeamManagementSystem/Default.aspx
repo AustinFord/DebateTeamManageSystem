@@ -6,7 +6,7 @@
         <asp:GridView runat="server" ID="teamsGrid"
         ItemType="DebateTeamManagementSystem.Models.Team" DataKeyNames="TeamID" 
         SelectMethod="teamsGrid_GetData"
-        AutoGenerateColumns="False" AllowSorting="True" CellPadding="3" Font-Size="Medium" OnSelectedIndexChanged="teamsGrid_SelectedIndexChanged">
+        AutoGenerateColumns="False" AllowSorting="True" CellPadding="3" Font-Size="Medium">
         
         <Columns>
             <asp:DynamicField DataField="TeamName" />

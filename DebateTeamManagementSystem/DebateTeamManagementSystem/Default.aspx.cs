@@ -62,12 +62,5 @@ namespace DebateTeamManagementSystem
             return query;
             
         }
-
-        protected void scheduleGrid_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-
     }
 }

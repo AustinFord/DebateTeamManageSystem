@@ -21,6 +21,9 @@ namespace DebateTeamManagementSystem.Models
         [Required, Display(Name ="Active Status")]
         public bool isActive { get; set; }
 
+        [Display(Name = "Score")]
+        public int Score { get; set; }
+
     }
     public class TimeSlot
     {
