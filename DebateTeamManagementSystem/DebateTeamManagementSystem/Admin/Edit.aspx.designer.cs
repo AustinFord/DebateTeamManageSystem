@@ -112,6 +112,33 @@ namespace DebateTeamManagementSystem {
         protected global::System.Web.UI.WebControls.Button Button_GenerateSchedule;
         
         /// <summary>
+        /// GenerateNewScheduleCheck control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox GenerateNewScheduleCheck;
+        
+        /// <summary>
+        /// GenerateNewSchedule control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder GenerateNewSchedule;
+        
+        /// <summary>
+        /// GenerateNewScheduleText control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal GenerateNewScheduleText;
+        
+        /// <summary>
         /// ScheduleError control.
         /// </summary>
         /// <remarks>
@@ -137,5 +164,41 @@ namespace DebateTeamManagementSystem {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView scheduleGrid;
+        
+        /// <summary>
+        /// ConfirmDeletion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox ConfirmDeletion;
+        
+        /// <summary>
+        /// DeletionWarning control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder DeletionWarning;
+        
+        /// <summary>
+        /// DeletionWarningText control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal DeletionWarningText;
+        
+        /// <summary>
+        /// DeleteSchedule control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button DeleteSchedule;
     }
 }

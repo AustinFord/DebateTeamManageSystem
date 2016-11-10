@@ -270,6 +270,12 @@ namespace DebateTeamManagementSystem
             Util.TimeSlot[] TimeSlotArray = Util.timeSlots;
             DebateContext scheduleDB = new DebateContext();
 
+            GenerateNewScheduleCheck.Visible = true;
+            GenerateNewScheduleText.Text = "By generating a new shchedule, you will delete all of the timeslots that are not locked.";
+            GenerateNewSchedule.Visible = true;
+
+            if (GenerateNewScheduleCheck.Checked && GenerateNewScheduleCheck.Visible == true) {
+
             var teams = teamsDB.Teams.ToArray();
 
             string[] teamNames = new string[teams.Length];
@@ -343,6 +349,7 @@ namespace DebateTeamManagementSystem
             }
 
             Response.Redirect("~/Admin/Edit");
+            }
 
         }
 
@@ -453,6 +460,29 @@ namespace DebateTeamManagementSystem
 
                 }
             }
+        }
+
+        protected void DeleteSchedule_Click(object sender, EventArgs e)
+        {
+            DebateContext scheduleDB = new DebateContext();
+
+            ConfirmDeletion.Visible = true;
+            DeletionWarning.Visible = true;
+            DeletionWarningText.Text = "WARNING: By clicking the confirm checkbox, you will delete all scheduled timeslots that are not locked.";
+            if (ConfirmDeletion.Checked && ConfirmDeletion.Visible == true) {
+
+                foreach (TimeSlot item in scheduleDB.TimeSlots.ToList())
+                {
+
+                    if (!item.isLocked)
+                    {
+                        scheduleDB.TimeSlots.Remove(item);
+                        scheduleDB.SaveChanges();
+                    }
+                }
+                Response.Redirect("~/Admin/Edit");
+            }
+                       
         }
     }
 }

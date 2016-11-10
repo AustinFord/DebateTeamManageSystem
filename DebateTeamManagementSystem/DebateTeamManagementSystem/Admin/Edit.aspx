@@ -84,6 +84,13 @@
         <br />
         <asp:Button ID="Button_GenerateSchedule" runat="server" OnClick="GenerateSchedule" Text="Generate Schedule" Width="201px" Height="38px" />
         
+        <asp:CheckBox ID="GenerateNewScheduleCheck" runat="server" Text="Confirm Generation?" Visible ="false" />
+            
+         <asp:PlaceHolder runat="server" ID="GenerateNewSchedule" Visible="false">
+                        <p class="text-danger">
+                            <asp:Literal runat="server" ID="GenerateNewScheduleText" />
+                        </p>
+                    </asp:PlaceHolder>
         <br />
 
         <div class ="jumbotron" style ="width: 1000px; margin: 0 auto;">
@@ -114,7 +121,16 @@
             <EditRowStyle CssClass="GridViewEditRow" BackColor="Silver" HorizontalAlign="Center" VerticalAlign="Middle" />
             <RowStyle HorizontalAlign="Center" VerticalAlign="Middle" />
     </asp:GridView>
-    </div>
+
+            <asp:CheckBox ID="ConfirmDeletion" runat="server" Text="Confirm Deletion?" Visible ="false" />
+            <asp:PlaceHolder runat="server" ID="DeletionWarning" Visible="false">
+                        <p class="text-danger">
+                            <asp:Literal runat="server" ID="DeletionWarningText" />
+                        </p>
+                    </asp:PlaceHolder>
+            <asp:Button ID="DeleteSchedule" runat="server" Text="Delete Entire Schedule" OnClick="DeleteSchedule_Click" />    
+        </div>
+        
     </div>
      
         
