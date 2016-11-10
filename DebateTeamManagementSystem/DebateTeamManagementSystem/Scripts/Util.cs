@@ -15,10 +15,8 @@ namespace DebateTeamManagementSystem.Scripts
         public static DateTime? startDate;
         public static DateTime? endDate;
         public static DateTime? backupEndDate;
-        public static int hourSlots;
-        public static int freeSlots = 1;
-
         public static TimeSlot[] timeSlots;
+
         private static Vec2[] fightPairings;
         private static Vec2[] sidePairings;
         private static int numWeeks = 0;
@@ -154,42 +152,29 @@ namespace DebateTeamManagementSystem.Scripts
             return "";
         }
 
-        public static string SetHourSlots(int hours)
-        {
-            hourSlots = hours;
-            return "";
-        }
-
-        public static string SetFreeSlots(int free)
-        {
-            freeSlots = free;
-            return "";
-        }
-
         public static string[] GenerateSchedule()
         {
             string[] fatal = new string[0];
-            string[] warnings = new string[0];
 
             // Check Team List
             if (teamList == null)
             {
                 fatal = ExtendArray(fatal, 1);
-                fatal[fatal.Length - 1] = "!Please submit a valid list of teams";
+                fatal[fatal.Length - 1] = "Please submit a valid list of teams";
             }
 
             // Check start date
             if (startDate == null)
             {
                 fatal = ExtendArray(fatal, 1);
-                fatal[fatal.Length - 1] = "!Please choose a valid Start Date";
+                fatal[fatal.Length - 1] = "Please choose a valid Start Date";
             }
 
             // Check end date
             if (endDate == null)
             {
                 fatal = ExtendArray(fatal, 1);
-                fatal[fatal.Length - 1] = "!Please choose a valid End Date";
+                fatal[fatal.Length - 1] = "Please choose a valid End Date";
             }
 
             validDays = new List<DateTime>();
@@ -201,52 +186,18 @@ namespace DebateTeamManagementSystem.Scripts
             }
 
             totalDays = validDays.Count;
-            int totalSlots = totalDays * hourSlots;
 
             int minSlots = 0;
 
             for (int i = teamList.Length - 1; i > 0; i--)
                 minSlots += i;
 
-            minSlots += (totalDays - 1) * freeSlots;
-
-            if (minSlots < totalSlots)
-            {
-                fatal = ExtendArray(fatal, 1);
-                fatal[fatal.Length - 1] = "!Not enough time slots exist to accomodate all of the teams and the number of free slots.";
-            }
-
-            if (freeSlots > (float)hourSlots / 2f)
-            {
-                warnings = ExtendArray(warnings, 1);
-                warnings[warnings.Length - 1] = "@There might too many free slots allocated for a reasonible schedule.";
-            }
-
-            if (freeSlots < (float)hourSlots / 3f)
-            {
-                warnings = ExtendArray(warnings, 1);
-                warnings[warnings.Length - 1] = "@There might not be enough free slots allocated for reschedules";
-            }
-
-            // If there are any fatal errors, return the fatal errors and warnings, else generate a schedule and return the warnings.
-            string[] outString = new string[fatal.Length + warnings.Length];
-
-            for (int i = 0; i < fatal.Length; i++)
-            {
-                outString[i] = fatal[i];
-            }
-
-            for (int i = 0; i < warnings.Length - 1; i++)
-            {
-                outString[fatal.Length + i] = warnings[i];
-            }
-
             if (fatal.Length > 0)
-                return outString;
+                return fatal;
 
             CreateSchedule((DateTime)startDate, (DateTime)endDate);
 
-            return outString;
+            return fatal;
         }
 
         public static void CreateSchedule(DateTime start, DateTime end)
