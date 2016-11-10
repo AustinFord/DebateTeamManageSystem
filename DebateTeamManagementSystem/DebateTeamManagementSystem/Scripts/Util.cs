@@ -18,10 +18,11 @@ namespace DebateTeamManagementSystem.Scripts
         public static TimeSlot[] timeSlots;
 
         private static Vec2[] fightPairings;
-        private static Vec2[] sidePairings;
         private static int numWeeks = 0;
         private static int totalDays;
         private static List<DateTime> validDays;
+
+        private static string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
         // Struct to hold all debate schedules, the teams involved, and the scores of each team
         // Might eventually hold the referee assigned to the debate
@@ -102,6 +103,16 @@ namespace DebateTeamManagementSystem.Scripts
             string temp = "";
             temp += dateTime.ToString("MMM") + " " + dateTime.Day + " " + dateTime.Year + "|" + dateTime.Hour + ":00 " + dateTime.ToString("tt");
             return temp;
+        }
+
+        /// <summary>
+        /// Takes a string and converts it to a sentence.
+        /// </summary>
+        /// <param name="date">Date in terms of MM/DD/YYYY</param>
+        /// <returns></returns>
+        public static string DateTimeConverter(string date)
+        {
+            return "" + months[Int32.Parse(date.Split('/')[0])-1] + " " + date.Split('/')[1] + ", " + date.Split('/')[2];
         }
 
         public static string SetTeams(string[] teams)
@@ -200,12 +211,12 @@ namespace DebateTeamManagementSystem.Scripts
             return fatal;
         }
 
-        public static void CreateSchedule(DateTime start, DateTime end)
+        public static bool CreateSchedule(DateTime start, DateTime end)
         {
             // Time Slaughter
             timeSlots = new TimeSlot[0];
 
-            numWeeks = (end - start).Days / 7;
+            numWeeks = (end - start).Days / 7 + 1;
             float tsD = (((float)teamList.Length / 2) * (teamList.Length - 1)) / (numWeeks);
             float carryOver = tsD % 1;
             int slots = (int)tsD;
@@ -219,53 +230,24 @@ namespace DebateTeamManagementSystem.Scripts
 
             for (int i = 0; i < numWeeks; i++)
             {
-                //Console.WriteLine();
-                //Console.WriteLine("AM | PM - Day " + (i+1) + " | CarryOver: " + (leapSlot + carryOver));
                 for (int j = 0; j < jVal; j++)
                 {
                     if (!(useCarryAm && j == jVal - 1))
                     {
-                        //Console.WriteLine(" X | X ");
-
-                        timeSlots = ExtendArray(timeSlots, 1);
-                        timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
-                        timeSlots[timeSlots.Length - 1].morning = true;
-                        timeSlots[timeSlots.Length - 1].freeSlot = false;
-
-                        timeSlots = ExtendArray(timeSlots, 1);
-                        timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
-                        timeSlots[timeSlots.Length - 1].morning = false;
-                        timeSlots[timeSlots.Length - 1].freeSlot = false;
+                        SetSlot(i, start, end, true, false);
+                        SetSlot(i, start, end, false, false);
                     }
                     else
                     {
                         if (carryAM)
                         {
-                            //Console.WriteLine(" X | F ");
-
-                            timeSlots = ExtendArray(timeSlots, 1);
-                            timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
-                            timeSlots[timeSlots.Length - 1].morning = true;
-                            timeSlots[timeSlots.Length - 1].freeSlot = false;
-
-                            timeSlots = ExtendArray(timeSlots, 1);
-                            timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
-                            timeSlots[timeSlots.Length - 1].morning = false;
-                            timeSlots[timeSlots.Length - 1].freeSlot = true;
+                            SetSlot(i, start, end, true, false);
+                            SetSlot(i, start, end, false, true);
                         }
                         else
                         {
-                            //Console.WriteLine(" F | X ");
-
-                            timeSlots = ExtendArray(timeSlots, 1);
-                            timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
-                            timeSlots[timeSlots.Length - 1].morning = true;
-                            timeSlots[timeSlots.Length - 1].freeSlot = true;
-
-                            timeSlots = ExtendArray(timeSlots, 1);
-                            timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
-                            timeSlots[timeSlots.Length - 1].morning = false;
-                            timeSlots[timeSlots.Length - 1].freeSlot = false;
+                            SetSlot(i, start, end, true, true);
+                            SetSlot(i, start, end, false, false);
                         }
                         carryAM = !carryAM;
                     }
@@ -277,70 +259,52 @@ namespace DebateTeamManagementSystem.Scripts
                     leapSlot -= 1f;
                     if (leapAM)
                     {
-                        //Console.WriteLine(" X | F ");
-
-                        timeSlots = ExtendArray(timeSlots, 1);
-                        timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
-                        timeSlots[timeSlots.Length - 1].morning = true;
-                        timeSlots[timeSlots.Length - 1].freeSlot = false;
-
-                        timeSlots = ExtendArray(timeSlots, 1);
-                        timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
-                        timeSlots[timeSlots.Length - 1].morning = false;
-                        timeSlots[timeSlots.Length - 1].freeSlot = true;
+                        SetSlot(i, start, end, true, false);
+                        SetSlot(i, start, end, false, true);
                     }
                     else
                     {
-                        //Console.WriteLine(" F | X ");
-
-                        timeSlots = ExtendArray(timeSlots, 1);
-                        timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
-                        timeSlots[timeSlots.Length - 1].morning = true;
-                        timeSlots[timeSlots.Length - 1].freeSlot = true;
-
-                        timeSlots = ExtendArray(timeSlots, 1);
-                        timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
-                        timeSlots[timeSlots.Length - 1].morning = false;
-                        timeSlots[timeSlots.Length - 1].freeSlot = false;
+                        SetSlot(i, start, end, true, true);
+                        SetSlot(i, start, end, false, false);
                     }
                     leapAM = !leapAM;
                 }
 
                 if (i != 0)
                 {
-                    //Console.WriteLine(" F | F ");
-
-                    timeSlots = ExtendArray(timeSlots, 1);
-                    timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
-                    timeSlots[timeSlots.Length - 1].morning = true;
-                    timeSlots[timeSlots.Length - 1].freeSlot = true;
-
-                    timeSlots = ExtendArray(timeSlots, 1);
-                    timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
-                    timeSlots[timeSlots.Length - 1].morning = false;
-                    timeSlots[timeSlots.Length - 1].freeSlot = true;
+                    SetSlot(i, start, end, true, true);
+                    SetSlot(i, start, end, false, true);
                 }
             }
 
             PairTeams(teamList);
 
-            FillSchedule(teamList);
+            return FillSchedule(teamList);
+        }
 
-            Console.WriteLine();
-
-            for (int i = 0; i < timeSlots.Length; i += 2)
-            {
-                Console.WriteLine(timeSlots[i].team1Name + "-" + timeSlots[i].team2Name + " | " + timeSlots[i + 1].team1Name + "-" + timeSlots[i + 1].team2Name);
-            }
+        private static void SetSlot(int i, DateTime start, DateTime end, bool morning, bool freeSlot)
+        {
+            timeSlots = ExtendArray(timeSlots, 1);
+            timeSlots[timeSlots.Length - 1].date = DateTimeConverter("" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Year);
+            timeSlots[timeSlots.Length - 1].morning = morning;
+            timeSlots[timeSlots.Length - 1].freeSlot = freeSlot;
         }
 
         private static void PairTeams(string[] teamList)
         {
             // Get Ready To Rock
             bool odd = (teamList.Length % 2 == 0 ? false : true);
-            int halfSize = teamList.Length / 2;
             fightPairings = new Util.Vec2[0];
             int pairIndex = 0;
+
+            if (odd)
+            {
+                teamList = Util.ExtendArray(teamList, 1);
+                teamList[teamList.Length - 1] = "BYE";
+            }
+
+            int halfSize = teamList.Length / 2;
+
             for (int i = 0; i < teamList.Length - 1; i++)
             {
                 // Setup the rounds for one set
@@ -358,6 +322,7 @@ namespace DebateTeamManagementSystem.Scripts
                 {
                     fightPairings = Util.ExtendArray(fightPairings, 1);
                     fightPairings[pairIndex] = new Util.Vec2(round[j], round[round.Length - 1 - j]);
+                    Console.WriteLine(teamList[(int)fightPairings[pairIndex].x] + " against " + teamList[(int)fightPairings[pairIndex].y]);
                     pairIndex++;
                 }
             }
@@ -375,7 +340,7 @@ namespace DebateTeamManagementSystem.Scripts
             }
         }
 
-        private static void FillSchedule(string[] teamList)
+        private static bool FillSchedule(string[] teamList)
         {
             Vec2[] sideBoard = new Vec2[0];
 
@@ -387,6 +352,11 @@ namespace DebateTeamManagementSystem.Scripts
                 int[] currentDay = new int[0];
                 while (timeSlotIndex < timeSlots.Length && date == timeSlots[timeSlotIndex].date)
                 {
+                    if (timeSlots[timeSlotIndex].freeSlot)
+                    {
+                        timeSlotIndex++;
+                        continue;
+                    }
                     currentDay = ExtendArray(currentDay, 1);
                     currentDay[currentDay.Length - 1] = timeSlotIndex;
                     timeSlotIndex++;
@@ -419,6 +389,8 @@ namespace DebateTeamManagementSystem.Scripts
                 // Morning slots
                 for (int j = 0; j < morningSlots.Length; j++)
                 {
+                    if (fightPairings.Length == 0)
+                        break;
                     bool noSideBoard = true;
                     for (int k = 0; k < sideBoard.Length; k++)
                     {
@@ -472,6 +444,8 @@ namespace DebateTeamManagementSystem.Scripts
                                 badTeams[badTeams.Length - 1] = (int)fightPairings[0].y;
                             }
                             fightPairings = RemoveAt(fightPairings, 0);
+                            if (fightPairings.Length == 0)
+                                break;
 
                         } while (!goodTeam);
                     }
@@ -481,6 +455,8 @@ namespace DebateTeamManagementSystem.Scripts
                 badTeams = new int[0];
                 for (int j = 0; j < afternoonSlots.Length; j++)
                 {
+                    if (fightPairings.Length == 0)
+                        break;
                     bool noSideBoard = true;
                     for (int k = 0; k < sideBoard.Length; k++)
                     {
@@ -534,11 +510,14 @@ namespace DebateTeamManagementSystem.Scripts
                                 badTeams[badTeams.Length - 1] = (int)fightPairings[0].y;
                             }
                             fightPairings = RemoveAt(fightPairings, 0);
-
+                            if (fightPairings.Length == 0)
+                                break;
                         } while (!goodTeam);
                     }
                 }
             }
+
+            return sideBoard.Length == 0;
         }
     }
 }

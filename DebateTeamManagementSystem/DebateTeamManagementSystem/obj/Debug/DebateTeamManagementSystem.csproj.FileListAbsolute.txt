@@ -506,3 +506,12 @@ C:\Users\austi\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\De
 C:\Users\austin\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.Migrations.initial.resources
 C:\Users\austin\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.csproj.GenerateResource.Cache
 C:\Users\austin\Source\Repos\DebateTeamManageSystem\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.Migrations.initial1.resources
+D:\Documents\Intro SWE Project\Repository\DebateTeamManagementSystem\DebateTeamManagementSystem\bin\SendGrid.CSharp.HTTP.Client.dll
+D:\Documents\Intro SWE Project\Repository\DebateTeamManagementSystem\DebateTeamManagementSystem\bin\SendGrid.dll
+D:\Documents\Intro SWE Project\Repository\DebateTeamManagementSystem\DebateTeamManagementSystem\bin\SendGrid.SmtpApi.dll
+D:\Documents\Intro SWE Project\Repository\DebateTeamManagementSystem\DebateTeamManagementSystem\bin\SendGridMail.dll
+D:\Documents\Intro SWE Project\Repository\DebateTeamManagementSystem\DebateTeamManagementSystem\bin\System.Net.Http.Formatting.dll
+D:\Documents\Intro SWE Project\Repository\DebateTeamManagementSystem\DebateTeamManagementSystem\bin\System.Net.Http.Formatting.xml
+D:\Documents\Intro SWE Project\Repository\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.Migrations.initial.resources
+D:\Documents\Intro SWE Project\Repository\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.Migrations.initial1.resources
+D:\Documents\Intro SWE Project\Repository\DebateTeamManagementSystem\DebateTeamManagementSystem\obj\Debug\DebateTeamManagementSystem.csproj.GenerateResource.Cache
