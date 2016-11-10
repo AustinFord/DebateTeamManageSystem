@@ -79,43 +79,19 @@
                 </div>
             </div>
           
-             <%--<h3>Please check all the times desired for timeslots. Each hour is a timeslot.</h3>
-            <div style ="width: 1000px; height: auto; margin: 0 auto; column-count:3;">
-            <asp:CheckBoxList ID="HourSlots" runat="server" Font-Size ="16px" >
-                <asp:ListItem Value="7">7:00AM</asp:ListItem>
-                <asp:ListItem Value="8">8:00AM</asp:ListItem>
-                <asp:ListItem Value="9">9:00AM</asp:ListItem>
-                <asp:ListItem Value="10">10:00AM</asp:ListItem>
-                <asp:ListItem Value="11">11:00AM</asp:ListItem>
-                <asp:ListItem Value="12">12:00PM</asp:ListItem>
-                <asp:ListItem Value="13">1:00PM</asp:ListItem>
-                <asp:ListItem Value="14">2:00PM</asp:ListItem>
-                <asp:ListItem Value="15">3:00PM</asp:ListItem>
-                <asp:ListItem Value="16">4:00PM</asp:ListItem>
-                <asp:ListItem Value="17">5:00PM</asp:ListItem>
-                <asp:ListItem Value="18">6:00PM</asp:ListItem>
-               
-            </asp:CheckBoxList>
-            </div>--%>
-    
-
-    
-        
-        <%--<h3>Please Select how many freeslots will be available each day</h3>
-         <asp:dropdownlist runat="server" id="FreeSlots" name="FreeSlots" Width="220px" >
-            <asp:ListItem Value="1">1 Free Slot</asp:ListItem>
-             <asp:ListItem Value="2">2 Free Slots</asp:ListItem>
-             <asp:ListItem Value="3">3 Free Slot</asp:ListItem>
-             <asp:ListItem Value="4">4 Free Slots</asp:ListItem>
-
-        </asp:dropdownlist>--%>
+           
         <br />
         <br />
         <asp:Button ID="Button_GenerateSchedule" runat="server" OnClick="GenerateSchedule" Text="Generate Schedule" Width="201px" Height="38px" />
         
         <br />
 
-        <div class ="jumbotron" style ="width: 1400px; margin: 0 auto;">
+        <div class ="jumbotron" style ="width: 1000px; margin: 0 auto;">
+            <asp:PlaceHolder runat="server" ID="ScheduleError" Visible="false">
+                        <p class="text-danger">
+                            <asp:Literal runat="server" ID="ScheduleErrorText" />
+                        </p>
+                    </asp:PlaceHolder>
         <asp:GridView runat="server" ID="scheduleGrid"
         ItemType="DebateTeamManagementSystem.Models.TimeSlot" DataKeyNames="TimeSlotID" 
         SelectMethod="scheduleGrid_GetData"
@@ -130,9 +106,8 @@
             <asp:DynamicField DataField="Team1Score" />
             <asp:DynamicField DataField="Team2Score" />
             <asp:DynamicField DataField="date" />
-           <%-- <asp:DynamicField DataField="time" />--%>
-           <asp:DynamicField DataField="isMorning" />
-           <asp:DynamicField DataField="isLocked" />
+            <asp:DynamicField DataField="isMorning" />
+            <asp:DynamicField DataField="isLocked" />
             
             
         </Columns>

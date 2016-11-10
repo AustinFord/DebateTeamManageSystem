@@ -206,17 +206,27 @@ namespace DebateTeamManagementSystem
         {
             using (DebateContext db = new DebateContext())
             {
-                var item = new TimeSlot { TimeSlotID = TimeSlotID };
-                db.Entry(item).State = EntityState.Deleted;
-                try
+                var item = db.TimeSlots.Find(TimeSlotID);
+
+                if (!item.isLocked)
                 {
-                    db.SaveChanges();
+                    ScheduleError.Visible = false;
+                    db.Entry(item).State = EntityState.Deleted;
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        ModelState.AddModelError("",
+                          String.Format("Item with id {0} no longer exists in the database.", TimeSlotID));
+                    }
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    ModelState.AddModelError("",
-                      String.Format("Item with id {0} no longer exists in the database.", TimeSlotID));
+                else {
+                    ScheduleErrorText.Text = "Cannot delete a row that is locked. Please unlock the row before deleting";
+                    ScheduleError.Visible = true;
                 }
+
             }
         }
 
@@ -257,6 +267,8 @@ namespace DebateTeamManagementSystem
         protected void GenerateSchedule(object sender, EventArgs e) {
      
             DebateContext teamsDB = new DebateContext();
+            Util.TimeSlot[] TimeSlotArray = Util.timeSlots;
+            DebateContext scheduleDB = new DebateContext();
 
             var teams = teamsDB.Teams.ToArray();
 
@@ -277,18 +289,10 @@ namespace DebateTeamManagementSystem
                 //send out an error to the screen
                 return;
             }
-
-            
-            
+           
             Util.CreateSchedule(teamNames, StartDate.SelectedDate, EndDate.SelectedDate);
 
-            Util.TimeSlot[] TimeSlotArray = Util.timeSlots;
-           
-
-            DebateContext scheduleDB = new DebateContext();
-
-           
-                
+            
             foreach(TimeSlot item in scheduleDB.TimeSlots.ToList()) {
 
                 if (!item.isLocked) {
@@ -296,14 +300,15 @@ namespace DebateTeamManagementSystem
                     scheduleDB.SaveChanges();
                 }
             }
-            //scheduleDB.Database.ExecuteSqlCommand("delete from TimeSlots");
-
+            
             TimeSlot TimeSlotToEnter = new TimeSlot();
             DbSet dbset = scheduleDB.Set(TimeSlotToEnter.GetType());
 
-            foreach (Util.TimeSlot item in Util.timeSlots) {
+            foreach (Util.TimeSlot item in Util.timeSlots)
+            {
 
                 TimeSlotToEnter = new TimeSlot();
+                                           
 
                 if (item.team1Name == null){
                     TimeSlotToEnter.Team1Name = "FREE";
@@ -325,9 +330,12 @@ namespace DebateTeamManagementSystem
                 TimeSlotToEnter.Team2Score = item.team2Score;
                 TimeSlotToEnter.date = item.date;
                 TimeSlotToEnter.isMorning = item.morning;
-               
-        
-                dbset.Add(TimeSlotToEnter);
+
+
+                if (isTimeSlotUnique(TimeSlotToEnter)) {
+                    dbset.Add(TimeSlotToEnter);
+
+                }
                 
 
                 scheduleDB.SaveChanges();
