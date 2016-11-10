@@ -5,9 +5,13 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <h3>Edit Team Info: </h3>
     <div class="jumbotron">
+        
+        
         <asp:Label ID="Label1" runat="server" Text="Please Enter Team Name"></asp:Label>
         <asp:TextBox ID="TextBox1" runat="server" OnTextChanged="TextBox1_TextChanged" Width="162px"></asp:TextBox>
         <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Submit" Width="125px" />
+         
+    
         <div class="gvclass">
         <asp:GridView runat="server" ID="teamsGrid" 
         ItemType="DebateTeamManagementSystem.Models.Team" DataKeyNames="TeamID" 
@@ -30,6 +34,12 @@
             <SortedAscendingHeaderStyle HorizontalAlign="Center" VerticalAlign="Middle" />
             <SortedDescendingHeaderStyle HorizontalAlign="Center" VerticalAlign="Middle" />
     </asp:GridView>
+
+            <asp:PlaceHolder runat="server" ID="TeamError" Visible="false">
+                        <p class="text-danger">
+                            <asp:Literal runat="server" ID="TeamErrorText" />
+                        </p>
+                    </asp:PlaceHolder>
         </div>
         <br />
        
@@ -37,7 +47,7 @@
         <div style ="width: 1000px; height: 30px; margin: 0 auto; column-count:2; display: inline;">
             <div>
                 <h4>Start date:</h4>
-            <asp:Calendar ID="StartDate" runat="server" BackColor="White" BorderColor="#3366CC" BorderWidth="1px" CellPadding="0" DayNameFormat="Shortest" Font-Names="Verdana" Font-Size="8pt" ForeColor="#003399" Height="16px" Width="220px">
+            <asp:Calendar ID="StartDate" runat="server" BackColor="White" BorderColor="#3366CC" BorderWidth="1px" CellPadding="0" DayNameFormat="Shortest" Font-Names="Verdana" Font-Size="8pt" ForeColor="#003399" Height="16px" Width="220px" OnSelectionChanged="StartDate_SelectionChanged">
                 <DayHeaderStyle BackColor="#99CCCC" ForeColor="#336666" Height="1px" />
                 <NextPrevStyle Font-Size="8pt" ForeColor="#CCCCFF" />
                 <OtherMonthDayStyle ForeColor="#999999" />
@@ -50,7 +60,7 @@
             </div>
             <div>
                 <h4>End date:</h4>
-            <asp:Calendar ID="EndDate" runat="server" BackColor="White" BorderColor="#3366CC" BorderWidth="1px" CellPadding="0" DayNameFormat="Shortest" Font-Names="Verdana" Font-Size="8pt" ForeColor="#003399" Height="16px" Width="220px">
+            <asp:Calendar ID="EndDate" runat="server" BackColor="White" BorderColor="#3366CC" BorderWidth="1px" CellPadding="0" DayNameFormat="Shortest" Font-Names="Verdana" Font-Size="8pt" ForeColor="#003399" Height="16px" Width="220px" OnSelectionChanged="EndDate_SelectionChanged">
                 <DayHeaderStyle BackColor="#99CCCC" ForeColor="#336666" Height="1px" />
                 <NextPrevStyle Font-Size="8pt" ForeColor="#CCCCFF" />
                 <OtherMonthDayStyle ForeColor="#999999" />
@@ -60,39 +70,35 @@
                 <TodayDayStyle BackColor="#99CCCC" ForeColor="White" />
                 <WeekendDayStyle BackColor="#CCCCFF" />
             </asp:Calendar>
+
+                <asp:PlaceHolder runat="server" ID="DateErrorMessage" Visible="false">
+                        <p class="text-danger">
+                            <asp:Literal runat="server" ID="InvalidDateText" />
+                        </p>
+                    </asp:PlaceHolder>
                 </div>
             </div>
-        <h3>Please check all the times desired for timeslots. Each hour is a timeslot.</h3>
-            <div style ="width: 1000px; height: auto; margin: 0 auto; column-count:3;">
-            <asp:CheckBoxList ID="HourSlots" runat="server" Font-Size ="16px" >
-                <asp:ListItem Value="7">7:00AM</asp:ListItem>
-                <asp:ListItem Value="8">8:00AM</asp:ListItem>
-                <asp:ListItem Value="9">9:00AM</asp:ListItem>
-                <asp:ListItem Value="10">10:00AM</asp:ListItem>
-                <asp:ListItem Value="11">11:00AM</asp:ListItem>
-                <asp:ListItem Value="12">12:00PM</asp:ListItem>
-                <asp:ListItem Value="13">1:00PM</asp:ListItem>
-                <asp:ListItem Value="14">2:00PM</asp:ListItem>
-                <asp:ListItem Value="15">3:00PM</asp:ListItem>
-                <asp:ListItem Value="16">4:00PM</asp:ListItem>
-                <asp:ListItem Value="17">5:00PM</asp:ListItem>
-                <asp:ListItem Value="18">6:00PM</asp:ListItem>
-               
-            </asp:CheckBoxList>
-            </div>
-        
-        <h3>Please Select how many freeslots will be available each day</h3>
-         <asp:dropdownlist runat="server" id="FreeSlots" name="FreeSlots" >
-            <asp:ListItem Value="1">1 Free Slot</asp:ListItem>
-             <asp:ListItem Value="2">2 Free Slots</asp:ListItem>
-        </asp:dropdownlist>
+          
+           
         <br />
         <br />
-        <asp:Button ID="Button_GenerateSchedule" runat="server" OnClick="GenerateSchedule" Text="Generate Schedule" Width="125px" />
+        <asp:Button ID="Button_GenerateSchedule" runat="server" OnClick="GenerateSchedule" Text="Generate Schedule" Width="201px" Height="38px" />
         
+        <asp:CheckBox ID="GenerateNewScheduleCheck" runat="server" Text="Confirm Generation?" Visible ="false" />
+            
+         <asp:PlaceHolder runat="server" ID="GenerateNewSchedule" Visible="false">
+                        <p class="text-danger">
+                            <asp:Literal runat="server" ID="GenerateNewScheduleText" />
+                        </p>
+                    </asp:PlaceHolder>
         <br />
 
-        <div class ="jumbotron" style ="width: 1400px; margin: 0 auto;">
+        <div class ="jumbotron" style ="width: 1000px; margin: 0 auto;">
+            <asp:PlaceHolder runat="server" ID="ScheduleError" Visible="false">
+                        <p class="text-danger">
+                            <asp:Literal runat="server" ID="ScheduleErrorText" />
+                        </p>
+                    </asp:PlaceHolder>
         <asp:GridView runat="server" ID="scheduleGrid"
         ItemType="DebateTeamManagementSystem.Models.TimeSlot" DataKeyNames="TimeSlotID" 
         SelectMethod="scheduleGrid_GetData"
@@ -107,12 +113,24 @@
             <asp:DynamicField DataField="Team1Score" />
             <asp:DynamicField DataField="Team2Score" />
             <asp:DynamicField DataField="date" />
-            <asp:DynamicField DataField="time" />
+            <asp:DynamicField DataField="isMorning" />
+            <asp:DynamicField DataField="isLocked" />
+            
+            
         </Columns>
             <EditRowStyle CssClass="GridViewEditRow" BackColor="Silver" HorizontalAlign="Center" VerticalAlign="Middle" />
             <RowStyle HorizontalAlign="Center" VerticalAlign="Middle" />
     </asp:GridView>
-    </div>
+
+            <asp:CheckBox ID="ConfirmDeletion" runat="server" Text="Confirm Deletion?" Visible ="false" />
+            <asp:PlaceHolder runat="server" ID="DeletionWarning" Visible="false">
+                        <p class="text-danger">
+                            <asp:Literal runat="server" ID="DeletionWarningText" />
+                        </p>
+                    </asp:PlaceHolder>
+            <asp:Button ID="DeleteSchedule" runat="server" Text="Delete Entire Schedule" OnClick="DeleteSchedule_Click" />    
+        </div>
+        
     </div>
      
         

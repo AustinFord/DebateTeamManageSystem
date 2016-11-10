@@ -13,7 +13,7 @@ namespace DebateTeamManagementSystem.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201610240002216_initial"; }
+            get { return "201611100211557_initial"; }
         }
         
         string IMigrationMetadata.Source

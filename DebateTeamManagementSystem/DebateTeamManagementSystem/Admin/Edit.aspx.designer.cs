@@ -49,6 +49,24 @@ namespace DebateTeamManagementSystem {
         protected global::System.Web.UI.WebControls.GridView teamsGrid;
         
         /// <summary>
+        /// TeamError control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder TeamError;
+        
+        /// <summary>
+        /// TeamErrorText control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal TeamErrorText;
+        
+        /// <summary>
         /// StartDate control.
         /// </summary>
         /// <remarks>
@@ -67,22 +85,22 @@ namespace DebateTeamManagementSystem {
         protected global::System.Web.UI.WebControls.Calendar EndDate;
         
         /// <summary>
-        /// HourSlots control.
+        /// DateErrorMessage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList HourSlots;
+        protected global::System.Web.UI.WebControls.PlaceHolder DateErrorMessage;
         
         /// <summary>
-        /// FreeSlots control.
+        /// InvalidDateText control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList FreeSlots;
+        protected global::System.Web.UI.WebControls.Literal InvalidDateText;
         
         /// <summary>
         /// Button_GenerateSchedule control.
@@ -94,6 +112,51 @@ namespace DebateTeamManagementSystem {
         protected global::System.Web.UI.WebControls.Button Button_GenerateSchedule;
         
         /// <summary>
+        /// GenerateNewScheduleCheck control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox GenerateNewScheduleCheck;
+        
+        /// <summary>
+        /// GenerateNewSchedule control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder GenerateNewSchedule;
+        
+        /// <summary>
+        /// GenerateNewScheduleText control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal GenerateNewScheduleText;
+        
+        /// <summary>
+        /// ScheduleError control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder ScheduleError;
+        
+        /// <summary>
+        /// ScheduleErrorText control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ScheduleErrorText;
+        
+        /// <summary>
         /// scheduleGrid control.
         /// </summary>
         /// <remarks>
@@ -101,5 +164,41 @@ namespace DebateTeamManagementSystem {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView scheduleGrid;
+        
+        /// <summary>
+        /// ConfirmDeletion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox ConfirmDeletion;
+        
+        /// <summary>
+        /// DeletionWarning control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder DeletionWarning;
+        
+        /// <summary>
+        /// DeletionWarningText control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal DeletionWarningText;
+        
+        /// <summary>
+        /// DeleteSchedule control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button DeleteSchedule;
     }
 }

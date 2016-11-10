@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 
 namespace DebateTeamManagementSystem.Models
@@ -21,6 +17,10 @@ namespace DebateTeamManagementSystem.Models
 
         [Required, StringLength(40), Display(Name = "Team Name")]
         public string TeamName { get; set; }
+
+        [Required, Display(Name ="Active Status")]
+        public bool isActive { get; set; }
+
     }
     public class TimeSlot
     {
@@ -43,7 +43,10 @@ namespace DebateTeamManagementSystem.Models
         [Required, Display(Name = "Date of Debate")]
         public string date { get; set; }
 
-        [Required, Display(Name = "Time of Debate")]
-        public string time { get; set; }
+        [Required, Display(Name = "Morning/Afternoon")]
+        public bool isMorning { get; set; }
+
+        [Display(Name = "Locked")]
+        public bool isLocked { get; set; }
     }
 }
