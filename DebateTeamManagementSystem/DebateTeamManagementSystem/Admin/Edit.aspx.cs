@@ -70,9 +70,7 @@ namespace DebateTeamManagementSystem
                 item = db.Teams.Find(TeamID);
                 itemTeamName = item.TeamName;
                 itemID = item.TeamID;
-                //found in the database
-                //if (db.Teams.Any(x => x.TeamName == item.TeamName && x.TeamID != item.TeamID))
-                // {
+                //need to add a check to make sure the updated team name is actually in the team list.
                 if (item == null)
                 {
                     ModelState.AddModelError("",
@@ -95,7 +93,7 @@ namespace DebateTeamManagementSystem
                     TeamErrorText.Text = "That team name is not unique. Please choose a new one";
                     TeamError.Visible = true;
                     db.SaveChanges();
-                    //then we should display an error saying the team name isnt unique.
+                    
                 }
 
             }
@@ -105,12 +103,14 @@ namespace DebateTeamManagementSystem
         {
             using (DebateContext db = new DebateContext())
             {
-                var item = new Team { TeamID = TeamID };
-                db.Entry(item).State = EntityState.Deleted;
-                int currentPageCount = teamsGrid.PageCount;
+               
+               var item = db.Teams.Find(TeamID);
 
+                db.Entry(item).State = EntityState.Deleted;
+              
                 try
                 {
+                    deleteTeamFromSchedule(TeamID);
                     db.SaveChanges();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -421,6 +421,38 @@ namespace DebateTeamManagementSystem
                 }
             }
             return timeSlotIsUnique;
+        }
+
+        protected void deleteTeamFromSchedule(int teamID){
+            using (DebateContext db = new DebateContext()){
+
+                var item = db.Teams.Find(teamID);
+                int numberOfRowsChanged = 0;
+                if (item == null)
+                {
+                    TeamErrorText.Text = "Team could not be found in the schedule";
+                    TeamError.Visible = true;
+                }
+                else {
+                    TeamError.Visible = false;
+
+                    foreach (TimeSlot scheduleItem in db.TimeSlots.ToList())
+                    {
+                        //need to make a back up of the schedule before deleting this.
+                            if (scheduleItem.Team1Name.Equals(item.TeamName)) {
+                            scheduleItem.Team1Name = "<Removed>";
+                            scheduleItem.Team1Score = 0;
+                            numberOfRowsChanged++;
+                            } else if (scheduleItem.Team2Name.Equals(item.TeamName)) {
+                            scheduleItem.Team2Name = "<Removed>";
+                            scheduleItem.Team2Score = 0;
+                            numberOfRowsChanged++;
+                        }
+                        db.SaveChanges();
+                    }
+
+                }
+            }
         }
     }
 }

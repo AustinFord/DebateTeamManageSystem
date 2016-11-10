@@ -421,6 +421,10 @@
     <Compile Include="Migrations\201611100211557_initial.Designer.cs">
       <DependentUpon>201611100211557_initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611100251136_initial1.cs" />
+    <Compile Include="Migrations\201611100251136_initial1.Designer.cs">
+      <DependentUpon>201611100251136_initial1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\DebateModels.cs" />
@@ -456,6 +460,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201611100211557_initial.resx">
       <DependentUpon>201611100211557_initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611100251136_initial1.resx">
+      <DependentUpon>201611100251136_initial1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
