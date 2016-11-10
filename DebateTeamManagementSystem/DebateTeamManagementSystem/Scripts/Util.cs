@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace IntroSWEConsoleApp
+namespace DebateTeamManagementSystem.Scripts
 {
     /// <summary>
     /// Utility class to be used for various functions and custom structs
     /// </summary>
     public static class Util
     {
-<<<<<<< HEAD
 
         public static string[] teamList;
         public static DateTime? startDate;
@@ -25,13 +24,7 @@ namespace IntroSWEConsoleApp
         private static int numWeeks = 0;
         private static int totalDays;
         private static List<DateTime> validDays;
-        
-=======
-        public static TimeSlot[] timeSlots;
-        private static Vec2[] fightPairings;
-        private static int numWeeks = 0;
 
->>>>>>> d79fbd1b8e9a48e3ed12a7d401f609f7cb7bffc5
         // Struct to hold all debate schedules, the teams involved, and the scores of each team
         // Might eventually hold the referee assigned to the debate
         public struct TimeSlot
@@ -112,9 +105,8 @@ namespace IntroSWEConsoleApp
             temp += dateTime.ToString("MMM") + " " + dateTime.Day + " " + dateTime.Year + "|" + dateTime.Hour + ":00 " + dateTime.ToString("tt");
             return temp;
         }
-<<<<<<< HEAD
-        
-        public static string SetTeams (string[] teams)
+
+        public static string SetTeams(string[] teams)
         {
             if (teams.Length < 2)
                 return "Please submit at least two (2) teams";
@@ -126,7 +118,7 @@ namespace IntroSWEConsoleApp
             return "";
         }
 
-        public static string SetStartDate (DateTime date)
+        public static string SetStartDate(DateTime date)
         {
             if (date.DayOfWeek != DayOfWeek.Saturday)
                 return "Please select a Saturday";
@@ -149,11 +141,11 @@ namespace IntroSWEConsoleApp
             return "";
         }
 
-        public static string SetEndDate (DateTime date)
+        public static string SetEndDate(DateTime date)
         {
             if (date.DayOfWeek != DayOfWeek.Saturday)
                 return "Please select a Saturday";
-            
+
             if (endDate != null && endDate < startDate)
                 return "The End Date cannot be before the Start Date";
 
@@ -162,19 +154,19 @@ namespace IntroSWEConsoleApp
             return "";
         }
 
-        public static string SetHourSlots (int hours)
+        public static string SetHourSlots(int hours)
         {
             hourSlots = hours;
             return "";
         }
 
-        public static string SetFreeSlots (int free)
+        public static string SetFreeSlots(int free)
         {
             freeSlots = free;
             return "";
         }
 
-        public static string[] GenerateSchedule ()
+        public static string[] GenerateSchedule()
         {
             string[] fatal = new string[0];
             string[] warnings = new string[0];
@@ -213,7 +205,7 @@ namespace IntroSWEConsoleApp
 
             int minSlots = 0;
 
-            for (int i = teamList.Length-1; i > 0; i--)
+            for (int i = teamList.Length - 1; i > 0; i--)
                 minSlots += i;
 
             minSlots += (totalDays - 1) * freeSlots;
@@ -258,35 +250,20 @@ namespace IntroSWEConsoleApp
         }
 
         public static void CreateSchedule(DateTime start, DateTime end)
-=======
-
-        public static void CreateSchedule (string[] teams, DateTime start, DateTime end)
->>>>>>> d79fbd1b8e9a48e3ed12a7d401f609f7cb7bffc5
         {
             // Time Slaughter
             timeSlots = new TimeSlot[0];
 
             numWeeks = (end - start).Days / 7;
-<<<<<<< HEAD
             float tsD = (((float)teamList.Length / 2) * (teamList.Length - 1)) / (numWeeks);
-=======
-            float tsD = (((float)teams.Length / 2) * (teams.Length - 1) )/(numWeeks);
->>>>>>> d79fbd1b8e9a48e3ed12a7d401f609f7cb7bffc5
             float carryOver = tsD % 1;
             int slots = (int)tsD;
             Console.WriteLine(tsD + " | " + carryOver + " | " + slots);
 
-<<<<<<< HEAD
             float leapSlot = (carryOver > 0 ? 1 - carryOver : 0);
             bool leapAM = true;
             bool carryAM = true;
             bool useCarryAm = ((float)slots / 2f % 1 == 0 ? false : true);
-=======
-            float leapSlot = (carryOver > 0 ? 1-carryOver : 0);
-            bool leapAM = true;
-            bool carryAM = true;
-            bool useCarryAm = ((float)slots/2f % 1 == 0 ? false : true);
->>>>>>> d79fbd1b8e9a48e3ed12a7d401f609f7cb7bffc5
             int jVal = (int)Math.Ceiling((float)slots / 2);
 
             for (int i = 0; i < numWeeks; i++)
@@ -300,7 +277,6 @@ namespace IntroSWEConsoleApp
                         //Console.WriteLine(" X | X ");
 
                         timeSlots = ExtendArray(timeSlots, 1);
-<<<<<<< HEAD
                         timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
                         timeSlots[timeSlots.Length - 1].morning = true;
                         timeSlots[timeSlots.Length - 1].freeSlot = false;
@@ -309,16 +285,6 @@ namespace IntroSWEConsoleApp
                         timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
                         timeSlots[timeSlots.Length - 1].morning = false;
                         timeSlots[timeSlots.Length - 1].freeSlot = false;
-=======
-                        timeSlots[timeSlots.Length -1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
-                        timeSlots[timeSlots.Length -1].morning = true;
-                        timeSlots[timeSlots.Length -1].freeSlot = false;
-
-                        timeSlots = ExtendArray(timeSlots, 1);
-                        timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
-                        timeSlots[timeSlots.Length -1].morning = false;
-                        timeSlots[timeSlots.Length -1].freeSlot = false;
->>>>>>> d79fbd1b8e9a48e3ed12a7d401f609f7cb7bffc5
                     }
                     else
                     {
@@ -328,7 +294,6 @@ namespace IntroSWEConsoleApp
 
                             timeSlots = ExtendArray(timeSlots, 1);
                             timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
-<<<<<<< HEAD
                             timeSlots[timeSlots.Length - 1].morning = true;
                             timeSlots[timeSlots.Length - 1].freeSlot = false;
 
@@ -336,15 +301,6 @@ namespace IntroSWEConsoleApp
                             timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
                             timeSlots[timeSlots.Length - 1].morning = false;
                             timeSlots[timeSlots.Length - 1].freeSlot = true;
-=======
-                            timeSlots[timeSlots.Length -1].morning = true;
-                            timeSlots[timeSlots.Length -1].freeSlot = false;
-
-                            timeSlots = ExtendArray(timeSlots, 1);
-                            timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
-                            timeSlots[timeSlots.Length -1].morning = false;
-                            timeSlots[timeSlots.Length -1].freeSlot = true;
->>>>>>> d79fbd1b8e9a48e3ed12a7d401f609f7cb7bffc5
                         }
                         else
                         {
@@ -352,7 +308,6 @@ namespace IntroSWEConsoleApp
 
                             timeSlots = ExtendArray(timeSlots, 1);
                             timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
-<<<<<<< HEAD
                             timeSlots[timeSlots.Length - 1].morning = true;
                             timeSlots[timeSlots.Length - 1].freeSlot = true;
 
@@ -360,15 +315,6 @@ namespace IntroSWEConsoleApp
                             timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
                             timeSlots[timeSlots.Length - 1].morning = false;
                             timeSlots[timeSlots.Length - 1].freeSlot = false;
-=======
-                            timeSlots[timeSlots.Length -1].morning = true;
-                            timeSlots[timeSlots.Length -1].freeSlot = true;
-
-                            timeSlots = ExtendArray(timeSlots, 1);
-                            timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
-                            timeSlots[timeSlots.Length -1].morning = false;
-                            timeSlots[timeSlots.Length -1].freeSlot = false;
->>>>>>> d79fbd1b8e9a48e3ed12a7d401f609f7cb7bffc5
                         }
                         carryAM = !carryAM;
                     }
@@ -384,7 +330,6 @@ namespace IntroSWEConsoleApp
 
                         timeSlots = ExtendArray(timeSlots, 1);
                         timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
-<<<<<<< HEAD
                         timeSlots[timeSlots.Length - 1].morning = true;
                         timeSlots[timeSlots.Length - 1].freeSlot = false;
 
@@ -392,15 +337,6 @@ namespace IntroSWEConsoleApp
                         timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
                         timeSlots[timeSlots.Length - 1].morning = false;
                         timeSlots[timeSlots.Length - 1].freeSlot = true;
-=======
-                        timeSlots[timeSlots.Length -1].morning = true;
-                        timeSlots[timeSlots.Length -1].freeSlot = false;
-
-                        timeSlots = ExtendArray(timeSlots, 1);
-                        timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
-                        timeSlots[timeSlots.Length -1].morning = false;
-                        timeSlots[timeSlots.Length -1].freeSlot = true;
->>>>>>> d79fbd1b8e9a48e3ed12a7d401f609f7cb7bffc5
                     }
                     else
                     {
@@ -408,7 +344,6 @@ namespace IntroSWEConsoleApp
 
                         timeSlots = ExtendArray(timeSlots, 1);
                         timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
-<<<<<<< HEAD
                         timeSlots[timeSlots.Length - 1].morning = true;
                         timeSlots[timeSlots.Length - 1].freeSlot = true;
 
@@ -416,15 +351,6 @@ namespace IntroSWEConsoleApp
                         timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
                         timeSlots[timeSlots.Length - 1].morning = false;
                         timeSlots[timeSlots.Length - 1].freeSlot = false;
-=======
-                        timeSlots[timeSlots.Length -1].morning = true;
-                        timeSlots[timeSlots.Length -1].freeSlot = true;
-
-                        timeSlots = ExtendArray(timeSlots, 1);
-                        timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
-                        timeSlots[timeSlots.Length -1].morning = false;
-                        timeSlots[timeSlots.Length -1].freeSlot = false;
->>>>>>> d79fbd1b8e9a48e3ed12a7d401f609f7cb7bffc5
                     }
                     leapAM = !leapAM;
                 }
@@ -435,7 +361,6 @@ namespace IntroSWEConsoleApp
 
                     timeSlots = ExtendArray(timeSlots, 1);
                     timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
-<<<<<<< HEAD
                     timeSlots[timeSlots.Length - 1].morning = true;
                     timeSlots[timeSlots.Length - 1].freeSlot = true;
 
@@ -449,39 +374,16 @@ namespace IntroSWEConsoleApp
             PairTeams(teamList);
 
             FillSchedule(teamList);
-=======
-                    timeSlots[timeSlots.Length -1].morning = true;
-                    timeSlots[timeSlots.Length -1].freeSlot = true;
-
-                    timeSlots = ExtendArray(timeSlots, 1);
-                    timeSlots[timeSlots.Length - 1].date = "" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Year;
-                    timeSlots[timeSlots.Length -1].morning = false;
-                    timeSlots[timeSlots.Length -1].freeSlot = true;
-                }
-            }
-
-            PairTeams(teams);
-
-            FillSchedule(teams);
->>>>>>> d79fbd1b8e9a48e3ed12a7d401f609f7cb7bffc5
 
             Console.WriteLine();
 
             for (int i = 0; i < timeSlots.Length; i += 2)
             {
-<<<<<<< HEAD
                 Console.WriteLine(timeSlots[i].team1Name + "-" + timeSlots[i].team2Name + " | " + timeSlots[i + 1].team1Name + "-" + timeSlots[i + 1].team2Name);
             }
         }
 
         private static void PairTeams(string[] teamList)
-=======
-                Console.WriteLine(timeSlots[i].team1Name + "-" + timeSlots[i].team2Name + " | " + timeSlots[i+1].team1Name + "-" + timeSlots[i+1].team2Name);
-            }
-        }
-
-        private static void PairTeams (string[] teamList)
->>>>>>> d79fbd1b8e9a48e3ed12a7d401f609f7cb7bffc5
         {
             // Get Ready To Rock
             bool odd = (teamList.Length % 2 == 0 ? false : true);
@@ -552,20 +454,12 @@ namespace IntroSWEConsoleApp
                     if (timeSlots[currentDay[j]].morning)
                     {
                         morningSlots = ExtendArray(morningSlots, 1);
-<<<<<<< HEAD
                         morningSlots[morningSlots.Length - 1] = currentDay[j];
-=======
-                        morningSlots[morningSlots.Length-1] = currentDay[j];
->>>>>>> d79fbd1b8e9a48e3ed12a7d401f609f7cb7bffc5
                     }
                     else
                     {
                         afternoonSlots = ExtendArray(afternoonSlots, 1);
-<<<<<<< HEAD
                         afternoonSlots[afternoonSlots.Length - 1] = currentDay[j];
-=======
-                        afternoonSlots[afternoonSlots.Length-1] = currentDay[j];
->>>>>>> d79fbd1b8e9a48e3ed12a7d401f609f7cb7bffc5
                     }
                 }
 
@@ -631,11 +525,7 @@ namespace IntroSWEConsoleApp
                         } while (!goodTeam);
                     }
                 }
-<<<<<<< HEAD
 
-=======
-                
->>>>>>> d79fbd1b8e9a48e3ed12a7d401f609f7cb7bffc5
                 // Afternoon slots
                 badTeams = new int[0];
                 for (int j = 0; j < afternoonSlots.Length; j++)
