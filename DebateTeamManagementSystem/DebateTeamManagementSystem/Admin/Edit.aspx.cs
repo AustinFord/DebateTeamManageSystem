@@ -10,7 +10,6 @@ using DebateTeamManagementSystem.Models;
 using System.Data.Entity.Infrastructure;
 using System.Web.Providers.Entities;
 using DebateTeamManagementSystem.Scripts;
-using IntroSWEConsoleApp;
 namespace DebateTeamManagementSystem
 {
 
@@ -295,8 +294,10 @@ namespace DebateTeamManagementSystem
                 //send out an error to the screen
                 return;
             }
-           
-            Util.CreateSchedule(teamNames, StartDate.SelectedDate, EndDate.SelectedDate);
+
+            Util.SetTeams(teamNames);
+
+            Util.CreateSchedule(StartDate.SelectedDate, EndDate.SelectedDate);
 
             
             foreach(TimeSlot item in scheduleDB.TimeSlots.ToList()) {
@@ -447,11 +448,11 @@ namespace DebateTeamManagementSystem
                     {
                         //need to make a back up of the schedule before deleting this.
                             if (scheduleItem.Team1Name.Equals(item.TeamName)) {
-                            scheduleItem.Team1Name = "<Removed>";
+                            scheduleItem.Team1Name = "REMOVED";
                             scheduleItem.Team1Score = 0;
                             numberOfRowsChanged++;
                             } else if (scheduleItem.Team2Name.Equals(item.TeamName)) {
-                            scheduleItem.Team2Name = "<Removed>";
+                            scheduleItem.Team2Name = "REMOVED";
                             scheduleItem.Team2Score = 0;
                             numberOfRowsChanged++;
                         }

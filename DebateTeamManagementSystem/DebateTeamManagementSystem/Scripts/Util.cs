@@ -18,7 +18,7 @@ namespace DebateTeamManagementSystem.Scripts
         public static int hourSlots;
         public static int freeSlots = 1;
 
-        private static TimeSlot[] timeSlots;
+        public static TimeSlot[] timeSlots;
         private static Vec2[] fightPairings;
         private static Vec2[] sidePairings;
         private static int numWeeks = 0;
