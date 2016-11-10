@@ -49,5 +49,8 @@ namespace DebateTeamManagementSystem.Models
 
         [Required, Display(Name = "Morning/Afternoon")]
         public bool isMorning { get; set; }
+
+        [Display(Name = "Locked")]
+        public bool isLocked { get; set; }
     }
 }

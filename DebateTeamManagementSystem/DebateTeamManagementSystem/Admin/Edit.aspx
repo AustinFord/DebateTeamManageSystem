@@ -132,6 +132,8 @@
             <asp:DynamicField DataField="date" />
            <%-- <asp:DynamicField DataField="time" />--%>
            <asp:DynamicField DataField="isMorning" />
+           <asp:DynamicField DataField="isLocked" />
+            
             
         </Columns>
             <EditRowStyle CssClass="GridViewEditRow" BackColor="Silver" HorizontalAlign="Center" VerticalAlign="Middle" />

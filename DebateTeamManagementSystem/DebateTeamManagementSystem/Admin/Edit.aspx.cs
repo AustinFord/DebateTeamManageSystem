@@ -287,7 +287,16 @@ namespace DebateTeamManagementSystem
 
             DebateContext scheduleDB = new DebateContext();
 
-            scheduleDB.Database.ExecuteSqlCommand("delete from TimeSlots");
+           
+                
+            foreach(TimeSlot item in scheduleDB.TimeSlots.ToList()) {
+
+                if (!item.isLocked) {
+                    scheduleDB.TimeSlots.Remove(item);
+                    scheduleDB.SaveChanges();
+                }
+            }
+            //scheduleDB.Database.ExecuteSqlCommand("delete from TimeSlots");
 
             TimeSlot TimeSlotToEnter = new TimeSlot();
             DbSet dbset = scheduleDB.Set(TimeSlotToEnter.GetType());
@@ -392,6 +401,18 @@ namespace DebateTeamManagementSystem
             
             return numberOfTeamsValid;
         }
-        
+
+        protected bool isTimeSlotUnique(TimeSlot possibleTimeslot) {
+            bool timeSlotIsUnique = true;
+            DebateContext timeslotDB = new DebateContext();
+            foreach (TimeSlot item in timeslotDB.TimeSlots.ToList()) {
+
+                if (item.isLocked && item.Team1Name.Equals(possibleTimeslot.Team1Name) && item.Team2Name.Equals(possibleTimeslot.Team2Name) && item.date.Equals(possibleTimeslot.date)) {
+                    timeSlotIsUnique = false;
+                    break;
+                }
+            }
+            return timeSlotIsUnique;
+        }
     }
 }
