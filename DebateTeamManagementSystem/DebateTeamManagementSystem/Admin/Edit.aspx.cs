@@ -199,6 +199,9 @@ namespace DebateTeamManagementSystem
                 {
                     db.SaveChanges();
                 }
+
+                CalculateTeamScore(item.Team1Name);
+                CalculateTeamScore(item.Team2Name);
             }
         }
 
@@ -484,6 +487,36 @@ namespace DebateTeamManagementSystem
                        
         }
 
-        
+        protected void CalculateTeamScore(string teamName) {
+
+            DebateContext db = new DebateContext();
+            int tempScore = 0;
+            foreach (TimeSlot item in db.TimeSlots.ToList()) {
+                if (item.RoundStatus == null || item.RoundStatus.Equals("Completed") || item.RoundStatus.Equals("")) {
+                    if (item.Team1Name.Equals(teamName))
+                    {
+                        tempScore += item.Team1Score;
+                    }
+                    else if(item.Team2Name.Equals(teamName)) {
+                        tempScore += item.Team2Score;
+                    }
+                }
+            }
+
+            int teamID = 0;
+
+            foreach (Team team in db.Teams.ToList()) {
+                if (team.TeamName.Equals(teamName)) {
+                    teamID = team.TeamID;
+                    break;
+                }
+            }
+
+           Team itemToChange = db.Teams.Find(teamID);
+
+            itemToChange.Score = tempScore;
+
+            db.SaveChanges();
+        }
     }
 }

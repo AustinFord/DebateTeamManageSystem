@@ -10,6 +10,7 @@
         
         <Columns>
             <asp:DynamicField DataField="TeamName" />
+            <asp:DynamicField DataField="Score" />
             
         </Columns>
     </asp:GridView>
