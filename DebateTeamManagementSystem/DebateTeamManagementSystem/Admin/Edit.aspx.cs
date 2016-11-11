@@ -199,7 +199,12 @@ namespace DebateTeamManagementSystem
                 {
                     db.SaveChanges();
                 }
+                if (item.RoundStatus == null || item.RoundStatus == "") {
 
+                    item.RoundStatus = "Completed";
+                    item.isLocked = true;
+                    db.SaveChanges();
+                }
                 CalculateTeamScore(item.Team1Name);
                 CalculateTeamScore(item.Team2Name);
             }
@@ -351,9 +356,15 @@ namespace DebateTeamManagementSystem
                 
 
                 scheduleDB.SaveChanges();
+                    
 
             }
 
+                foreach (Team item in teamsDB.Teams.ToList()) {
+
+                    CalculateTeamScore(item.TeamName);
+
+                }
             Response.Redirect("~/Admin/Edit");
             }
 
@@ -453,14 +464,26 @@ namespace DebateTeamManagementSystem
                     {
                         //need to make a back up of the schedule before deleting this.
                             if (scheduleItem.Team1Name.Equals(item.TeamName) || scheduleItem.Team2Name.Equals(item.TeamName)) {
-                            scheduleItem.RoundStatus = item.TeamName + " dropout";
+
+                            if (scheduleItem.RoundStatus != null && scheduleItem.RoundStatus != "" && scheduleItem.RoundStatus != "Completed") {
+
+                            scheduleItem.RoundStatus += " | " + item.TeamName + " dropout";
                             numberOfRowsChanged++;
+                            } else {
+                                scheduleItem.RoundStatus = item.TeamName + " dropout";
+                                numberOfRowsChanged++;
+                            }
                             }
                         }
                         db.SaveChanges();
                     }
+                foreach (Team team in db.Teams.ToList())
+                {
+
+                    CalculateTeamScore(team.TeamName);
 
                 }
+            }
             
         }
 
@@ -481,6 +504,13 @@ namespace DebateTeamManagementSystem
                         scheduleDB.TimeSlots.Remove(item);
                         scheduleDB.SaveChanges();
                     }
+                }
+
+                foreach (Team team in scheduleDB.Teams.ToList())
+                {
+
+                    CalculateTeamScore(team.TeamName);
+
                 }
                 Response.Redirect("~/Admin/Edit");
             }
@@ -513,10 +543,13 @@ namespace DebateTeamManagementSystem
             }
 
            Team itemToChange = db.Teams.Find(teamID);
+            if (itemToChange != null) {
 
             itemToChange.Score = tempScore;
 
+            }
             db.SaveChanges();
         }
+        
     }
 }
