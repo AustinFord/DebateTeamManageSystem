@@ -21,8 +21,11 @@ namespace DebateTeamManagementSystem.Scripts
         private static int numWeeks = 0;
         private static int totalDays;
         private static List<DateTime> validDays;
+        private static Vec2[] sideBoard;
 
         private static string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+                             // TeamCount 0  1  2  3  4  5  6  7  8  9  10
+        private static int[] minWeeks = { 0, 0, 1, 2, 2, 3, 3, 4, 4, 5, 5 };
 
         // Struct to hold all debate schedules, the teams involved, and the scores of each team
         // Might eventually hold the referee assigned to the debate
@@ -98,6 +101,11 @@ namespace DebateTeamManagementSystem.Scripts
             return tempArray;
         }
 
+        /// <summary>
+        /// Takes a DateTime variable and converts it to a sentence.
+        /// </summary>
+        /// <param name="dateTime">The DateTime to convert from</param>
+        /// <returns></returns>
         public static string DateTimeConverter(DateTime dateTime)
         {
             string temp = "";
@@ -106,13 +114,13 @@ namespace DebateTeamManagementSystem.Scripts
         }
 
         /// <summary>
-        /// Takes a string and converts it to a sentence.
+        /// Takes a string date and converts it to a sentence.
         /// </summary>
         /// <param name="date">Date in terms of MM/DD/YYYY</param>
         /// <returns></returns>
         public static string DateTimeConverter(string date)
         {
-            return "" + months[Int32.Parse(date.Split('/')[0])-1] + " " + date.Split('/')[1] + ", " + date.Split('/')[2];
+            return "" + months[Int32.Parse(date.Split('/')[0]) - 1] + " " + date.Split('/')[1] + ", " + date.Split('/')[2];
         }
 
         public static string SetTeams(string[] teams)
@@ -217,23 +225,27 @@ namespace DebateTeamManagementSystem.Scripts
             timeSlots = new TimeSlot[0];
 
             numWeeks = (end - start).Days / 7 + 1;
-            float tsD = (((float)teamList.Length / 2) * (teamList.Length - 1)) / (numWeeks);
+            float adjustedTeamSize = teamList.Length + (teamList.Length % 2);
+            float tsD = ((adjustedTeamSize / 2) * (adjustedTeamSize - 1)) / (numWeeks);
+            tsD = tsD + (tsD % 2);
             float carryOver = tsD % 1;
             int slots = (int)tsD;
             Console.WriteLine(tsD + " | " + carryOver + " | " + slots);
 
             float leapSlot = (carryOver > 0 ? 1 - carryOver : 0);
-            bool leapAM = true;
+            bool leapAM = false;
             bool carryAM = true;
             bool useCarryAm = ((float)slots / 2f % 1 == 0 ? false : true);
             int jVal = (int)Math.Ceiling((float)slots / 2);
 
             for (int i = 0; i < numWeeks; i++)
             {
+                Console.WriteLine("Week " + (i + 1) + " | Carry: " + (leapSlot + carryOver));
                 for (int j = 0; j < jVal; j++)
                 {
                     if (!(useCarryAm && j == jVal - 1))
                     {
+                        Console.WriteLine("D | D");
                         SetSlot(i, start, end, true, false);
                         SetSlot(i, start, end, false, false);
                     }
@@ -241,11 +253,13 @@ namespace DebateTeamManagementSystem.Scripts
                     {
                         if (carryAM)
                         {
+                            Console.WriteLine("D | F");
                             SetSlot(i, start, end, true, false);
                             SetSlot(i, start, end, false, true);
                         }
                         else
                         {
+                            Console.WriteLine("F | D");
                             SetSlot(i, start, end, true, true);
                             SetSlot(i, start, end, false, false);
                         }
@@ -259,11 +273,13 @@ namespace DebateTeamManagementSystem.Scripts
                     leapSlot -= 1f;
                     if (leapAM)
                     {
+                        Console.WriteLine("D | F");
                         SetSlot(i, start, end, true, false);
                         SetSlot(i, start, end, false, true);
                     }
                     else
                     {
+                        Console.WriteLine("F | D");
                         SetSlot(i, start, end, true, true);
                         SetSlot(i, start, end, false, false);
                     }
@@ -272,6 +288,7 @@ namespace DebateTeamManagementSystem.Scripts
 
                 if (i != 0)
                 {
+                    Console.WriteLine("F | F");
                     SetSlot(i, start, end, true, true);
                     SetSlot(i, start, end, false, true);
                 }
@@ -342,7 +359,7 @@ namespace DebateTeamManagementSystem.Scripts
 
         private static bool FillSchedule(string[] teamList)
         {
-            Vec2[] sideBoard = new Vec2[0];
+            sideBoard = new Vec2[0];
 
             string date = timeSlots[0].date;
             int timeSlotIndex = 0;
@@ -387,137 +404,91 @@ namespace DebateTeamManagementSystem.Scripts
                 int[] badTeams = new int[0];
 
                 // Morning slots
-                for (int j = 0; j < morningSlots.Length; j++)
-                {
-                    if (fightPairings.Length == 0)
-                        break;
-                    bool noSideBoard = true;
-                    for (int k = 0; k < sideBoard.Length; k++)
-                    {
-                        bool goodTeam = true;
-                        for (int l = 0; l < badTeams.Length; l++)
-                        {
-                            if (sideBoard[k].x == badTeams[l] || sideBoard[k].y == badTeams[l])
-                            {
-                                goodTeam = false;
-                                break;
-                            }
-                        }
-                        if (!goodTeam)
-                            continue;
-
-                        noSideBoard = false;
-                        timeSlots[morningSlots[j]].team1Name = teamList[(int)sideBoard[k].x];
-                        timeSlots[morningSlots[j]].team2Name = teamList[(int)sideBoard[k].y];
-
-                        badTeams = ExtendArray(badTeams, 2);
-                        badTeams[badTeams.Length - 2] = (int)sideBoard[k].x;
-                        badTeams[badTeams.Length - 1] = (int)sideBoard[k].y;
-
-                        sideBoard = RemoveAt(sideBoard, k);
-                        break;
-                    }
-
-                    if (noSideBoard)
-                    {
-                        // After sideBoard is checked and taken care of, do this if there's not a team added to that slot
-                        bool goodTeam = true;
-                        do
-                        {
-                            for (int k = 0; k < badTeams.Length; k++)
-                            {
-                                if (badTeams[k] == fightPairings[0].x || badTeams[k] == fightPairings[0].y)
-                                {
-                                    goodTeam = false;
-                                    sideBoard = ExtendArray(sideBoard, 1);
-                                    sideBoard[sideBoard.Length - 1] = fightPairings[0];
-                                }
-                            }
-
-                            if (goodTeam)
-                            {
-                                timeSlots[morningSlots[j]].team1Name = teamList[(int)fightPairings[0].x];
-                                timeSlots[morningSlots[j]].team2Name = teamList[(int)fightPairings[0].y];
-
-                                badTeams = ExtendArray(badTeams, 2);
-                                badTeams[badTeams.Length - 2] = (int)fightPairings[0].x;
-                                badTeams[badTeams.Length - 1] = (int)fightPairings[0].y;
-                            }
-                            fightPairings = RemoveAt(fightPairings, 0);
-                            if (fightPairings.Length == 0)
-                                break;
-
-                        } while (!goodTeam);
-                    }
-                }
+                FillSlots(morningSlots);
 
                 // Afternoon slots
-                badTeams = new int[0];
-                for (int j = 0; j < afternoonSlots.Length; j++)
-                {
-                    if (fightPairings.Length == 0)
-                        break;
-                    bool noSideBoard = true;
-                    for (int k = 0; k < sideBoard.Length; k++)
-                    {
-                        bool goodTeam = true;
-                        for (int l = 0; l < badTeams.Length; l++)
-                        {
-                            if (sideBoard[k].x == badTeams[l] || sideBoard[k].y == badTeams[l])
-                            {
-                                goodTeam = false;
-                                break;
-                            }
-                        }
-                        if (!goodTeam)
-                            continue;
-
-                        noSideBoard = false;
-                        timeSlots[afternoonSlots[j]].team1Name = teamList[(int)sideBoard[k].x];
-                        timeSlots[afternoonSlots[j]].team2Name = teamList[(int)sideBoard[k].y];
-
-                        badTeams = ExtendArray(badTeams, 2);
-                        badTeams[badTeams.Length - 2] = (int)sideBoard[k].x;
-                        badTeams[badTeams.Length - 1] = (int)sideBoard[k].y;
-
-                        sideBoard = RemoveAt(sideBoard, k);
-                        break;
-                    }
-
-                    if (noSideBoard)
-                    {
-                        // After sideBoard is checked and taken care of, do this if there's not a team added to that slot
-                        bool goodTeam = true;
-                        do
-                        {
-                            for (int k = 0; k < badTeams.Length; k++)
-                            {
-                                if (badTeams[k] == fightPairings[0].x || badTeams[k] == fightPairings[0].y)
-                                {
-                                    goodTeam = false;
-                                    sideBoard = ExtendArray(sideBoard, 1);
-                                    sideBoard[sideBoard.Length - 1] = fightPairings[0];
-                                }
-                            }
-
-                            if (goodTeam)
-                            {
-                                timeSlots[afternoonSlots[j]].team1Name = teamList[(int)fightPairings[0].x];
-                                timeSlots[afternoonSlots[j]].team2Name = teamList[(int)fightPairings[0].y];
-
-                                badTeams = ExtendArray(badTeams, 2);
-                                badTeams[badTeams.Length - 2] = (int)fightPairings[0].x;
-                                badTeams[badTeams.Length - 1] = (int)fightPairings[0].y;
-                            }
-                            fightPairings = RemoveAt(fightPairings, 0);
-                            if (fightPairings.Length == 0)
-                                break;
-                        } while (!goodTeam);
-                    }
-                }
+                FillSlots(afternoonSlots);
             }
 
             return sideBoard.Length == 0;
+        }
+
+        private static void FillSlots(int[] slots)
+        {
+            int[] badTeams = new int[0];
+
+            for (int j = 0; j < slots.Length; j++)
+            {
+                if (fightPairings.Length == 0 && sideBoard.Length == 0)
+                    break;
+                bool noSideBoard = true;
+                for (int k = 0; k < sideBoard.Length; k++)
+                {
+                    bool goodTeam = true;
+                    foreach (int b in badTeams)
+                    {
+                        if (sideBoard[k].x == b || sideBoard[k].y == b)
+                        {
+                            goodTeam = false;
+                            break;
+                        }
+                    }
+                    if (!goodTeam)
+                        continue;
+
+                    noSideBoard = false;
+                    timeSlots[slots[j]].team1Name = teamList[(int)sideBoard[k].x];
+                    timeSlots[slots[j]].team2Name = teamList[(int)sideBoard[k].y];
+                    Console.WriteLine(timeSlots[slots[j]].team1Name + " - " + timeSlots[slots[j]].team2Name);
+
+                    badTeams = ExtendArray(badTeams, 2);
+                    badTeams[badTeams.Length - 2] = (int)sideBoard[k].x;
+                    badTeams[badTeams.Length - 1] = (int)sideBoard[k].y;
+
+                    sideBoard = RemoveAt(sideBoard, k);
+                    k--;
+                    break;
+                }
+
+                if (noSideBoard && fightPairings.Length > 0)
+                {
+                    // After sideBoard is checked and taken care of, do this if there's not a team added to that slot
+                    bool goodTeam = true;
+                    do
+                    {
+                        if (fightPairings.Length == 0)
+                            break;
+                        goodTeam = true;
+                        for (int k = 0; k < badTeams.Length; k++)
+                        {
+                            if (badTeams[k] == fightPairings[0].x || badTeams[k] == fightPairings[0].y)
+                            {
+                                goodTeam = false;
+                                sideBoard = ExtendArray(sideBoard, 1);
+                                sideBoard[sideBoard.Length - 1] = fightPairings[0];
+                                fightPairings = RemoveAt(fightPairings, 0);
+                                if (fightPairings.Length == 0)
+                                    break;
+                            }
+                        }
+
+                        if (goodTeam)
+                        {
+                            timeSlots[slots[j]].team1Name = teamList[(int)fightPairings[0].x];
+                            timeSlots[slots[j]].team2Name = teamList[(int)fightPairings[0].y];
+                            Console.WriteLine(timeSlots[slots[j]].team1Name + " - " + timeSlots[slots[j]].team2Name);
+
+                            badTeams = ExtendArray(badTeams, 2);
+                            badTeams[badTeams.Length - 2] = (int)fightPairings[0].x;
+                            badTeams[badTeams.Length - 1] = (int)fightPairings[0].y;
+                            fightPairings = RemoveAt(fightPairings, 0);
+                            if (fightPairings.Length == 0)
+                                break;
+                        }
+
+                    } while (!goodTeam);
+                }
+            }
         }
     }
 }
