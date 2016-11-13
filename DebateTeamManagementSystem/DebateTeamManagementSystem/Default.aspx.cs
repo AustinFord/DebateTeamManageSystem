@@ -20,7 +20,9 @@ namespace DebateTeamManagementSystem
         public IQueryable<Team> teamsGrid_GetData()
         {
             DebateContext db = new DebateContext();
+
             var query = db.Teams;
+
             return query;
         }
 
@@ -48,29 +50,17 @@ namespace DebateTeamManagementSystem
         public IQueryable<TimeSlot> scheduleGrid_GetData()
         {
             DebateContext db = new DebateContext();
-            var query = db.TimeSlots;
+            List<TimeSlot> displayList = new List<TimeSlot>();
+            
+            foreach (TimeSlot item in db.TimeSlots.ToList()) {
+
+                if (!item.Team1Name.Equals("FREE") && !item.Team2Name.Equals("FREE")) {
+                    displayList.Add(item);
+                }
+            }
+            IQueryable<TimeSlot> query = displayList.AsQueryable();
             return query;
+            
         }
-
-        protected void scheduleGrid_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-        /*public void teamsGrid_DeleteItem(int studentID)
-{
-   using (SchoolContext db = new SchoolContext())
-   {
-       var item = new Student { StudentID = studentID };
-       db.Entry(item).State = EntityState.Deleted;
-       try
-       {
-           db.SaveChanges();
-       }
-       catch (DbUpdateConcurrencyException)
-       {
-           ModelState.AddModelError("",
-             String.Format("Item with id {0} no longer exists in the database.", studentID));
-       }
-   }*/
     }
 }

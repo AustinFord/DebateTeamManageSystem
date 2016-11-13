@@ -7,13 +7,13 @@ namespace DebateTeamManagementSystem.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class p : IMigrationMetadata
+    public sealed partial class initial3 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(p));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(initial3));
         
         string IMigrationMetadata.Id
         {
-            get { return "201610262256451_p"; }
+            get { return "201611102159423_initial3"; }
         }
         
         string IMigrationMetadata.Source

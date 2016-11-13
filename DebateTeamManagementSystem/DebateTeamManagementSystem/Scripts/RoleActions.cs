@@ -39,16 +39,16 @@ namespace DebateTeamManagementSystem.Scripts
             var userMgr = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
             var appUser = new ApplicationUser
             {
-                UserName = "twolf1@students.kennesaw.edu",
-                Email = "twolf1@students.kennesaw.edu"
+                UserName = "farrwolfsoftware@gmail.com",
+                Email = "farrwolfsoftware@gmail.com"
             };
             IdUserResult = userMgr.Create(appUser, "Pa$$word1");
 
             // If the new "canEdit" user was successfully created, 
             // add the "canEdit" user to the "canEdit" role. 
-            if (!userMgr.IsInRole(userMgr.FindByEmail("twolf1@students.kennesaw.edu").Id, "canEdit"))
+            if (!userMgr.IsInRole(userMgr.FindByEmail("farrwolfsoftware@gmail.com").Id, "canEdit"))
             {
-                IdUserResult = userMgr.AddToRole(userMgr.FindByEmail("twolf1@students.kennesaw.edu").Id, "canEdit");
+                IdUserResult = userMgr.AddToRole(userMgr.FindByEmail("farrwolfsoftware@gmail.com").Id, "canEdit");
             }
         }
     }
