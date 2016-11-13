@@ -73,6 +73,11 @@ namespace DebateTeamManagementSystem
             {
                 adminLink.Visible = true;
             }
+            if (HttpContext.Current.User.IsInRole("restrictedEdit"))
+            {
+                refereeLink.Visible = true;
+
+            }
         }
 
         protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)

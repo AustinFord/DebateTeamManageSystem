@@ -12,12 +12,13 @@ namespace DebateTeamManagementSystem.Scripts
     {
         internal void AddUserAndRole()
         {
-            //THIS CODE IS COPIED, EDIT LATER
+            
             // Access the application context and create result variables.
             Models.ApplicationDbContext context = new ApplicationDbContext();
             IdentityResult IdRoleResult;
             IdentityResult IdUserResult;
-
+            IdentityResult IdRefereeResult;
+            IdentityResult IdUserRefereeResult;
             // Create a RoleStore object by using the ApplicationDbContext object. 
             // The RoleStore is only allowed to contain IdentityRole objects.
             var roleStore = new RoleStore<IdentityRole>(context);
@@ -32,6 +33,9 @@ namespace DebateTeamManagementSystem.Scripts
                 IdRoleResult = roleMgr.Create(new IdentityRole { Name = "canEdit" });
             }
 
+            if (!roleMgr.RoleExists("restrictedEdit")) {
+                IdRefereeResult = roleMgr.Create(new IdentityRole { Name = "restrictedEdit" });
+            }
             // Create a UserManager object based on the UserStore object and the ApplicationDbContext  
             // object. Note that you can create new objects and use them as parameters in
             // a single line of code, rather than using multiple lines of code, as you did
@@ -44,11 +48,22 @@ namespace DebateTeamManagementSystem.Scripts
             };
             IdUserResult = userMgr.Create(appUser, "Pa$$word1");
 
+            var referee = new ApplicationUser
+            {
+                UserName = "refereewolfsoftware@gmail.com",
+                Email = "refereewolfsoftware@gmail.com"
+            };
+            IdUserRefereeResult = userMgr.Create(referee, "Pa$$word1");
+            
             // If the new "canEdit" user was successfully created, 
             // add the "canEdit" user to the "canEdit" role. 
             if (!userMgr.IsInRole(userMgr.FindByEmail("farrwolfsoftware@gmail.com").Id, "canEdit"))
             {
                 IdUserResult = userMgr.AddToRole(userMgr.FindByEmail("farrwolfsoftware@gmail.com").Id, "canEdit");
+            }
+
+            if (!userMgr.IsInRole(userMgr.FindByEmail("refereewolfsoftware@gmail.com").Id, "restrictedEdit")) {
+                IdUserRefereeResult = userMgr.AddToRole(userMgr.FindByEmail("refereewolfsoftware@gmail.com").Id, "restrictedEdit");
             }
         }
     }
