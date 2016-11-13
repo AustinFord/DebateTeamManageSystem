@@ -5,3 +5,9 @@
 *.mdf
 *.ldf
 /DebateTeamManagementSystem/DebateTeamManagementSystem/obj/Debug/DesignTimeResolveAssemblyReferences.cache
+/DebateTeamManagementSystem/DebateTeamManagementSystem/bin/SendGrid.CSharp.HTTP.Client.dll
+/DebateTeamManagementSystem/DebateTeamManagementSystem/bin/System.Net.Http.Formatting.xml
+/DebateTeamManagementSystem/DebateTeamManagementSystem/bin/System.Net.Http.Formatting.dll
+/DebateTeamManagementSystem/DebateTeamManagementSystem/bin/SendGridMail.dll
+/DebateTeamManagementSystem/DebateTeamManagementSystem/bin/SendGrid.SmtpApi.dll
+/DebateTeamManagementSystem/DebateTeamManagementSystem/bin/SendGrid.dll
