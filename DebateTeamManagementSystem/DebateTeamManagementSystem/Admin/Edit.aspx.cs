@@ -650,7 +650,10 @@ namespace DebateTeamManagementSystem
             bool result = true;
 
             DebateContext db = new DebateContext();
-
+            if (db.TimeSlots.ToList().Count == 0)
+            {
+                return false;
+            }
             foreach (TimeSlot item in db.TimeSlots.ToList())
             {
 
@@ -662,5 +665,7 @@ namespace DebateTeamManagementSystem
             }
             return result;
         }
+
+        
     }
 }

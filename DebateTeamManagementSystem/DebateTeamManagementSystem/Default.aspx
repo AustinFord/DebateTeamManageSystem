@@ -3,6 +3,14 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <div class="jumbotron">
+        
+        <asp:PlaceHolder runat="server" ID="Winner" Visible="false">
+                        <p class="text-danger">
+                            <asp:Literal runat="server" ID="WinnerText" />
+                        </p>
+                    </asp:PlaceHolder>
+
+        <br />
         <asp:GridView runat="server" ID="teamsGrid"
         ItemType="DebateTeamManagementSystem.Models.Team" DataKeyNames="TeamID" 
         SelectMethod="teamsGrid_GetData"
