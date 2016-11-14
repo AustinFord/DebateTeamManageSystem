@@ -129,6 +129,16 @@
                         </p>
                     </asp:PlaceHolder>
             <asp:Button ID="DeleteSchedule" runat="server" Text="Delete Entire Schedule" OnClick="DeleteSchedule_Click" />    
+            <br />
+            <br />
+            <asp:CheckBox ID="FinalizeCheckbox" runat="server" Text="Confirm Finalization?" Visible ="false" />
+            <asp:PlaceHolder runat="server" ID="FinalizeWarning" Visible="false">
+                        <p class="text-danger">
+                            <asp:Literal runat="server" ID="FinalizeScheduleWarningText" />
+                        </p>
+                    </asp:PlaceHolder>
+            
+            <asp:Button ID="FinalizeButton" runat="server" OnClick="FinalizeButton_Click" Text="Finalize Season" />
         </div>
         
     </div>

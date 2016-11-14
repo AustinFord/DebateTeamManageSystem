@@ -25,7 +25,7 @@ namespace DebateTeamManagementSystem.Scripts
 
         private static string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
                              // TeamCount 0  1  2  3  4  5  6  7  8  9  10
-        private static int[] minWeeks = { 0, 0, 1, 2, 2, 3, 3, 4, 4, 5, 5 };
+        public static int[] minWeeks = { 0, 0, 1, 2, 2, 3, 3, 4, 4, 5, 5 };
 
         // Struct to hold all debate schedules, the teams involved, and the scores of each team
         // Might eventually hold the referee assigned to the debate
