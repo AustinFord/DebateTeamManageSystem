@@ -38,6 +38,7 @@ namespace DebateTeamManagementSystem
             {
                 TimeSlot item = null;
                 item = db.TimeSlots.Find(TimeSlotID);
+                
                 if (item == null)
                 {
                     ModelState.AddModelError("",
@@ -72,45 +73,15 @@ namespace DebateTeamManagementSystem
             }
         }
 
-        //public void scheduleGrid_DeleteItem(int TimeSlotID)
-        //{
-        //    using (DebateContext db = new DebateContext())
-        //    {
-        //        var item = db.TimeSlots.Find(TimeSlotID);
-
-        //        if (!item.isLocked)
-        //        {
-        //            ScheduleError.Visible = false;
-        //            db.Entry(item).State = EntityState.Deleted;
-        //            try
-        //            {
-        //                db.SaveChanges();
-        //            }
-        //            catch (DbUpdateConcurrencyException)
-        //            {
-        //                ModelState.AddModelError("",
-        //                  String.Format("Item with id {0} no longer exists in the database.", TimeSlotID));
-        //            }
-        //        }
-        //        else
-        //        {
-        //            ScheduleErrorText.Text = "Cannot delete a row that is locked. Please unlock the row before deleting";
-        //            ScheduleError.Visible = true;
-        //        }
-
-        //    }
-
-
-        //}
-
         protected void CalculateTeamScore(string teamName)
         {
 
             DebateContext db = new DebateContext();
             int tempScore = 0;
+            Team team = findTeamByName(teamName);
             foreach (TimeSlot item in db.TimeSlots.ToList())
             {
-                if (item.RoundStatus == null || item.RoundStatus.Equals("Completed") || item.RoundStatus.Equals(""))
+                if ((item.RoundStatus == null || item.RoundStatus.Equals("Completed") || item.RoundStatus.Equals("") || item.RoundStatus.Contains("Reactivated")))
                 {
                     if (item.Team1Name.Equals(teamName))
                     {
@@ -125,11 +96,11 @@ namespace DebateTeamManagementSystem
 
             int teamID = 0;
 
-            foreach (Team team in db.Teams.ToList())
+            foreach (Team item in db.Teams.ToList())
             {
-                if (team.TeamName.Equals(teamName))
+                if (item.TeamName.Equals(teamName))
                 {
-                    teamID = team.TeamID;
+                    teamID = item.TeamID;
                     break;
                 }
             }
@@ -148,6 +119,23 @@ namespace DebateTeamManagementSystem
         {
 
         }
-        
+
+        protected Team findTeamByName(String name)
+        {
+            DebateContext db = new DebateContext();
+            Team team = null;
+
+            foreach (Team item in db.Teams.ToList())
+            {
+                if (item.TeamName == name)
+                {
+                    team = item;
+                    break;
+                }
+            }
+
+            return team;
+        }
+
     }
 }

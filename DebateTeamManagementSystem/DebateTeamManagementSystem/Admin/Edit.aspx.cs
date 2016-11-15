@@ -96,10 +96,15 @@ namespace DebateTeamManagementSystem
                             db.SaveChanges();
                             Response.Redirect("~/Admin/Edit");
                         }
-                            
-                        
+
+                        if (itemTeamName != item.TeamName){
+                            updateTeamInSchedule(itemTeamName, item.TeamName);
+                            db.SaveChanges();
+                            Response.Redirect("~/Admin/Edit");
+                        }
 
                         db.SaveChanges();
+                        
                         TeamError.Visible = false;
                     }
                 }
@@ -204,7 +209,11 @@ namespace DebateTeamManagementSystem
             using (DebateContext db = new DebateContext())
             {
                 TimeSlot item = null;
+               
                 item = db.TimeSlots.Find(TimeSlotID);
+                string originalTeam1 = item.Team1Name;
+                string originalTeam2 = item.Team2Name;
+
                 if (item == null)
                 {
                     ModelState.AddModelError("",
@@ -213,19 +222,107 @@ namespace DebateTeamManagementSystem
                 }
 
                 TryUpdateModel(item);
-                if (ModelState.IsValid)
-                {
-                    db.SaveChanges();
-                }
-                if (item.RoundStatus == null || item.RoundStatus == "")
-                {
 
-                    item.RoundStatus = "Completed";
-                    item.isLocked = true;
-                    db.SaveChanges();
+                if (item.Team1Name != originalTeam1)
+                {
+                    Team possibleTeam = findTeamByName(item.Team1Name);
+
+                    if (possibleTeam == null)
+                    {
+                        //the team name is not in the team list so we need to alert the user.
+                        ScheduleErrorText.Text = "Team 1's name is not from the teams list.";
+                        ScheduleError.Visible = true;
+
+                        item.Team1Name = originalTeam1;
+                        db.SaveChanges();
+                    } else if (possibleTeam != null && item.Team2Name == "FREE") {
+                        //the team name is not in the team list so we need to alert the user.
+                        ScheduleErrorText.Text = "A team cannot be in a time slot by themselves";
+                        ScheduleError.Visible = true;
+
+                        item.Team1Name = originalTeam1;
+                        db.SaveChanges();
+                    }
+                    else {
+                        if (ModelState.IsValid)
+                        {
+                            db.SaveChanges();
+                        }
+                        if (item.RoundStatus == null || item.RoundStatus == "")
+                        {
+                            if (!(item.Team1Score == 0 && item.Team2Score == 0)) {
+                                item.RoundStatus = "Completed";
+
+                                item.isLocked = true;
+                            }
+                            
+                            db.SaveChanges();
+                        }
+                        CalculateTeamScore(item.Team1Name);
+                        CalculateTeamScore(item.Team2Name);
+                    }
                 }
-                CalculateTeamScore(item.Team1Name);
-                CalculateTeamScore(item.Team2Name);
+                else if (item.Team2Name != originalTeam2)
+                {
+                    Team possibleTeam = findTeamByName(item.Team2Name);
+
+                    if (possibleTeam == null)
+                    {
+                        item.Team2Name = originalTeam2;
+
+                        ScheduleErrorText.Text = "Team 2's name is not from the teams list.";
+                        ScheduleError.Visible = true;
+
+                        db.SaveChanges();
+                        //throw an error
+                    }else if (possibleTeam != null && item.Team1Name == "FREE")
+                    {
+                        //the team name is not in the team list so we need to alert the user.
+                        ScheduleErrorText.Text = "A team cannot be in a time slot by themselves";
+                        ScheduleError.Visible = true;
+
+                        item.Team2Name = originalTeam2;
+                        db.SaveChanges();
+                    }
+                    else {
+                        if (ModelState.IsValid)
+                        {
+                            db.SaveChanges();
+                        }
+                        if (item.RoundStatus == null || item.RoundStatus == "")
+                        {
+
+                            if (!(item.Team1Score == 0 && item.Team2Score == 0))
+                            {
+                                item.RoundStatus = "Completed";
+
+                                item.isLocked = true;
+                            }
+                            db.SaveChanges();
+                        }
+                        CalculateTeamScore(item.Team1Name);
+                        CalculateTeamScore(item.Team2Name);
+                    }
+                }
+                else {
+
+                    if (ModelState.IsValid){
+                        db.SaveChanges();
+                    }
+                    if (item.RoundStatus == null || item.RoundStatus == ""){
+
+                        if (!(item.Team1Score == 0 && item.Team2Score == 0))
+                        {
+                            item.RoundStatus = "Completed";
+
+                            item.isLocked = true;
+                        }
+                        db.SaveChanges();
+                    }
+                    CalculateTeamScore(item.Team1Name);
+                    CalculateTeamScore(item.Team2Name);
+                }
+
             }
         }
 
@@ -754,6 +851,26 @@ namespace DebateTeamManagementSystem
 
             return team;            
         }
+
+        protected void updateTeamInSchedule(string oldName, string newName) {
+            DebateContext db = new DebateContext();
+
+            foreach (TimeSlot item in db.TimeSlots.ToList()) {
+
+                if (item.Team1Name == oldName)
+                {
+                    item.Team1Name = newName;
+                    item.RoundStatus += "| " + "Team " + oldName + " Changed their name to: " + newName; 
+                }
+                else if (item.Team2Name == oldName) {
+                    item.Team2Name = newName;
+                }
+
+            }
+            db.SaveChanges();
+
+        }
+        
         
     }
 }
