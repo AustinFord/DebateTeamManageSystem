@@ -156,39 +156,44 @@ namespace DebateTeamManagementSystem
             using (DebateContext db = new DebateContext())
             {
                 var teamName = TextBox1.Text;
-
+                TeamError.Visible = false;
                 var teamList = db.Teams.ToList();
 
                 Boolean isTeamUnique = isTeamNameUnique(teamName, teamList);
 
-
-                if (isTeamUnique)
+                if (teamList.Count() < 10)
                 {
-                    var item = new Team { TeamName = teamName };
 
-                    if (TextBox1.Text != null && TextBox1.Text != "")
+                    if (isTeamUnique)
                     {
-                        DbSet dbset = db.Set(item.GetType());
+                        var item = new Team { TeamName = teamName };
 
-                        dbset.Add(item);
+                        if (TextBox1.Text != null && TextBox1.Text != "")
+                        {
+                            DbSet dbset = db.Set(item.GetType());
 
-                        db.Entry(item).State = EntityState.Added;
+                            dbset.Add(item);
+
+                            db.Entry(item).State = EntityState.Added;
+                        }
+
+                        if (ModelState.IsValid)
+                        {
+                            db.SaveChanges();
+                        }
+                        Response.Redirect("~/Admin/Edit");
                     }
-
-                    if (ModelState.IsValid)
+                    else
                     {
-                        db.SaveChanges();
+                        TeamErrorText.Text = "That team name is not unique. Please choose a new one";
+                        TeamError.Visible = true;
                     }
-
                 }
-                else
-                {
-                    TeamErrorText.Text = "That team name is not unique. Please choose a new one";
+                else {
+
+                    TeamErrorText.Text = "You can only have up to 10 teams";
                     TeamError.Visible = true;
                 }
-
-
-                Response.Redirect("~/Admin/Edit");
             }
         }
 
