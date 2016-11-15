@@ -26,6 +26,12 @@
             <HeaderStyle HorizontalAlign="Center" VerticalAlign="Middle" />
             <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle"/>
             </asp:DynamicField>
+            <asp:DynamicField DataField="isActive" HeaderText="Is Active" >
+            <HeaderStyle HorizontalAlign="Center" VerticalAlign="Middle" />
+            <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle"/>
+            </asp:DynamicField>
+            
+            
         </Columns>
             <EditRowStyle BackColor="Silver" HorizontalAlign="Center" VerticalAlign="Middle" />
             <HeaderStyle HorizontalAlign="Center" VerticalAlign="Middle" />

@@ -13,7 +13,7 @@ namespace DebateTeamManagementSystem
     public partial class _Default : Page
     {
         protected void Page_Load(object sender, EventArgs e)
-        {
+        {   
             if (areAllRowsLocked()) {
             declareWinner();
 
@@ -24,30 +24,18 @@ namespace DebateTeamManagementSystem
         {
             DebateContext db = new DebateContext();
 
-            var query = db.Teams;
+            List<Team> displayList = new List<Team>();
 
-            return query;
-        }
-
-        public void teamsGrid_UpdateItem(int TeamID)
-        {
-            using (DebateContext db = new DebateContext())
+            foreach (Team item in db.Teams.ToList())
             {
-                Team item = null;
-                item = db.Teams.Find(TeamID);
-                if (item == null)
-                {
-                    ModelState.AddModelError("",
-                      String.Format("Item with id {0} was not found", TeamID));
-                    return;
-                }
 
-                TryUpdateModel(item);
-                if (ModelState.IsValid)
+                if (item.isActive)
                 {
-                    db.SaveChanges();
+                    displayList.Add(item);
                 }
             }
+            IQueryable<Team> query = displayList.AsQueryable();
+            return query;
         }
 
         public IQueryable<TimeSlot> scheduleGrid_GetData()
@@ -71,7 +59,7 @@ namespace DebateTeamManagementSystem
             List<int> winners = new List<int>();
             int highestScore = findLargestScore();
             DebateContext db = new DebateContext();
-            Team[] teamsArray = db.Teams.ToArray();
+            Team[] teamsArray = listOfActiveTeams().ToArray();
 
             for (int i = 0; i < teamsArray.Length; i++) {
 
@@ -126,9 +114,9 @@ namespace DebateTeamManagementSystem
         public int findLargestScore() {
             DebateContext db = new DebateContext();
 
-            Team[] teamArray = db.Teams.ToArray();
+            Team[] teamArray = listOfActiveTeams().ToArray();
             int highScore = 0;
-            for (int i = 1; i < teamArray.Length; i++) {
+            for (int i = 0; i <= teamArray.Length -1; i++) {
                 if (teamArray[i].Score > teamArray[highScore].Score) {
                     highScore = i;
                 }
@@ -184,5 +172,24 @@ namespace DebateTeamManagementSystem
             }
             return max;
         }
+        protected List<Team> listOfActiveTeams()
+        {
+            DebateContext teamsDB = new DebateContext();
+
+            List<Team> listOfActiveTeams = new List<Team>();
+
+            foreach (Team item in teamsDB.Teams.ToList())
+            {
+                if (item.isActive)
+                {
+                    listOfActiveTeams.Add(item);
+                }
+            }
+
+            return listOfActiveTeams;
+        }
+
+        
+
     }
 }

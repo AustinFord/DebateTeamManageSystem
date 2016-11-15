@@ -70,6 +70,7 @@ namespace DebateTeamManagementSystem
                 item = db.Teams.Find(TeamID);
                 itemTeamName = item.TeamName;
                 itemID = item.TeamID;
+                bool originalActivity = item.isActive;
                 //need to add a check to make sure the updated team name is actually in the team list.
                 if (item == null)
                 {
@@ -81,9 +82,23 @@ namespace DebateTeamManagementSystem
                 TryUpdateModel(item);
 
                 if (isTeamNameUnique(item.TeamName, db.Teams.ToList(), itemID))
-                {
+                {   
                     if (ModelState.IsValid)
                     {
+                        if (!item.isActive)
+                        {
+                            deleteTeamFromSchedule(TeamID);
+                            db.SaveChanges();
+                            Response.Redirect("~/Admin/Edit");
+                        }
+                        if (!originalActivity && item.isActive) {
+                            reactivateTeam(TeamID);
+                            db.SaveChanges();
+                            Response.Redirect("~/Admin/Edit");
+                        }
+                            
+                        
+
                         db.SaveChanges();
                         TeamError.Visible = false;
                     }
@@ -108,8 +123,7 @@ namespace DebateTeamManagementSystem
 
                 var item = db.Teams.Find(TeamID);
 
-                db.Entry(item).State = EntityState.Deleted;
-
+                
                 try
                 {
                     deleteTeamFromSchedule(TeamID);
@@ -281,7 +295,6 @@ namespace DebateTeamManagementSystem
 
         protected void GenerateSchedule(object sender, EventArgs e)
         {
-
             DebateContext teamsDB = new DebateContext();
             Util.TimeSlot[] TimeSlotArray = Util.timeSlots;
             DebateContext scheduleDB = new DebateContext();
@@ -300,7 +313,7 @@ namespace DebateTeamManagementSystem
             if (GenerateNewScheduleCheck.Checked && GenerateNewScheduleCheck.Visible == true)
             {
 
-                var teams = teamsDB.Teams.ToArray();
+                var teams = listOfActiveTeams().ToArray();
 
                 string[] teamNames = new string[teams.Length];
 
@@ -309,6 +322,7 @@ namespace DebateTeamManagementSystem
                     teamNames[i] = teams[i].TeamName;
                 }
 
+                List<Team> activeTeams = listOfActiveTeams();
 
                 if (!isDateGood())
                 {
@@ -588,9 +602,10 @@ namespace DebateTeamManagementSystem
 
             DebateContext db = new DebateContext();
             int tempScore = 0;
+            Team team = findTeamByName(teamName);
             foreach (TimeSlot item in db.TimeSlots.ToList())
             {
-                if (item.RoundStatus == null || item.RoundStatus.Equals("Completed") || item.RoundStatus.Equals(""))
+                if ((item.RoundStatus == null || item.RoundStatus.Equals("Completed") || item.RoundStatus.Equals("") || item.RoundStatus.Contains("Reactivated")))
                 {
                     if (item.Team1Name.Equals(teamName))
                     {
@@ -605,11 +620,11 @@ namespace DebateTeamManagementSystem
 
             int teamID = 0;
 
-            foreach (Team team in db.Teams.ToList())
+            foreach (Team item in db.Teams.ToList())
             {
-                if (team.TeamName.Equals(teamName))
+                if (item.TeamName.Equals(teamName))
                 {
-                    teamID = team.TeamID;
+                    teamID = item.TeamID;
                     break;
                 }
             }
@@ -666,6 +681,79 @@ namespace DebateTeamManagementSystem
             return result;
         }
 
+        protected List<Team> listOfActiveTeams() {
+            DebateContext teamsDB = new DebateContext();
+
+            List<Team> listOfActiveTeams = new List<Team>();
+
+            foreach (Team item in teamsDB.Teams.ToList()) {
+                if (item.isActive) {
+                    listOfActiveTeams.Add(item);
+                }
+            }
+
+            return listOfActiveTeams;
+        }
+
+        protected void reactivateTeam(int teamID) {
+            using (DebateContext db = new DebateContext())
+            {
+
+                var item = db.Teams.Find(teamID);
+                int numberOfRowsChanged = 0;
+                if (item == null)
+                {
+                    TeamErrorText.Text = "Team could not be found in the schedule";
+                    TeamError.Visible = true;
+                }
+                else
+                {
+                    TeamError.Visible = false;
+
+                    foreach (TimeSlot scheduleItem in db.TimeSlots.ToList())
+                    {
+                        //need to make a back up of the schedule before deleting this.
+                        if (scheduleItem.Team1Name.Equals(item.TeamName) || scheduleItem.Team2Name.Equals(item.TeamName))
+                        {
+
+                            if (scheduleItem.RoundStatus != null && scheduleItem.RoundStatus != "" && scheduleItem.RoundStatus != "Completed")
+                            {
+
+                                scheduleItem.RoundStatus += " | " + item.TeamName + " Reactivated";
+                                numberOfRowsChanged++;
+                            }
+                            else
+                            {
+                                scheduleItem.RoundStatus = item.TeamName + " Reactivated";
+                                numberOfRowsChanged++;
+                            }
+                        }
+                    }
+                    db.SaveChanges();
+                }
+                foreach (Team team in db.Teams.ToList())
+                {
+
+                    CalculateTeamScore(team.TeamName);
+
+                }
+            }
+
+        }
+
+        protected Team findTeamByName(String name) {
+            DebateContext db = new DebateContext();
+            Team team = null;
+
+            foreach (Team item in db.Teams.ToList()){
+                if (item.TeamName == name) {
+                    team = item;
+                    break;
+                }
+            }
+
+            return team;            
+        }
         
     }
 }
