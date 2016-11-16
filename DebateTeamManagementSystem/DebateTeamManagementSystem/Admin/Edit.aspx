@@ -8,7 +8,7 @@
         
         
         <asp:Label ID="Label1" runat="server" Text="Please Enter Team Name"></asp:Label>
-        <asp:TextBox ID="TextBox1" runat="server" OnTextChanged="TextBox1_TextChanged" Width="162px"></asp:TextBox>
+        <asp:TextBox ID="TextBox1" runat="server" OnTextChanged="TextBox1_TextChanged" Width="162px" MaxLength="45"></asp:TextBox>
         <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Submit" Width="125px" />
          
     

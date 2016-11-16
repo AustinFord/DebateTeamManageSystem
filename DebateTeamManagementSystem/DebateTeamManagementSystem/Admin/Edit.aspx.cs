@@ -869,6 +869,7 @@ namespace DebateTeamManagementSystem
                 }
                 else if (item.Team2Name == oldName) {
                     item.Team2Name = newName;
+                    item.RoundStatus += "| " + "Team " + oldName + " Changed their name to: " + newName;
                 }
 
             }
