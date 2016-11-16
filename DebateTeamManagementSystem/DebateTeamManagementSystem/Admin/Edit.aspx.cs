@@ -24,16 +24,43 @@ namespace DebateTeamManagementSystem
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            if (!IsPostBack && Session["IsAlreadyLoad"] == null)
+            DebateContext db = new DebateContext();
+            //dont display the options for the schedule unless a schedule exists.
+            if (!(db.TimeSlots.Count() == 0))
             {
+                FinalizeButton.Visible = true;
+                AddAnotherWeek.Visible = true;
+                TimeSlotsDropDown.Visible = true;
+                DeleteSchedule.Visible = true;
+            }
+            else {
+                FinalizeButton.Visible = false;
+                AddAnotherWeek.Visible = false;
+                DeleteSchedule.Visible = false;
+                TimeSlotsDropDown.Visible = false;
+            }
+            //if (!IsPostBack && Session["IsAlreadyLoad"] == null)
+            //{
+            //    StartDate.SelectedDate = DateTime.Today.AddDays(((int)DayOfWeek.Saturday - (int)DateTime.Today.DayOfWeek + 7) % 7);
+            //    prevStartDate = StartDate.SelectedDate;
+
+
+            //    EndDate.SelectedDate = StartDate.SelectedDate.AddDays(7);
+            //    prevEndDate = EndDate.SelectedDate;
+            //    Session["IsAlreadyLoad"] = true;
+
+            //}
+
+            if (StartDate.SelectedDate < DateTime.Now) {
                 StartDate.SelectedDate = DateTime.Today.AddDays(((int)DayOfWeek.Saturday - (int)DateTime.Today.DayOfWeek + 7) % 7);
                 prevStartDate = StartDate.SelectedDate;
 
-
+                
+               
+            }
+            if (EndDate.SelectedDate < DateTime.Now) {
                 EndDate.SelectedDate = StartDate.SelectedDate.AddDays(7);
                 prevEndDate = EndDate.SelectedDate;
-                Session["IsAlreadyLoad"] = true;
-
             }
             if (!validNumberOfTeams())
             {
@@ -529,12 +556,13 @@ namespace DebateTeamManagementSystem
 
         protected void StartDate_SelectionChanged(object sender, EventArgs e)
         {
-            if (StartDate.SelectedDate.DayOfWeek != DayOfWeek.Saturday || StartDate.SelectedDate < DateTime.Today)
+            if (StartDate.SelectedDate.DayOfWeek != DayOfWeek.Saturday || StartDate.SelectedDate < DateTime.Today || EndDate.SelectedDate < StartDate.SelectedDate)
             {
-                StartDate.SelectedDate = prevStartDate;
-                InvalidDateText.Text = "The start date must be on a saturday and at least today or in the future.";
+                
+                //StartDate.SelectedDate = prevStartDate;
+                InvalidDateText.Text = "The start date must be on a saturday and at least today or in the future. The End date cannot be before the start date";
                 DateErrorMessage.Visible = true;
-
+                StartDate.SelectedDate = DateTime.Today.AddDays(((int)DayOfWeek.Saturday - (int)DateTime.Today.DayOfWeek + 7) % 7);
 
             }
             else
@@ -547,11 +575,12 @@ namespace DebateTeamManagementSystem
 
         protected void EndDate_SelectionChanged(object sender, EventArgs e)
         {
-            if (EndDate.SelectedDate.DayOfWeek != DayOfWeek.Saturday || EndDate.SelectedDate < DateTime.Today)
+            if (EndDate.SelectedDate.DayOfWeek != DayOfWeek.Saturday || EndDate.SelectedDate < DateTime.Today || EndDate.SelectedDate < StartDate.SelectedDate)
             {
-                EndDate.SelectedDate = prevEndDate;
-                InvalidDateText.Text = "The end date must be on a saturday and at least today or in the future.";
+                //EndDate.SelectedDate = prevEndDate;
+                InvalidDateText.Text = "The end date must be on a saturday and at least today or in the future. The end date cannot be before the start date";
                 DateErrorMessage.Visible = true;
+                EndDate.SelectedDate = StartDate.SelectedDate.AddDays(7);
 
             }
             else
@@ -890,7 +919,34 @@ namespace DebateTeamManagementSystem
             db.SaveChanges();
 
         }
-        
-        
+
+        protected void AddAnotherWeek_Click(object sender, EventArgs e)
+        {
+            DebateContext db = new DebateContext();
+
+            TimeSlot timeslotToEnter = new TimeSlot();
+
+            timeslotToEnter.Team1Name = "FREE";
+            timeslotToEnter.Team2Name = "FREE";
+            timeslotToEnter.Team1Score = 0;
+            timeslotToEnter.Team2Score = 0;
+            timeslotToEnter.RoundStatus = "Added Extra Week";
+            timeslotToEnter.date = EndDate.SelectedDate.AddDays(7).Date.ToString();
+
+            for (int i = 0; i < Int32.Parse(TimeSlotsDropDown.SelectedValue); i++) {
+                timeslotToEnter.time = "Morning";
+                db.TimeSlots.Add(timeslotToEnter);
+                db.SaveChanges();
+            }
+
+            for (int i = 0; i < Int32.Parse(TimeSlotsDropDown.SelectedValue); i++)
+            {
+                timeslotToEnter.time = "Afternoon";
+                db.TimeSlots.Add(timeslotToEnter);
+                db.SaveChanges();
+            }
+            Response.Redirect("~/Admin/Edit");
+        }
+
     }
 }

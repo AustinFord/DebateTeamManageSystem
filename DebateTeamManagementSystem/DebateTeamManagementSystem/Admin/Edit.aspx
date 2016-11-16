@@ -135,7 +135,7 @@
                             <asp:Literal runat="server" ID="DeletionWarningText" />
                         </p>
                     </asp:PlaceHolder>
-            <asp:Button ID="DeleteSchedule" runat="server" Text="Delete Entire Schedule" OnClick="DeleteSchedule_Click" />    
+            <asp:Button ID="DeleteSchedule" runat="server" Text="Delete Entire Schedule" OnClick="DeleteSchedule_Click" Visible ="false" />    
             <br />
             <br />
             <asp:CheckBox ID="FinalizeCheckbox" runat="server" Text="Confirm Finalization?" Visible ="false" />
@@ -145,7 +145,17 @@
                         </p>
                     </asp:PlaceHolder>
             
-            <asp:Button ID="FinalizeButton" runat="server" OnClick="FinalizeButton_Click" Text="Finalize Season and Declare A Winner" />
+            <asp:Button ID="FinalizeButton" runat="server" OnClick="FinalizeButton_Click" Text="Finalize Season and Declare A Winner" Visible ="false" />
+            <br />
+            <br />
+            <asp:Button ID="AddAnotherWeek" runat="server" OnClick="AddAnotherWeek_Click" Text="Add Another Week" Visible ="false" />
+            <asp:DropDownList ID="TimeSlotsDropDown" runat="server" Visible ="false">
+                <asp:ListItem Value="1 ">1 Timeslot</asp:ListItem>
+                <asp:ListItem Value="2 ">2 Timeslots</asp:ListItem>
+                <asp:ListItem Value="3 ">3 Timeslots</asp:ListItem>
+                <asp:ListItem Value="4 ">4 Timeslots</asp:ListItem>
+                <asp:ListItem Value="5 ">5 Timeslots</asp:ListItem>
+            </asp:DropDownList>
         </div>
         
     </div>
