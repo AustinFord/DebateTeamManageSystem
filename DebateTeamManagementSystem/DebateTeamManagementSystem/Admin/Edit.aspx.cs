@@ -128,7 +128,19 @@ namespace DebateTeamManagementSystem
 
                 var item = db.Teams.Find(TeamID);
 
-                
+                if (db.TimeSlots == null || !db.TimeSlots.Any()){
+                    db.Entry(item).State = EntityState.Deleted;
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        ModelState.AddModelError("",
+                          String.Format("Item with id {0} no longer exists in the database.", TeamID));
+                    }
+                }
+                else {
                 try
                 {
                     deleteTeamFromSchedule(TeamID);
@@ -142,6 +154,8 @@ namespace DebateTeamManagementSystem
                 }
 
                 Response.Redirect("~/Admin/Edit");
+                }
+                
 
             }
         }
