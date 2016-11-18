@@ -207,7 +207,7 @@ namespace DebateTeamManagementSystem
 
                     if (isTeamUnique)
                     {
-                        var item = new Team { TeamName = teamName };
+                        var item = new Team { TeamName = teamName, isActive = true };
 
                         if (TextBox1.Text != null && TextBox1.Text != "")
                         {
@@ -931,7 +931,9 @@ namespace DebateTeamManagementSystem
             timeslotToEnter.Team1Score = 0;
             timeslotToEnter.Team2Score = 0;
             timeslotToEnter.RoundStatus = "Added Extra Week";
-            timeslotToEnter.date = EndDate.SelectedDate.AddDays(7).Date.ToString();
+            DateTime date = EndDate.SelectedDate.AddDays(7);
+            //timeslotToEnter.date = EndDate.SelectedDate.AddDays(7).Date.ToString();
+            timeslotToEnter.date = Util.DateTimeConverter("" + date.Date.Month + "/" + date.Date.Day + "/" + date.Date.Year);
 
             for (int i = 0; i < Int32.Parse(TimeSlotsDropDown.SelectedValue); i++) {
                 timeslotToEnter.time = "Morning";

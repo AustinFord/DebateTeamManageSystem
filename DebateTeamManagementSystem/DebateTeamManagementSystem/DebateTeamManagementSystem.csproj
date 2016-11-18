@@ -419,26 +419,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201611100211557_initial.cs" />
-    <Compile Include="Migrations\201611100211557_initial.Designer.cs">
-      <DependentUpon>201611100211557_initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201611100251136_initial1.cs" />
-    <Compile Include="Migrations\201611100251136_initial1.Designer.cs">
-      <DependentUpon>201611100251136_initial1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201611102147209_initial2.cs" />
-    <Compile Include="Migrations\201611102147209_initial2.Designer.cs">
-      <DependentUpon>201611102147209_initial2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201611102159423_initial3.cs" />
-    <Compile Include="Migrations\201611102159423_initial3.Designer.cs">
-      <DependentUpon>201611102159423_initial3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201611102225098_initial4.cs" />
-    <Compile Include="Migrations\201611102225098_initial4.Designer.cs">
-      <DependentUpon>201611102225098_initial4.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\DebateModels.cs" />
@@ -477,23 +457,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201611100211557_initial.resx">
-      <DependentUpon>201611100211557_initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201611100251136_initial1.resx">
-      <DependentUpon>201611100251136_initial1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201611102147209_initial2.resx">
-      <DependentUpon>201611102147209_initial2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201611102159423_initial3.resx">
-      <DependentUpon>201611102159423_initial3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201611102225098_initial4.resx">
-      <DependentUpon>201611102225098_initial4.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

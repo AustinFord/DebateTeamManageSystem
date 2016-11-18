@@ -27,7 +27,7 @@
             <asp:DynamicField DataField="date" ReadOnly = "true" />
             <asp:DynamicField DataField="time" ReadOnly = "true" />
             <asp:DynamicField DataField="isLocked" ReadOnly = "true" />
-             <asp:DynamicField DataField="RoundStatus" />
+             <asp:DynamicField DataField="RoundStatus" ReadOnly ="true" />
             
         </Columns>
             <EditRowStyle CssClass="GridViewEditRow" BackColor="Silver" HorizontalAlign="Center" VerticalAlign="Middle" />
