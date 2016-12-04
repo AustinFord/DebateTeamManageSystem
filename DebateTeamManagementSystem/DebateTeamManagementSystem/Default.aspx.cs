@@ -45,7 +45,7 @@ namespace DebateTeamManagementSystem
             
             foreach (TimeSlot item in db.TimeSlots.ToList()) {
 
-                if (!item.Team1Name.Equals("FREE") && !item.Team2Name.Equals("FREE")) {
+                if (!item.Team1Name.Equals("---") && !item.Team2Name.Equals("---")) {
                     displayList.Add(item);
                 }
             }
