@@ -52,8 +52,13 @@ namespace DebateTeamManagementSystem
                 {
 
                     TryUpdateModel(item);
-
-                    if (item.Team1Score < 0 || item.Team2Score < 0)
+                    if (item.Team1Name == "---" && item.Team2Name == "---")
+                    {
+                        item.Team1Score = 0;
+                        item.Team2Score = 0;
+                        db.SaveChanges();
+                    }
+                    else if (item.Team1Score < 0 || item.Team2Score < 0)
                     {
                         item.Team1Score = originalTeam1Score;
                         item.Team2Score = originalTeam2Score;

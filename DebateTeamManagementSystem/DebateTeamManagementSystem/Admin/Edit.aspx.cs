@@ -270,6 +270,11 @@ namespace DebateTeamManagementSystem
                 }
                     
                 TryUpdateModel(item);
+                if (item.Team1Name == "---" && item.Team2Name == "---") {
+                    item.Team1Score = 0;
+                    item.Team2Score = 0;
+                    db.SaveChanges();
+                }
                 if (item.Team1Score < 0 || item.Team2Score < 0)
                 {
                     item.Team1Score = originalTeam1Score;
@@ -337,7 +342,7 @@ namespace DebateTeamManagementSystem
 
                         db.SaveChanges();
                         //throw an error
-                    }else if (possibleTeam != null && item.Team1Name == "FREE")
+                    }else if (possibleTeam != null && item.Team1Name == "---")
                     {
                         //the team name is not in the team list so we need to alert the user.
                         ScheduleErrorText.Text = "A team cannot be in a time slot by themselves";
@@ -425,7 +430,7 @@ namespace DebateTeamManagementSystem
         {
             Boolean isTeamNameUnique = true;
 
-            if (teamName.ToLower() == "free") {
+            if (teamName.ToLower() == "---") {
                 isTeamNameUnique = false;
                 return isTeamNameUnique;
             }
@@ -445,7 +450,7 @@ namespace DebateTeamManagementSystem
         Boolean isTeamNameUnique(String teamName, List<Team> teamList, int teamID)
         {
             Boolean isTeamNameUnique = true;
-            if (teamName.ToLower() == "free")
+            if (teamName.ToLower() == "---")
             {
                 isTeamNameUnique = false;
                 return isTeamNameUnique;
@@ -534,7 +539,7 @@ namespace DebateTeamManagementSystem
 
                     if (item.team1Name == null)
                     {
-                        TimeSlotToEnter.Team1Name = "FREE";
+                        TimeSlotToEnter.Team1Name = "---";
                     }
                     else
                     {
@@ -544,7 +549,7 @@ namespace DebateTeamManagementSystem
                     if (item.team2Name == null)
                     {
 
-                        TimeSlotToEnter.Team2Name = "FREE";
+                        TimeSlotToEnter.Team2Name = "---";
                     }
                     else
                     {
@@ -954,15 +959,18 @@ namespace DebateTeamManagementSystem
 
             TimeSlot timeslotToEnter = new TimeSlot();
 
-            timeslotToEnter.Team1Name = "FREE";
-            timeslotToEnter.Team2Name = "FREE";
+            timeslotToEnter.Team1Name = "---";
+            timeslotToEnter.Team2Name = "---";
             timeslotToEnter.Team1Score = 0;
             timeslotToEnter.Team2Score = 0;
             timeslotToEnter.RoundStatus = "Added Extra Week";
-            DateTime date = EndDate.SelectedDate.AddDays(7);
-            //timeslotToEnter.date = EndDate.SelectedDate.AddDays(7).Date.ToString();
-            timeslotToEnter.date = Util.DateTimeConverter("" + date.Date.Month + "/" + date.Date.Day + "/" + date.Date.Year);
+            TimeSlot[] timeSlotArray = db.TimeSlots.ToArray();
+            string date = timeSlotArray[timeSlotArray.Length - 1].date;
+            DateTime dateToEnter = Util.DateTimeConverter(date);
+            dateToEnter = dateToEnter.AddDays(7);
 
+            timeslotToEnter.date = Util.DateTimeConverter(dateToEnter);
+           
             for (int i = 0; i < Int32.Parse(TimeSlotsDropDown.SelectedValue); i++) {
                 timeslotToEnter.time = "Morning";
                 db.TimeSlots.Add(timeslotToEnter);

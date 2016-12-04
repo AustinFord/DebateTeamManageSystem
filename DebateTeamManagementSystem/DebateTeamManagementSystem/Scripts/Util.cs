@@ -102,25 +102,36 @@ namespace DebateTeamManagementSystem.Scripts
         }
 
         /// <summary>
-        /// Takes a DateTime variable and converts it to a sentence.
-        /// </summary>
-        /// <param name="dateTime">The DateTime to convert from</param>
-        /// <returns></returns>
-        public static string DateTimeConverter(DateTime dateTime)
-        {
-            string temp = "";
-            temp += dateTime.ToString("MMM") + " " + dateTime.Day + " " + dateTime.Year + "|" + dateTime.Hour + ":00 " + dateTime.ToString("tt");
-            return temp;
-        }
-
-        /// <summary>
         /// Takes a string date and converts it to a sentence.
         /// </summary>
         /// <param name="date">Date in terms of MM/DD/YYYY</param>
-        /// <returns></returns>
-        public static string DateTimeConverter(string date)
+        /// <returns>Returns a string sentence</returns>
+        public static string DateTimeConverter(DateTime date)
         {
-            return "" + months[Int32.Parse(date.Split('/')[0]) - 1] + " " + date.Split('/')[1] + ", " + date.Split('/')[2];
+            return "" + months[date.Month - 1] + " " + date.Day + ", " + date.Year;
+        }
+        
+        /// <summary>
+        /// Converts a string to a DateTime variable
+        /// </summary>
+        /// <param name="date">Date in terms of MMM DD, YYYY</param>
+        /// <returns></returns>
+        public static DateTime DateTimeConverter(string date)
+        {
+            DateTime output = new DateTime();
+            for (int i = 0; i < months.Length; i++)
+            {
+                if (date.Split(' ')[0] == months[i])
+                {
+                    output = output.AddMonths(i);
+                    break;
+                }
+            }
+
+            output = output.AddDays(Int32.Parse(date.Split(' ')[1].Split(',')[0])-1);
+            output =  output.AddYears(Int32.Parse(date.Split(' ')[2])-1);
+
+            return output;
         }
 
         public static string SetTeams(string[] teams)
@@ -302,7 +313,8 @@ namespace DebateTeamManagementSystem.Scripts
         private static void SetSlot(int i, DateTime start, DateTime end, bool morning, bool freeSlot)
         {
             timeSlots = ExtendArray(timeSlots, 1);
-            timeSlots[timeSlots.Length - 1].date = DateTimeConverter("" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Year);
+            //timeSlots[timeSlots.Length - 1].date = DateTimeConverter("" + start.AddDays(i * 7).Date.Month + "/" + start.AddDays(i * 7).Date.Day + "/" + start.AddDays(i * 7).Date.Year);
+            timeSlots[timeSlots.Length - 1].date = DateTimeConverter(start.AddDays(i * 7));
             timeSlots[timeSlots.Length - 1].morning = morning;
             timeSlots[timeSlots.Length - 1].freeSlot = freeSlot;
         }
