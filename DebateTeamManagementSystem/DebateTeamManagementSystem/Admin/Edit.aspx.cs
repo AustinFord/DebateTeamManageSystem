@@ -255,10 +255,12 @@ namespace DebateTeamManagementSystem
             using (DebateContext db = new DebateContext())
             {
                 TimeSlot item = null;
-               
+                ScheduleError.Visible = false;
                 item = db.TimeSlots.Find(TimeSlotID);
                 string originalTeam1 = item.Team1Name;
                 string originalTeam2 = item.Team2Name;
+                int originalTeam1Score = item.Team1Score;
+                int originalTeam2Score = item.Team2Score;
 
                 if (item == null)
                 {
@@ -266,9 +268,23 @@ namespace DebateTeamManagementSystem
                       String.Format("Item with id {0} was not found", TimeSlotID));
                     return;
                 }
-
+                    
                 TryUpdateModel(item);
-
+                if (item.Team1Score < 0 || item.Team2Score < 0)
+                {
+                    item.Team1Score = originalTeam1Score;
+                    item.Team2Score = originalTeam2Score;
+                    ScheduleErrorText.Text = "Scores must be between 0 and 100 inclusive";
+                    ScheduleError.Visible = true;
+                    db.SaveChanges();
+                }
+                else if (item.Team1Score > 100 || item.Team2Score > 100) {
+                    item.Team1Score = originalTeam1Score;
+                    item.Team2Score = originalTeam2Score;
+                    ScheduleErrorText.Text = "Scores must be between 0 and 100 inclusive";
+                    ScheduleError.Visible = true;
+                    db.SaveChanges();
+                }
                 if (item.Team1Name != originalTeam1)
                 {
                     Team possibleTeam = findTeamByName(item.Team1Name);
@@ -348,6 +364,7 @@ namespace DebateTeamManagementSystem
                         }
                         CalculateTeamScore(item.Team1Name);
                         CalculateTeamScore(item.Team2Name);
+                        
                     }
                 }
                 else {
@@ -363,10 +380,13 @@ namespace DebateTeamManagementSystem
 
                             item.isLocked = true;
                         }
+                        
                         db.SaveChanges();
+                        
                     }
                     CalculateTeamScore(item.Team1Name);
                     CalculateTeamScore(item.Team2Name);
+                    
                 }
 
             }
@@ -405,6 +425,10 @@ namespace DebateTeamManagementSystem
         {
             Boolean isTeamNameUnique = true;
 
+            if (teamName.ToLower() == "free") {
+                isTeamNameUnique = false;
+                return isTeamNameUnique;
+            }
             foreach (Team currentItem in teamList)
             {
 
@@ -421,7 +445,11 @@ namespace DebateTeamManagementSystem
         Boolean isTeamNameUnique(String teamName, List<Team> teamList, int teamID)
         {
             Boolean isTeamNameUnique = true;
-
+            if (teamName.ToLower() == "free")
+            {
+                isTeamNameUnique = false;
+                return isTeamNameUnique;
+            }
             foreach (Team currentItem in teamList)
             {
 

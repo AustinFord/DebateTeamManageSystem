@@ -38,7 +38,9 @@ namespace DebateTeamManagementSystem
             {
                 TimeSlot item = null;
                 item = db.TimeSlots.Find(TimeSlotID);
-                
+                ScheduleError.Visible = false;
+                int originalTeam1Score = item.Team1Score;
+                int originalTeam2Score = item.Team2Score;
                 if (item == null)
                 {
                     ModelState.AddModelError("",
@@ -50,16 +52,35 @@ namespace DebateTeamManagementSystem
                 {
 
                     TryUpdateModel(item);
-                    if (ModelState.IsValid)
+
+                    if (item.Team1Score < 0 || item.Team2Score < 0)
                     {
+                        item.Team1Score = originalTeam1Score;
+                        item.Team2Score = originalTeam2Score;
+                        ScheduleErrorText.Text = "Scores must be between 0 and 100 inclusive";
+                        ScheduleError.Visible = true;
                         db.SaveChanges();
                     }
-                    if (item.RoundStatus == null || item.RoundStatus == "")
+                    else if (item.Team1Score > 100 || item.Team2Score > 100)
                     {
-
-                        item.RoundStatus = "Completed";
-                        item.isLocked = true;
+                        item.Team1Score = originalTeam1Score;
+                        item.Team2Score = originalTeam2Score;
+                        ScheduleErrorText.Text = "Scores must be between 0 and 100 inclusive";
+                        ScheduleError.Visible = true;
                         db.SaveChanges();
+                    }
+                    else {
+                        if (ModelState.IsValid)
+                        {
+                            db.SaveChanges();
+                        }
+                        if (item.RoundStatus == null || item.RoundStatus == "")
+                        {
+
+                            item.RoundStatus = "Completed";
+                            item.isLocked = true;
+                            db.SaveChanges();
+                        }
                     }
                     CalculateTeamScore(item.Team1Name);
                     CalculateTeamScore(item.Team2Name);
